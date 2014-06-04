@@ -1,12 +1,35 @@
 class Player
 
-  Role.all_roles.each do |r|
-    define_method("#{r}?") { r == role}
-  end
-
   delegate :max_health, to: :character
 
+  attr_reader :in_play, :health, :brain
+
+  def sheriff?
+    role == "Sheriff"
+  end
+
+  def hand_size
+    hand.size
+  end
+
+  def target_with(player, card)
+
+  end
+
+  def target_of(card)
+    return false if barrel(card)
+    brain.target_of(card)
+  end
+
+  def barrel(card)
+    if card.barrelable?
+      deck.draw!.barreled?
+    end
+    false
+  end
+
   def hit!
+    #TODO char ability
     health--
     if dead?
       # TODO play a beer
@@ -20,25 +43,42 @@ class Player
   end
 
   def play
-    dynamite = in_play.detect{ |card| card.type = Card.dynamite }
-    if dynamite
-      in_play.delete(dynamite)
+    dynamite
+    return if dead?
+    return if jail
+    draw
+    brain.play
+    brain.discard if hand.size > hand_limit
+  end
+
+  def dynamite
+    dynamite_card = in_play.detect{ |card| card.type = Card.dynamite_card }
+    if dynamite_card
+      in_play.delete(dynamite_card)
       if deck.draw!.explode?
         3.times { hit!  }
       else
-        left[1].in_play << dynamite
+        left[1].in_play << dynamite_card
       end
     end
-    return if dead?
-    jail = in_play.detect{ |card| card.type = Card.jail }
-    if jail
-      deck.discard << jail
-      in_play.delete(jail)
-      return if deck.draw!.still_in_jail?
+  end
+
+  def jail
+    jail_card = in_play.detect{ |card| card.type = Card.jail_card }
+    if jail_card
+      deck.discard << jail_card
+      in_play.delete(jail_card)
+      return true if deck.draw!.still_in_jail?
     end
-    brain.draw
-    brain.play
-    brain.discard if hand.size > hand_limit
+    false
+  end
+
+  def draw
+    if character.special_draw?
+      brain.draw
+    else
+      hand << deck.take(character.draws)
+    end
   end
 
   def jailed?
