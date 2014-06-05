@@ -2,10 +2,14 @@ class Player
 
   delegate :max_health, to: :character
 
-  attr_reader :in_play, :health, :brain
+  attr_reader :in_play, :health, :brain, :role, :character
+  def initialize(role, character)
+    @role = role
+    @character = character
+  end
 
   def sheriff?
-    role == "Sheriff"
+    role == "sheriff"
   end
 
   def hand_size
@@ -23,7 +27,7 @@ class Player
 
   def barrel(card)
     if card.barrelable?
-      deck.draw!.barreled?
+      return deck.draw!.barreled?
     end
     false
   end
