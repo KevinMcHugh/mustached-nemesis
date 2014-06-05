@@ -1,5 +1,4 @@
 class Deck
-  attr_reader :draw, :discard
 
   def initialize
     @draw = Card.all
@@ -13,12 +12,22 @@ class Deck
   end
 
   def take(number_of_cards=1)
-    draw.pop(number_of_cards)
+    check_to_shuffle.pop(number_of_cards)
   end
 
   def draw!
-    card = draw.pop
+    card = check_to_shuffle.pop
     discard.push(card)
     card
   end
+
+  def check_to_shuffle
+    return draw unless draw.empty?
+    draw += discard.shuffle
+    discard.clear
+    draw
+  end
+
+  private
+  attr_reader :draw, :discard
 end
