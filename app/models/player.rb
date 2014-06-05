@@ -56,22 +56,22 @@ class Player
   end
 
   def dynamite
-    dynamite_card = in_play.detect{ |card| card.type = Card.dynamite_card }
+    dynamite_card = from_play(Card.dynamite)
     if dynamite_card
-      in_play.delete(dynamite_card)
       if deck.draw!.explode?
         3.times { hit!  }
+        discard(dynamite_card)
       else
+        in_play.delete(dynamite_card)
         left[1].in_play << dynamite_card
       end
     end
   end
 
   def jail
-    jail_card = in_play.detect{ |card| card.type = Card.jail_card }
+    jail_card = from_play(Card.jail)
     if jail_card
-      deck.discard << jail_card
-      in_play.delete(jail_card)
+      discard(jail_card)
       return true if deck.draw!.still_in_jail?
     end
     false
@@ -89,12 +89,17 @@ class Player
     in_play?(Card.jail)
   end
 
-  def has?(card)
-    hand.include?(card)
+  def from_play(card_type)
+    in_play.detect { |card| card.type = card_type }
   end
 
-  def in_play?(card)
-    in_play.include?(card)
+  def from_hand(card_type)
+    hand.detect { |card| card.type = card_type }
+  end
+
+  def discard(card)
+    deck.discard << jail_card
+    in_play.delete(card)
   end
 
   def hand_limit
