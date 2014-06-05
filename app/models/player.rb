@@ -36,7 +36,9 @@ class Player
     #TODO char ability
     health--
     if dead?
-      # TODO play a beer
+      beer_card = from_hand(Card.beer)
+      beer_card.play
+      discard(beer_card)
     else
       PlayerKilledEvent.new(self)
     end
