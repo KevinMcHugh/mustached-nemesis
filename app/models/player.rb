@@ -1,11 +1,30 @@
-class Player
+# for each character, there should be a subclass of player
+# that uses a refinement implementing that character's
+# special ability. You have to create that subclass because
+# `using` cannot be called from within a method. Blech.
+#
+# For `method`,  where `method` is subject to being overriden
+# by a refinement, `method` should internally call `_method`,
+# so that the refinement can use the original behavior without
+# changing the API.
 
+class Player
   delegate :max_health, to: :character
 
-  attr_reader :in_play, :health, :brain, :role, :character
+  attr_reader :in_play, :health, :brain, :role, :character, :deck
+
   def initialize(role, character)
     @role = role
     @character = character
+  end
+
+  def play
+    dynamite
+    return if dead?
+    return if jail
+    draw
+    brain.play
+    brain.discard if hand.size > hand_limit
   end
 
   def sheriff?
@@ -45,22 +64,16 @@ class Player
   def beer
     beer_card = from_hand(Card.beer)
     if beer_card
-      beer_benefit.times { health += 1 if health < max_health}
-      discard(beer_card)
+      play_and_discard(beer_card)
     end
+  end
+
+  def heal_one
+    health += 1 if health < max_health
   end
 
   def dead?
     health <= 0
-  end
-
-  def play
-    dynamite
-    return if dead?
-    return if jail
-    draw
-    brain.play
-    brain.discard if hand.size > hand_limit
   end
 
   def dynamite
@@ -85,18 +98,11 @@ class Player
     false
   end
 
-  def draw
-    if character.special_draw?
-      brain.draw
-    else
-      hand << deck.take(character.draws)
-    end
-  end
-
   def jailed?
     in_play?(Card.jail)
   end
 
+  private
   def from_play(card_type)
     in_play.detect { |card| card.type = card_type }
   end
@@ -106,13 +112,25 @@ class Player
   end
 
   def discard(card)
-    deck.discard << jail_card
+    deck.discard << card
     in_play.delete(card)
   end
 
+  def play_and_discard(card)
+    _play_and_discard(card)
+  end
+
+  def _play_and_discard(card)
+    card.play
+    discard(card)
+  end
+
   def hand_limit
-    #TODO handle that character with a constant 10 card limit
     health
+  end
+
+  def draw(cards = character.draws)
+    hand << deck.take(cards)
   end
 
   def beer_benefit; 1; end
