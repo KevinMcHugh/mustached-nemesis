@@ -36,11 +36,17 @@ class Player
     #TODO char ability
     health--
     if dead?
-      beer_card = from_hand(Card.beer)
-      beer_card.play
-      discard(beer_card)
+      beer
     else
       PlayerKilledEvent.new(self)
+    end
+  end
+
+  def beer
+    beer_card = from_hand(Card.beer)
+    if beer_card
+      beer_benefit.times { health += 1 if health < max_health}
+      discard(beer_card)
     end
   end
 
@@ -108,4 +114,6 @@ class Player
     #TODO handle that character with a constant 10 card limit
     health
   end
+
+  def beer_benefit; 1; end
 end
