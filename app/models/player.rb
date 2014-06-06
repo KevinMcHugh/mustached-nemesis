@@ -22,7 +22,7 @@ class Player
     dynamite
     return if dead?
     return if jail
-    draw
+    draw_for_turn
     brain.play
     brain.discard if hand.size > hand_limit
   end
@@ -52,7 +52,6 @@ class Player
   end
 
   def hit!
-    #TODO char ability
     health--
     if dead?
       beer
@@ -129,8 +128,12 @@ class Player
     health
   end
 
-  def draw(cards = character.draws)
-    hand << deck.take(cards)
+  def draw_for_turn
+    2.times { draw }
+  end
+
+  def draw
+    hand << deck.take(1)
   end
 
   def beer_benefit; 1; end

@@ -28,6 +28,15 @@ class Deck
     draw
   end
 
+
+  def most_recently_discarded
+    discard.last
+  end
+
+  def top_card
+    check_to_shuffle.first
+  end
+
   private
   attr_reader :draw, :discard
 end

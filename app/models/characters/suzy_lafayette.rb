@@ -6,6 +6,6 @@ module SuzyLafayetteAbility
     end
   end
 end
-class SuzyLafeyettePlayer < Player
+class SuzyLafayettePlayer < Player
   using SuzyLafayetteAbility
 end
