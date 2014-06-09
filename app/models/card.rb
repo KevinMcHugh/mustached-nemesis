@@ -35,6 +35,9 @@ class Card
   def still_in_jail?
     suit != "heart"
   end
+  def barreled?
+    suit == "heart"
+  end
 
   def gun?
     GUN.include?(self.class)

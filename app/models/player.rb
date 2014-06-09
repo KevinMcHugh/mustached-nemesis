@@ -11,11 +11,13 @@
 class Player
   delegate :max_health, to: :character
 
-  attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right
+  attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right, :range_increase, :range_decrease
 
   def initialize(role, character)
     @role = role
     @character = character
+    @range_increase = 0
+    @range_decrease = 0
   end
 
   def play
@@ -137,7 +139,7 @@ class Player
       right_distance += 1
       player = player.right
     end
-    [left_distance, right_distance].min
+    [left_distance, right_distance].min + target_player.range_increase - self.range_decrease
   end
 
   def play_and_discard(card, target_player:nil, target_card:nil)
