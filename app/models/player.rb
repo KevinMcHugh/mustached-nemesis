@@ -35,10 +35,6 @@ class Player
     hand.size
   end
 
-  def target_with(player, card)
-
-  end
-
   def target_of(card, targetter)
     return false if barrel(card)
     hit = brain.target_of(card)
@@ -61,15 +57,10 @@ class Player
     end
   end
 
-  def beer
-    beer_card = from_hand(Card.beer)
-    if beer_card
-      play_and_discard(beer_card)
+  def heal(regained_health)
+    regained_health.times do
+      health += 1 if health < max_health
     end
-  end
-
-  def heal_one
-    health += 1 if health < max_health
   end
 
   def dead?
@@ -102,6 +93,8 @@ class Player
     in_play?(Card.jail)
   end
 
+  def beer_benefit; 1; end
+
   private
   def from_play(card_type)
     in_play.detect { |card| card.type = card_type }
@@ -114,10 +107,11 @@ class Player
   def discard(card)
     deck.discard << card
     in_play.delete(card)
+    hand.delete(card)
   end
 
   def play_and_discard(card)
-    card.play
+    card.play(self)
     discard(card)
   end
 
@@ -136,6 +130,4 @@ class Player
   def draw!(reason=nil)
     deck.draw!
   end
-
-  def beer_benefit; 1; end
 end

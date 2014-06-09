@@ -1,15 +1,15 @@
 class Card
-  MISSABLE = %w{ bang! punch springfield gatling }
-  attr_accessor :suit, :number, :type
+  require 'cards'
+  MISSABLE =  [BangCard, PunchCard, SpringfieldCard]  #[bang! punch springfield gatling ]
+  attr_accessor :suit, :number
 
-  def initialize(suit, number, type)
-    @suit = suit
-    @number = number
-    @type = type
+  def type
+    self.class
   end
 
-  def play(player, target_player:nil, taget_card:nil)
-    player.discard(self)
+  def initialize(suit, number)
+    @suit = suit
+    @number = number
   end
 
   def barrelable?
@@ -22,5 +22,18 @@ class Card
 
   def still_in_jail?
     suit != "heart"
+  end
+
+  def self.beer_card
+    BeerCard
+  end
+  def self.bang_card
+    BangCard
+  end
+  def self.punch_card
+    PunchCard
+  end
+  def self.springfield_card
+    SpringfieldCard
   end
 end
