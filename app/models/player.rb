@@ -52,11 +52,7 @@ class Player
     false
   end
 
-  def hit!(hitter)
-    _hit!(hitter)
-  end
-
-  def _hit!(hitter=nil)
+  def hit!(hitter=nil)
     health--
     if dead?
       beer
@@ -121,10 +117,6 @@ class Player
   end
 
   def play_and_discard(card)
-    _play_and_discard(card)
-  end
-
-  def _play_and_discard(card)
     card.play
     discard(card)
   end
