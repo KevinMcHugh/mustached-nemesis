@@ -1,7 +1,19 @@
 class Card
   require 'cards'
+  MISSABLE =  []
   MISSABLE =  [BangCard, PunchCard, SpringfieldCard]  #[bang! punch springfield gatling ]
   attr_accessor :suit, :number
+
+  def no_range?
+    false
+  end
+
+  def gun_range?
+    false
+  end
+  def range
+    1
+  end
 
   def type
     self.class
@@ -23,6 +35,11 @@ class Card
   def still_in_jail?
     suit != "heart"
   end
+
+  def gun?
+    GUN.include?(self.class)
+  end
+
 
   def self.beer_card
     BeerCard

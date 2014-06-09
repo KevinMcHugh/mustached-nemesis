@@ -11,7 +11,7 @@
 class Player
   delegate :max_health, to: :character
 
-  attr_reader :in_play, :health, :brain, :role, :character, :deck
+  attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right
 
   def initialize(role, character)
     @role = role
@@ -110,9 +110,43 @@ class Player
     hand.delete(card)
   end
 
-  def play_and_discard(card)
-    card.play(self)
-    discard(card)
+  def in_range?(card, target_player)
+    if card.no_range?
+      true
+    elsif card.gun_range?
+      gun_range >= distance_to(target_player)
+    else
+      card.range >= distance_to(target_player)
+    end
+  end
+
+  def gun_range
+    in_play.detect { |card| card.gun? }.range
+  end
+
+  def distance_to(target_player)
+    left_distance = 1
+    right_distance = 1
+    player = self.left
+    while player != target_player
+      left_distance += 1
+      player = player.left
+    end
+    player = self.right
+    while player != target_player
+      right_distance += 1
+      player = player.right
+    end
+    [left_distance, right_distance].min
+  end
+
+  def play_and_discard(card, target_player:nil, target_card:nil)
+    if in_range?(card, target_player)
+      card.play(self)
+      discard(card)
+    else
+      raise OutOfRangeException
+    end
   end
 
   def hand_limit
