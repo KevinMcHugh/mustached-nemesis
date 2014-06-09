@@ -48,7 +48,7 @@ describe Card do
       expect(Card.new("club", 1).still_in_jail?).to eq true
       expect(Card.new("diamond", 1).still_in_jail?).to eq true
     end
-  end`
+  end
 
   describe "#type" do
     it "should match the type" do
