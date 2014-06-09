@@ -26,7 +26,7 @@ describe Card do
       expect(PunchCard.new("spade", 1).barrelable?).to eq true
     end
     it "should barrel springfield" do
-      #expect(Card.new("spade", 1).barrelable?).to eq true
+      expect(SpringfieldCard.new("spade", 1).barrelable?).to eq true
     end
     it "should barrel gatling" do
       #expect(Card.new("spade", 1).barrelable?).to eq true

@@ -11,7 +11,7 @@
 class Player
   delegate :max_health, to: :character
 
-  attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right, :range_increase, :range_decrease
+  attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right
 
   def initialize(role, character)
     @role = role
@@ -97,7 +97,16 @@ class Player
 
   def beer_benefit; 1; end
 
-  private
+  def left=(player)
+    @left = player
+    player.right = self unless player.right
+  end
+
+  def right=(player)
+    @right = player
+    player.left = self unless player.left
+  end
+
   def from_play(card_type)
     in_play.detect { |card| card.type = card_type }
   end
@@ -124,6 +133,14 @@ class Player
 
   def gun_range
     in_play.detect { |card| card.gun? }.range
+  end
+
+  def range_increase
+    0
+  end
+
+  def range_decrease
+    0
   end
 
   def distance_to(target_player)

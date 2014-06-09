@@ -1,6 +1,6 @@
 class Card
   require 'cards'
-  MISSABLE =  []
+  GUN =  []
   MISSABLE =  [BangCard, PunchCard, SpringfieldCard]  #[bang! punch springfield gatling ]
   attr_accessor :suit, :number
 
