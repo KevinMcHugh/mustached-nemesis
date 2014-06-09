@@ -21,3 +21,14 @@ class BeerCard < Card
     player.heal(player.beer_benefit)
   end
 end
+class IndiansCard < Card
+  def no_range?;true;end
+  def play(player, target_player=nil, target_card:nil)
+    target_player = player.left
+
+    while target_player != player
+      target_player.target_of(self, player)
+      target_player = target_player.left
+    end
+  end
+end

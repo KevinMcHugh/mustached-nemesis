@@ -90,4 +90,16 @@ describe Player do
       end
     end
   end
+
+  describe "#barrel" do
+    let(:indians_card) { IndiansCard.new }
+    let(:bang_card) { BangCard.new }
+    it 'always returns false if the card is not barrelable' do
+      expect(sheriff.barrel(indians_card)).to be_false
+    end
+    it 'returns true if the card is barrelable' do
+      allow(sheriff).to receive(:draw!).and_return(Card.new('heart'))
+      expect(sheriff.barrel(bang_card)).to be_true
+    end
+  end
 end
