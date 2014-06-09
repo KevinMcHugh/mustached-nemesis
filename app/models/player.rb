@@ -1,3 +1,5 @@
+require 'card'
+
 # for each character, there should be a subclass of player
 # that uses a refinement implementing that character's
 # special ability. You have to create that subclass because
@@ -18,6 +20,7 @@ class Player
     @character = character
     @range_increase = 0
     @range_decrease = 0
+    @in_play = []
   end
 
   def play
@@ -132,7 +135,8 @@ class Player
   end
 
   def gun_range
-    in_play.detect { |card| card.gun? }.range
+    gun = in_play.detect { |card| card.gun? }
+    gun ? gun.range : 1
   end
 
   def range_increase

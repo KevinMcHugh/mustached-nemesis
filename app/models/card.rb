@@ -2,7 +2,13 @@ class Card
   require 'cards'
   GUN =  []
   MISSABLE =  [BangCard, PunchCard, SpringfieldCard]  #[bang! punch springfield gatling ]
+
   attr_accessor :suit, :number
+
+  def initialize(suit=nil, number=nil)
+    @suit = suit
+    @number = number
+  end
 
   def no_range?
     false
@@ -17,11 +23,6 @@ class Card
 
   def type
     self.class
-  end
-
-  def initialize(suit, number)
-    @suit = suit
-    @number = number
   end
 
   def barrelable?

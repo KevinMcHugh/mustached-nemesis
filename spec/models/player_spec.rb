@@ -34,6 +34,48 @@ describe Player do
     end
   end
 
+  describe "#in_range?" do
+    let(:bang_card) { BangCard.new("diamonds", 5) }
+    let(:beer_card) { BeerCard.new }
+    let(:punch_card) { PunchCard.new("clubs") }
+
+    context "beer card" do
+      it 'always returns true for beer cards' do
+        expect(sheriff.in_range?(beer_card, sheriff)).to be_true
+      end
+    end
+
+    context "bang card, no gun" do
+      it "is true if the player is in range" do
+        expect(sheriff.in_range?(bang_card, outlaw_1)).to be_true
+        expect(sheriff.in_range?(bang_card, renegade)).to be_true
+      end
+      it "is false if the player isn't in range" do
+        expect(sheriff.in_range?(bang_card, outlaw_2)).to be_false
+      end
+    end
+
+    context "bang card, with gun" do
+      before { allow(sheriff).to receive(:gun_range).and_return(2) }
+      it "is true now for all players in range" do
+        expect(sheriff.in_range?(bang_card, outlaw_1)).to be_true
+        expect(sheriff.in_range?(bang_card, outlaw_2)).to be_true
+        expect(sheriff.in_range?(bang_card, renegade)).to be_true
+      end
+    end
+
+    context "punch card always has a range of 1, even with gun" do
+      before { allow(sheriff).to receive(:gun_range).and_return(2) }
+      it "is true if the player is in range" do
+        expect(sheriff.in_range?(punch_card, outlaw_1)).to be_true
+        expect(sheriff.in_range?(punch_card, renegade)).to be_true
+      end
+      it "is false if the player isn't in range" do
+        expect(sheriff.in_range?(punch_card, outlaw_2)).to be_false
+      end
+    end
+  end
+
   describe '#sheriff?' do
     context 'when the player is not the sheriff' do
       subject { described_class.new("outlaw", nil) }
