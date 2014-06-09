@@ -39,9 +39,10 @@ class Player
 
   end
 
-  def target_of(card)
+  def target_of(card, targetter)
     return false if barrel(card)
-    brain.target_of(card)
+    hit = brain.target_of(card)
+    hit!(targetter) if hit
   end
 
   def barrel(card)
@@ -51,7 +52,11 @@ class Player
     false
   end
 
-  def hit!
+  def hit!(hitter)
+    _hit!(hitter)
+  end
+
+  def _hit!(hitter=nil)
     health--
     if dead?
       beer
