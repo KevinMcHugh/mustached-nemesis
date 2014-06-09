@@ -1,4 +1,4 @@
-class BeerCard < Beer
+class BeerCard < Card
 
   def play(player, target_player:nil, target_card:nil)
     player.heal(1)
