@@ -47,7 +47,7 @@ class Player
 
   def barrel(card)
     if card.barrelable?
-      return deck.draw!.barreled?
+      return draw!(:barrel).barreled?
     end
     false
   end
@@ -79,7 +79,7 @@ class Player
   def dynamite
     dynamite_card = from_play(Card.dynamite)
     if dynamite_card
-      if deck.draw!.explode?
+      if draw!(:dynamite).explode?
         3.times { hit!  }
         discard(dynamite_card)
       else
@@ -93,7 +93,7 @@ class Player
     jail_card = from_play(Card.jail)
     if jail_card
       discard(jail_card)
-      return true if deck.draw!.still_in_jail?
+      return true if draw!(:jail).still_in_jail?
     end
     false
   end
@@ -131,6 +131,10 @@ class Player
 
   def draw
     hand << deck.take(1)
+  end
+
+  def draw!(reason=nil)
+    deck.draw!
   end
 
   def beer_benefit; 1; end
