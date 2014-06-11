@@ -96,9 +96,64 @@ describe Player do
     it 'always returns false if the card is not barrelable' do
       expect(sheriff.barrel(indians_card)).to be_false
     end
-    it 'returns true if the card is barrelable' do
+    it 'returns true if the card is barrelable and a heart is drawn' do
       allow(sheriff).to receive(:draw!).and_return(Card.new('heart'))
       expect(sheriff.barrel(bang_card)).to be_true
+    end
+    it 'returns false if the card is barrelable and a heart is not drawn' do
+      allow(sheriff).to receive(:draw!).and_return(Card.new('spade'))
+      expect(sheriff.barrel(bang_card)).to be_false
+    end
+  end
+
+  describe "#jail" do
+    let(:jail_card) { JailCard.new }
+
+    it 'return false if player is not in jail' do
+      expect(outlaw_1.jail).to be_false
+    end
+    it 'returns true if the draw is not a heart' do
+      outlaw_1.in_play << jail_card
+      allow(outlaw_1).to receive(:draw!).and_return(Card.new('spade'))
+      expect(outlaw_1.jail).to be_true
+    end
+    it 'returns false if the draw is a heart' do
+      outlaw_1.in_play << jail_card
+      allow(outlaw_1).to receive(:draw!).and_return(Card.new('heart'))
+      expect(outlaw_1.jail).to be_false
+    end
+    it "removes the jail from in play and adds it to the discard" do
+      outlaw_1.in_play << jail_card
+      allow(outlaw_1).to receive(:draw!).and_return(Card.new('spade'))
+      outlaw_1.jail
+      expect(outlaw_1.in_play.include?(jail_card)).to be_false
+      expect(deck.discard.last).to be jail_card
+    end
+  end
+
+  describe "#dynamite" do
+    let(:dynamite_card) { DynamiteCard.new }
+
+    it 'does not damage the player if there is no dynamite' do
+      health = outlaw_1.health
+      outlaw_1.dynamite
+      expect(outlaw_1.health).to eq health
+    end
+    it 'does not damage the player if the draw is not 2-9 spades and passes' do
+      health = outlaw_1.health
+      outlaw_1.in_play << dynamite_card
+      allow(outlaw_1).to receive(:draw!).and_return(Card.new('spade', 10))
+      outlaw_1.dynamite
+      expect(outlaw_1.health).to eq health
+      expect(outlaw_1.left.in_play.include?(dynamite_card)).to be_true
+    end
+    it 'does damage the player if the draw is 2-9 spades, and discards' do
+      health = outlaw_1.health
+      outlaw_1.in_play << dynamite_card
+      allow(outlaw_1).to receive(:draw!).and_return(Card.new('spade', 9))
+      outlaw_1.dynamite
+      expect(outlaw_1.health).to eq (health - 3)
+      expect(deck.discard.last).to be dynamite_card
     end
   end
 end

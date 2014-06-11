@@ -58,11 +58,9 @@ class Player
   end
 
   def hit!(hitter=nil)
-    health--
+    @health -= 1
     if dead?
-      beer
-    else
-      PlayerKilledEvent.new(self)
+      PlayerKilledEvent.new(self) unless beer
     end
   end
 
@@ -77,20 +75,20 @@ class Player
   end
 
   def dynamite
-    dynamite_card = from_play(Card.dynamite)
+    dynamite_card = from_play(Card.dynamite_card)
     if dynamite_card
       if draw!(:dynamite).explode?
         3.times { hit!  }
         discard(dynamite_card)
       else
         in_play.delete(dynamite_card)
-        left[1].in_play << dynamite_card
+        left.in_play << dynamite_card
       end
     end
   end
 
   def jail
-    jail_card = from_play(Card.jail)
+    jail_card = from_play(Card.jail_card)
     if jail_card
       discard(jail_card)
       return true if draw!(:jail).still_in_jail?
