@@ -1,7 +1,7 @@
 class Card
   require 'cards'
   GUN =  []
-  MISSABLE =  [BangCard, PunchCard, SpringfieldCard]  #[bang! punch springfield gatling ]
+  MISSABLE =  [BangCard, PunchCard, SpringfieldCard, GatlingCard]  #[bang! punch springfield gatling ]
 
   attr_accessor :suit, :number
 
@@ -56,5 +56,17 @@ class Card
   end
   def self.springfield_card
     SpringfieldCard
+  end
+  def self.indians_card
+    IndiansCard
+  end
+  def self.jail_card
+    JailCard
+  end
+  def self.dynamite_card
+    DynamiteCard
+  end
+  def self.gatling_card
+    GatlingCard
   end
 end

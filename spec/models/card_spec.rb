@@ -20,16 +20,16 @@ describe Card do
 
   describe "#barrelable?" do
     it "should barrel bang!" do
-      expect(BangCard.new("spade", 1).barrelable?).to eq true
+      expect(BangCard.new.barrelable?).to eq true
     end
     it "should barrel punch" do
-      expect(PunchCard.new("spade", 1).barrelable?).to eq true
+      expect(PunchCard.new.barrelable?).to eq true
     end
     it "should barrel springfield" do
-      expect(SpringfieldCard.new("spade", 1).barrelable?).to eq true
+      expect(SpringfieldCard.new.barrelable?).to eq true
     end
     it "should barrel gatling" do
-      #expect(Card.new("spade", 1).barrelable?).to eq true
+      expect(GatlingCard.new.barrelable?).to eq true
     end
     it "should not barrel duel" do
       #expect(Card.new("spade", 1).barrelable?).to eq false
