@@ -13,14 +13,18 @@ require 'card'
 class Player
   delegate :max_health, to: :character
 
-  attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right
+  attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right, :hand
 
-  def initialize(role, character)
+  def initialize(role, character, deck)
+    @deck = deck
+    @hand = []
     @role = role
     @character = character
     @range_increase = 0
     @range_decrease = 0
     @in_play = []
+    ###TODO: implement char health
+    @health = 4
   end
 
   def play
@@ -111,11 +115,11 @@ class Player
   end
 
   def from_play(card_type)
-    in_play.detect { |card| card.type = card_type }
+    in_play.detect { |card| card.type == card_type }
   end
 
   def from_hand(card_type)
-    hand.detect { |card| card.type = card_type }
+    hand.detect { |card| card.type == card_type }
   end
 
   def discard(card)

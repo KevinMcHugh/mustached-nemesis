@@ -1,10 +1,11 @@
 require 'spec_helper'
 
 describe Player do
-  let(:sheriff) { described_class.new("sheriff", nil) }
-  let(:outlaw_1) { described_class.new("outlaw", nil) }
-  let(:outlaw_2) { described_class.new("outlaw", nil) }
-  let(:renegade) { described_class.new("renagade", nil) }
+  let(:deck) { Deck.new }
+  let(:sheriff) { described_class.new("sheriff", nil, deck) }
+  let(:outlaw_1) { described_class.new("outlaw", nil, deck) }
+  let(:outlaw_2) { described_class.new("outlaw", nil, deck) }
+  let(:renegade) { described_class.new("renagade", nil, deck) }
   before do
     sheriff.left = renegade
     outlaw_1.left = sheriff
@@ -78,15 +79,13 @@ describe Player do
 
   describe '#sheriff?' do
     context 'when the player is not the sheriff' do
-      subject { described_class.new("outlaw", nil) }
       it 'returns false' do
-        expect(subject.sheriff?).to be_false
+        expect(outlaw_1.sheriff?).to be_false
       end
     end
     context 'when the player is the sheriff' do
-      subject { described_class.new("sheriff", nil) }
       it 'returns false' do
-        expect(subject.sheriff?).to be_true
+        expect(sheriff.sheriff?).to be_true
       end
     end
   end
