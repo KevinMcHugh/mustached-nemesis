@@ -174,4 +174,31 @@ describe Player do
       expect(sheriff.health).to eq sheriff.max_health - 1
     end
   end
+
+  describe "#dead?" do
+    it "returns false if player has health" do
+      expect(sheriff.dead?).to be_false
+    end
+    it "returns true if player has no health" do
+      allow(sheriff).to receive(:health).and_return(0)
+      expect(sheriff.dead?).to be_true
+    end
+  end
+
+  describe "#hit" do
+    it "deals one damage to the player" do
+      health = sheriff.health
+      sheriff.hit!
+      expect(sheriff.health).to eq health - 1
+    end
+    it "kills player if it takes last health" do
+      4.times { sheriff.hit! }
+      expect(sheriff.dead?).to be_true
+    end
+    it "plays beer to keep the player alive" do
+      sheriff.hand << BeerCard.new
+      4.times { sheriff.hit! }
+      expect(sheriff.dead?).to be_false
+    end
+  end
 end

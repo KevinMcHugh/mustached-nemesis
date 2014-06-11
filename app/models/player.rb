@@ -58,7 +58,17 @@ class Player
   def hit!(hitter=nil)
     @health -= 1
     if dead?
-      PlayerKilledEvent.new(self) unless beer
+      PlayerKilledEvent.new(self, hitter) unless beer
+    end
+  end
+
+  def beer
+    beer_card = from_hand(Card.beer_card)
+    if beer_card
+      play_and_discard(beer_card)
+      true
+    else
+      false
     end
   end
 
@@ -186,5 +196,10 @@ class Player
 
   def draw!(reason=nil)
     deck.draw!
+  end
+end
+
+class PlayerKilledEvent
+  def initialize(player, killer)
   end
 end
