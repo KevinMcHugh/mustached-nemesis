@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe Player do
   let(:deck) { Deck.new }
-  let(:sheriff) { described_class.new("sheriff", nil, deck) }
-  let(:outlaw_1) { described_class.new("outlaw", nil, deck) }
-  let(:outlaw_2) { described_class.new("outlaw", nil, deck) }
-  let(:renegade) { described_class.new("renagade", nil, deck) }
+  let(:sheriff) { described_class.new("sheriff", deck) }
+  let(:outlaw_1) { described_class.new("outlaw", deck) }
+  let(:outlaw_2) { described_class.new("outlaw", deck) }
+  let(:renegade) { described_class.new("renagade", deck) }
   before do
     sheriff.left = renegade
     outlaw_1.left = sheriff
@@ -154,6 +154,24 @@ describe Player do
       outlaw_1.dynamite
       expect(outlaw_1.health).to eq (health - 3)
       expect(deck.discard.last).to be dynamite_card
+    end
+  end
+
+  describe "#heal" do
+    it "heals the player 1 point" do
+      2.times { sheriff.hit! }
+      sheriff.heal
+      expect(sheriff.health).to eq sheriff.max_health - 1
+    end
+    it "does not heal more than maximum health" do
+      health = sheriff.health
+      sheriff.heal
+      expect(sheriff.health).to eq health
+    end
+    it "heals more than one at a time" do
+      3.times { sheriff.hit! }
+      sheriff.heal(2)
+      expect(sheriff.health).to eq sheriff.max_health - 1
     end
   end
 end

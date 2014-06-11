@@ -11,20 +11,18 @@ require 'card'
 # changing the API.
 
 class Player
-  delegate :max_health, to: :character
 
-  attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right, :hand
+  attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right, :hand, :max_health
 
-  def initialize(role, character, deck)
+  def initialize(role, deck)
     @deck = deck
     @hand = []
     @role = role
-    @character = character
     @range_increase = 0
     @range_decrease = 0
     @in_play = []
-    ###TODO: implement char health
     @health = 4
+    @max_health = 4
   end
 
   def play
@@ -64,9 +62,9 @@ class Player
     end
   end
 
-  def heal(regained_health)
+  def heal(regained_health=1)
     regained_health.times do
-      health += 1 if health < max_health
+      @health += 1 if health < max_health
     end
   end
 
