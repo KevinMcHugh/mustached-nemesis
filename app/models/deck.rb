@@ -28,7 +28,7 @@
 
 class Deck
 
-  def initialize(seed = nil)
+  def initialize(seed = nil, expansions = nil)
     cards =
     @seed = seed ? seed : Random.new.seed
     @draw = create_deck.shuffle(random: Random.new(@seed))
@@ -70,6 +70,10 @@ class Deck
     4.times { |n| cards << MissedCard.new("club", n+10) }
     6.times { |n| cards << MissedCard.new("spade", n+2) }
     cards << MissedCard.new("diamond", 8)
+    #   Duel Q♦, J♠, 8♣
+    cards << DuelCard.new("diamond", 12)
+    cards << DuelCard.new("spade", 11)
+    cards << DuelCard.new("club", 8)
 
     cards
   end

@@ -45,9 +45,29 @@ class Player
     hand.size
   end
 
-  def target_of(card, targetter)
+  def target_of_indians(card, targetter)
+    response = brain.target_of_indians(card, targetter)
+    if response.respond_to?(:type) && response.type == Card.bang_card && hand.include?(response)
+      discard(response)
+    else
+      hit!(targetter)
+    end
+  end
+
+  def target_of_duel
+    response = brain.target_of_duel(card, targetter)
+    if response.respond_to?(:type) && response.type == Card.bang_card && hand.include?(response)
+      discard(response)
+      targetter.target_of_duel(card, self)
+    else
+      hit!(targetter)
+    end
+  end
+
+
+  def target_of_bang(card, targetter)
     return false if draw!(:barrel).barreled?
-    response = brain.target_of(card)
+    response = brain.target_of_bang(card, targetter)
     if response.respond_to?(:type) && response.type == Card.missed_card && hand.include?(response) && card.missable?
       discard(response)
     else

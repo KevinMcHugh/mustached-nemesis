@@ -5,16 +5,18 @@
 # option to take the explosion.
 
 #bug in line 11 for barrel
-class LuckyDuke
-  def draw!(reason)
-    options = 2.times.map { deck.draw! }
-    card = options.find { |option| !option.send(reasons_to_methods[reason]) }
-    card ? card : options.first
-  end
+module Character
+  class LuckyDuke
+    def draw!(reason)
+      options = 2.times.map { deck.draw! }
+      card = options.find { |option| !option.send(reasons_to_methods[reason]) }
+      card ? card : options.first
+    end
 
-  private
-  def reasons_to_methods
-    { jail: :stll_in_jail?, barrel: :barreled?, dynamite: :explode? }
-  end
+    private
+    def reasons_to_methods
+      { jail: :stll_in_jail?, barrel: :barreled?, dynamite: :explode? }
+    end
 
+  end
 end

@@ -76,4 +76,7 @@ class Card
   def self.missed_card
     MissedCard
   end
+  def self.duel_card
+    DuelCard
+  end
 end

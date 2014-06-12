@@ -1,6 +1,11 @@
 class Game < ActiveRecord::Base
-  has_many :players
-  attr_reader :deck
+  attr_reader :deck, :players
+
+  def initialize(players, deck)
+    @players = players
+    @deck = deck
+
+  end
 
   def start
     @event_listener = EventListener.new(self)
