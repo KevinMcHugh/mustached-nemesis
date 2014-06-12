@@ -9,17 +9,12 @@ class CreateGame
 
   def execute()
     players = []
-    @roles.shuffle.each do |role|
-      @brains.push(@brains.shift.new(role))
-    end
     @characters = Character.constants.select { |c| Character.const_get(c).is_a?(Class) }.shuffle
-    @brains.each do |brain|
-      brain.player = brain.choose_character(@characters.shift, @characters.shift).new(brain.role, @deck)
-      players << brain.player
+    @roles.shuffle.each do |role|
+      b = @brains.shift.new(role)
+      b.player = Character.const_get(b.choose_character(@characters.shift, @characters.shift)).new(role, @deck, b)
+      players << b.player
     end
-    Game.new(players, deck).start
+    Game.new(players, @deck).start
   end
-
-  private
-
 end

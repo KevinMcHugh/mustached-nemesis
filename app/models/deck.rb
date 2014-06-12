@@ -27,7 +27,7 @@
 
 
 class Deck
-
+  require 'card'
   def initialize(seed = nil, expansions = nil)
     cards =
     @seed = seed ? seed : Random.new.seed
@@ -80,7 +80,7 @@ class Deck
 
   def deal_to(players)
     players.each do |player|
-      player.give(take(player.max_health))
+      player.hand += take(player.max_health)
     end
   end
 

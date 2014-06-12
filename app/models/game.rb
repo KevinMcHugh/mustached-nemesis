@@ -1,5 +1,6 @@
-class Game < ActiveRecord::Base
+class Game
   attr_reader :deck, :players
+  attr_accessor :over
 
   def initialize(players, deck)
     @players = players
@@ -9,13 +10,15 @@ class Game < ActiveRecord::Base
 
   def start
     @event_listener = EventListener.new(self)
-    @event_listener.subscribe(self)
+    #@event_listener.subscribe(self)
 
     @deck = Deck.new
     deck.deal_to(players)
     while !over do
       begin
         players.each do |player|
+          @event_listener.notify("#{player.class} #{player.health} #{player.role}")
+          @event_listener.notify(player.hand.flat_map(&:class))
           player.play
         end
       rescue GameOverException => e
@@ -42,8 +45,8 @@ class Game < ActiveRecord::Base
   end
 
   def self.all_roles
-    %w{sheriff, renegade, outlaw, outlaw,
-      deputy, outlaw, deputy, renegade}
+    %w{sheriff renegade outlaw outlaw
+      deputy outlaw deputy renegade}
   end
 end
 

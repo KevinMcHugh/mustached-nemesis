@@ -11,7 +11,7 @@ require 'card'
 # changing the API.
 
 class Player
-
+  attr_writer :hand
   attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right, :hand, :max_health
 
   def initialize(role, deck, brain=nil)
@@ -31,6 +31,7 @@ class Player
     return if dead?
     return if jail
     draw_for_turn
+
     brain.play
     while hand.size > hand_limit
       discard(brain.discard)
