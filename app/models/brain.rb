@@ -1,4 +1,5 @@
 class Brain
+  attr_accessor :player
   def initialize()
   end
   def target_of(card)
@@ -8,3 +9,5 @@ class Brain
   def play()
   end
 end
+
+

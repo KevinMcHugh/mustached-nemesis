@@ -14,7 +14,7 @@ class Player
 
   attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right, :hand, :max_health
 
-  def initialize(role, deck)
+  def initialize(role, deck, brain=nil)
     @deck = deck
     @hand = []
     @role = role
@@ -23,7 +23,7 @@ class Player
     @in_play = []
     @health = 4
     @max_health = 4
-    @brain = Brain.new
+    @brain ||= Brain.new
   end
 
   def play
@@ -32,7 +32,9 @@ class Player
     return if jail
     draw_for_turn
     brain.play
-    brain.discard if hand.size > hand_limit
+    while hand.size > hand_limit
+      discard(brain.discard)
+    end
   end
 
   def sheriff?
@@ -144,11 +146,11 @@ class Player
   end
 
   def range_increase
-    0
+    @range_increase
   end
 
   def range_decrease
-    0
+    @range_decrease
   end
 
   def distance_to(target_player)
