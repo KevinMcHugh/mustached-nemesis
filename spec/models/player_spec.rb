@@ -90,22 +90,6 @@ describe Player do
     end
   end
 
-  describe "#barrel" do
-    let(:indians_card) { IndiansCard.new }
-    let(:bang_card) { BangCard.new }
-    it 'always returns false if the card is not barrelable' do
-      expect(sheriff.barrel(indians_card)).to be_false
-    end
-    it 'returns true if the card is barrelable and a heart is drawn' do
-      allow(sheriff).to receive(:draw!).and_return(Card.new('heart'))
-      expect(sheriff.barrel(bang_card)).to be_true
-    end
-    it 'returns false if the card is barrelable and a heart is not drawn' do
-      allow(sheriff).to receive(:draw!).and_return(Card.new('spade'))
-      expect(sheriff.barrel(bang_card)).to be_false
-    end
-  end
-
   describe "#jail" do
     let(:jail_card) { JailCard.new }
 
@@ -135,24 +119,18 @@ describe Player do
     let(:dynamite_card) { DynamiteCard.new }
 
     it 'does not damage the player if there is no dynamite' do
-      health = outlaw_1.health
-      outlaw_1.dynamite
-      expect(outlaw_1.health).to eq health
+      expect{outlaw_1.dynamite}.to change{outlaw_1.health}.by(0)
     end
     it 'does not damage the player if the draw is not 2-9 spades and passes' do
-      health = outlaw_1.health
       outlaw_1.in_play << dynamite_card
       allow(outlaw_1).to receive(:draw!).and_return(Card.new('spade', 10))
-      outlaw_1.dynamite
-      expect(outlaw_1.health).to eq health
+      expect{outlaw_1.dynamite}.to change{outlaw_1.health}.by(0)
       expect(outlaw_1.left.in_play.include?(dynamite_card)).to be_true
     end
     it 'does damage the player if the draw is 2-9 spades, and discards' do
-      health = outlaw_1.health
       outlaw_1.in_play << dynamite_card
       allow(outlaw_1).to receive(:draw!).and_return(Card.new('spade', 9))
-      outlaw_1.dynamite
-      expect(outlaw_1.health).to eq (health - 3)
+      expect{outlaw_1.dynamite}.to change{outlaw_1.health}.by(-3)
       expect(deck.discard.last).to be dynamite_card
     end
   end
@@ -160,18 +138,14 @@ describe Player do
   describe "#heal" do
     it "heals the player 1 point" do
       2.times { sheriff.hit! }
-      sheriff.heal
-      expect(sheriff.health).to eq sheriff.max_health - 1
+      expect{sheriff.heal}.to change{sheriff.health}.by(1)
     end
     it "does not heal more than maximum health" do
-      health = sheriff.health
-      sheriff.heal
-      expect(sheriff.health).to eq health
+      expect{sheriff.heal}.to_not change{sheriff.health}
     end
     it "heals more than one at a time" do
       3.times { sheriff.hit! }
-      sheriff.heal(2)
-      expect(sheriff.health).to eq sheriff.max_health - 1
+      expect{sheriff.heal(2)}.to change{sheriff.health}.by(2)
     end
   end
 
@@ -187,9 +161,7 @@ describe Player do
 
   describe "#hit" do
     it "deals one damage to the player" do
-      health = sheriff.health
-      sheriff.hit!
-      expect(sheriff.health).to eq health - 1
+      expect{sheriff.hit!}.to change{sheriff.health}.by(-1)
     end
     it "kills player if it takes last health" do
       4.times { sheriff.hit! }
@@ -199,6 +171,56 @@ describe Player do
       sheriff.hand << BeerCard.new
       4.times { sheriff.hit! }
       expect(sheriff.dead?).to be_false
+    end
+  end
+
+  describe "#target_of" do
+    it "does not deal damage if barreled" do
+      allow(sheriff).to receive(:draw!).and_return(Card.new("heart"))
+      expect(sheriff.target_of(BangCard.new, outlaw_1)).to be_false
+      expect{sheriff.target_of(BangCard.new, outlaw_1)}.to_not change{sheriff.health}
+    end
+
+    context "not barreled" do
+      before { allow(sheriff).to receive(:draw!).and_return(Card.new("spade")) }
+
+      it "discards and does not deal damage if the response is a missed card from the hand" do
+        mc = MissedCard.new
+        sheriff.hand << mc
+        allow(sheriff.brain).to receive(:target_of).and_return(mc)
+        expect{sheriff.target_of(BangCard.new, outlaw_1)}.to_not change{sheriff.health}
+        expect(deck.discard.last).to be mc
+      end
+      it "hits if no response" do
+        allow(sheriff.brain).to receive(:target_of)
+        expect{sheriff.target_of(BangCard.new, outlaw_1)}.to change{sheriff.health}.by(-1)
+      end
+      it "hits if miss card is faked" do
+        allow(sheriff.brain).to receive(:target_of).and_return(MissedCard.new)
+        expect{sheriff.target_of(BangCard.new, outlaw_1)}.to change{sheriff.health}.by(-1)
+      end
+    end
+  end
+
+  describe "#discard" do
+    let(:card_1) { Card.new }
+    let(:card_2) { Card.new }
+    it "removes the card from in play" do
+      sheriff.in_play << card_1
+      expect{sheriff.discard(card_1)}.to change{sheriff.in_play}.from([card_1]).to([])
+    end
+    it "removes the card from hand" do
+      sheriff.hand << card_1
+      expect{sheriff.discard(card_1)}.to change{sheriff.hand}.from([card_1]).to([])
+    end
+    it "does not remove a card of the same type" do
+      sheriff.in_play << card_1
+      sheriff.in_play << card_2
+      expect{sheriff.discard(card_1)}.to change{sheriff.in_play}.from([card_1, card_2]).to([card_2])
+    end
+    it "adds the card to the top of the discard stack" do
+      sheriff.in_play << card_1
+      expect{sheriff.discard(card_1)}.to change{deck.discard}.from([]).to([card_1])
     end
   end
 end

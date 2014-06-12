@@ -45,6 +45,10 @@ class GatlingCard < Card
     end
   end
 end
+class MissedCard < Card
+  def play(player=nil, target_player=nil, target_card=nil)
+  end
+end
 class JailCard < Card
   def no_range?;true;end
   def play(player, target_player, target_card=nil)

@@ -66,6 +66,11 @@ class Deck
     #   Dynamite 10♣, 2♥
     cards << DynamiteCard.new("heart", 2)
     cards << DynamiteCard.new("club", 10)
+    #   Missed 10-A♣, 2-8♠, 8♦
+    4.times { |n| cards << MissedCard.new("club", n+10) }
+    6.times { |n| cards << MissedCard.new("spade", n+2) }
+    cards << MissedCard.new("diamond", 8)
+
     cards
   end
 

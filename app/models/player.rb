@@ -23,6 +23,7 @@ class Player
     @in_play = []
     @health = 4
     @max_health = 4
+    @brain = Brain.new
   end
 
   def play
@@ -43,16 +44,13 @@ class Player
   end
 
   def target_of(card, targetter)
-    return false if barrel(card)
-    hit = brain.target_of(card)
-    hit!(targetter) if hit
-  end
-
-  def barrel(card)
-    if card.barrelable?
-      return draw!(:barrel).barreled?
+    return false if draw!(:barrel).barreled?
+    response = brain.target_of(card)
+    if response.respond_to?(:type) && response.type == Card.missed_card && hand.include?(response) && card.missable?
+      discard(response)
+    else
+      hit!(targetter)
     end
-    false
   end
 
   def hit!(hitter=nil)
@@ -102,10 +100,6 @@ class Player
       return true if draw!(:jail).still_in_jail?
     end
     false
-  end
-
-  def jailed?
-    in_play?(Card.jail)
   end
 
   def beer_benefit; 1; end
@@ -175,8 +169,8 @@ class Player
 
   def play_and_discard(card, target_player:nil, target_card:nil)
     if in_range?(card, target_player)
-      card.play(self)
       discard(card)
+      card.play(self)
     else
       raise OutOfRangeException
     end

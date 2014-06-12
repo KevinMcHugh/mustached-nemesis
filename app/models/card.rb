@@ -29,6 +29,10 @@ class Card
     MISSABLE.include?(type)
   end
 
+  def missable?
+    MISSABLE.include?(type)
+  end
+
   def explode?
     number >= 2 && number <= 9 && suit == "spade"
   end
@@ -68,5 +72,8 @@ class Card
   end
   def self.gatling_card
     GatlingCard
+  end
+  def self.missed_card
+    MissedCard
   end
 end
