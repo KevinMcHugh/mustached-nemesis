@@ -10,6 +10,7 @@ module PlayerBrain
       @logger = Logger.new(Rails.root.join("log", "game.log"))
     end
 
+    # you have the option of picking from many cards, pick the best one.
     def pick(*args)
       args.first
     end
@@ -37,7 +38,7 @@ module PlayerBrain
     #This is the method that is called on your turn.
     def play
       bang = player.from_hand(Card.bang_card)
-      player.play_and_discard(bang, player.left) if bang
+      player.play_card(bang, player.players.first) if bang
     end
 
     private

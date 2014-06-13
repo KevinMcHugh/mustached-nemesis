@@ -185,11 +185,13 @@ class Player
     player = self.left
     while player != target_player
       left_distance += 1
+      raise ArgumentError.new if left_distance > 25
       player = player.left
     end
     player = self.right
     while player != target_player
       right_distance += 1
+      raise ArgumentError.new if right_distance > 25
       player = player.right
     end
     [left_distance, right_distance].min + target_player.range_increase - self.range_decrease
@@ -198,9 +200,9 @@ class Player
   def play_and_discard(card, target_player=nil, target_card=nil)
     @logger.info("#{self.class}:#{card.class} at #{target_player.class}")
     if card.type == Card.bang_card
-      bangs_played +=1
+      @bangs_played +=1
     end
-    raise TooManyBangsPlayedException.new if bangs_played > bang_limit
+    raise TooManyBangsPlayedException.new if @bangs_played > bang_limit
     if in_range?(card, target_player)
       discard(card)
       card.play(self, target_player, target_card)

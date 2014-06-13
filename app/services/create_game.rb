@@ -14,7 +14,7 @@ class CreateGame
       brain = @brains.shift.new(role)
       character_class = Character.const_get(brain.choose_character(@characters.shift, @characters.shift))
       player = character_class.new(role, @deck, brain)
-      brain.player = PlayerAPI.new(player)
+      brain.player = PlayerAPI.new(player, brain)
       if role == 'sheriff'
         players.unshift(player)
       else
