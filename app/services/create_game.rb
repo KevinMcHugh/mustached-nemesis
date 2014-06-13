@@ -11,17 +11,18 @@ class CreateGame
     players = []
     @characters = Character.constants.select { |c| Character.const_get(c).is_a?(Class) }.shuffle
     @roles.shuffle.each do |role|
-      b = @brains.shift.new(role)
-      c = Character.const_get(b.choose_character(@characters.shift, @characters.shift))
-      b.player = c.new(role, @deck, b)
+      brain = @brains.shift.new(role)
+      character_class = Character.const_get(brain.choose_character(@characters.shift, @characters.shift))
+      player = character_class.new(role, @deck, brain)
+      brain.player = PlayerAPI.new(player)
       if role == 'sheriff'
-        players.unshift(b.player)
+        players.unshift(player)
       else
-        players << b.player
+        players << player
       end
     end
     right_player = players.last
-    players.each  do |player|
+    players.each do |player|
       player.right = right_player
       right_player = player
     end
