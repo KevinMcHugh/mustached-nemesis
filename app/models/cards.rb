@@ -59,9 +59,14 @@ class PanicCard < Card
   end
 end
 class CatBalouCard < Card
-  def range; 1; end
+  def no_range?; true; end
   def play(player, target_player, target_card)
-
+    if target_card == :hand
+      duscard(target_player.random_from_hand)
+    else
+      card = target_player.from_play(target_card)
+      discard(card) if card
+    end
   end
 end
 class DuelCard < Card

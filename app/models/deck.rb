@@ -71,9 +71,15 @@ class Deck
     #   Wells Fargo 3♥
     cards << WellsFargoCard.new("heart", 3)
     #   Cat Balou 9♦, 10♦, J♦, K♥
-
+    cards << CatBalouCard.new("diamond", 9)
+    cards << CatBalouCard.new("diamond", 10)
+    cards << CatBalouCard.new("diamond", 11)
+    cards << CatBalouCard.new("heart", 13)
     #   Panic! J♥, Q♥, K♥, 8♦
-
+    cards << PanicCard.new("heart", 11)
+    cards << PanicCard.new("heart", 12)
+    cards << PanicCard.new("heart", 13)
+    cards << PanicCard.new("diamond", 8)
     #   General Store 9♣, Q♠
 
     #   Jail 10♠, 4♥, J♠
