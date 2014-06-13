@@ -1,35 +1,42 @@
 class Game
-  attr_reader :deck, :players
-  attr_accessor :over
+  attr_reader :deck, :players, :over, :event_listener
 
   def initialize(players, deck)
     @players = players
     @deck = deck
+    @event_listener = EventListener.new(self)
+    event_listener.subscribe(self)
+    @players.each { |p| p.event_listener = event_listener }
 
+    @logger = Logger.new(Rails.root.join("log", "game.log"))
+    @logger.info("STARTING A NEWWWWW GAMEEEEEE")
+    @logger.info("YEEEEE-HAWWWWWWWWWWWWWWWWWWW")
+    @logger.info("\n")
+    @logger.info("\n")
+    @logger.info("\n")
+    @logger.info("\n")
   end
 
   def start
-    @event_listener = EventListener.new(self)
-    #@event_listener.subscribe(self)
-
-    @deck = Deck.new
     deck.deal_to(players)
     while !over do
       begin
-        players.each do |player|
-          @event_listener.notify("#{player.class} #{player.health} #{player.role}")
-          @event_listener.notify(player.hand.flat_map(&:class))
+        player = players.find(&:sheriff?)
+        while true
+          @logger.info("#{player.class} #{player.health} #{player.role}")
+          @logger.info(player.hand.flat_map(&:class))
           player.play
+          player = player.left
         end
       rescue GameOverException => e
-        e
+        @logger.info("#{players.find_all(&:dead?).map(&:to_s)}")
       end
     end
   end
 
   def notify(event)
     if event.game_over?
-      over = true
+      @over = true
       raise GameOverException.new
     end
   end

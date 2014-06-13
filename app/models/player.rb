@@ -11,7 +11,7 @@ require 'card'
 # changing the API.
 
 class Player
-  attr_accessor :hand
+  attr_accessor :hand, :event_listener
   attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right, :max_health
 
   def initialize(role, deck, brain=nil)
@@ -80,7 +80,7 @@ class Player
   def hit!(hitter=nil)
     @health -= 1
     if dead?
-      PlayerKilledEvent.new(self, hitter) unless beer
+      PlayerKilledEvent.new(event_listener, self, hitter) unless beer
     end
   end
 
@@ -147,6 +147,7 @@ class Player
   end
 
   def discard(card)
+    @logger.info("#{self.class} discarding #{card.class}")
     deck.discard << card
     in_play.delete(card)
     hand.delete(card)
@@ -191,10 +192,11 @@ class Player
     [left_distance, right_distance].min + target_player.range_increase - self.range_decrease
   end
 
-  def play_and_discard(card, target_player:nil, target_card:nil)
+  def play_and_discard(card, target_player=nil, target_card=nil)
+    @logger.info("#{self.class}:#{card.class} at #{target_player.class}")
     if in_range?(card, target_player)
       discard(card)
-      card.play(self)
+      card.play(self, target_player, target_card)
     else
       raise OutOfRangeException
     end
@@ -215,9 +217,23 @@ class Player
   def draw!(reason=nil)
     deck.draw!
   end
+
+  def to_s
+    "#{self.class} #{health} #{role}"
+  end
 end
 
-class PlayerKilledEvent
-  def initialize(player, killer)
+class PlayerKilledEvent < Event
+  attr_reader :killed, :killer
+  def initialize(event_listener, killed, killer)
+    @killed = killed
+    @killer = killer
+    @killed.deck.discard.push(@killed.hand)
+    @killed.deck.discard.push(@killed.in_play)
+    @killed.left.right = @killed.right
+    @killed.right.left = @killed.left
+
+    super(event_listener)
   end
+  def player_killed?; true; end
 end
