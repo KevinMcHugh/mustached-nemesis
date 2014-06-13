@@ -32,7 +32,7 @@ class Player
     return if dead?
     return if jail
     draw_for_turn
-
+    @logger.info(hand.map(&:class))
     brain.play
     while hand.size > hand_limit
       discard(brain.discard)
@@ -234,6 +234,9 @@ class PlayerKilledEvent < Event
     @killed.right.left = @killed.left
 
     super(event_listener)
+  end
+  def to_s
+    "#{killed} has been killed by #{killer}"
   end
   def player_killed?; true; end
 end

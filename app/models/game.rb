@@ -1,5 +1,5 @@
 class Game
-  attr_reader :deck, :players, :over, :event_listener
+  attr_reader :deck, :players, :over, :event_listener, :round
 
   def initialize(players, deck)
     @players = players
@@ -19,17 +19,18 @@ class Game
 
   def start
     deck.deal_to(players)
+    @round = 0
+
     while !over do
       begin
-        player = players.find(&:sheriff?)
+        player = sheriff
         while true
+          @round += 1 if player.sheriff?
           @logger.info("#{player.class} #{player.health} #{player.role}")
-          @logger.info(player.hand.flat_map(&:class))
           player.play
           player = player.left
         end
       rescue GameOverException => e
-        @logger.info("#{players.find_all(&:dead?).map(&:to_s)}")
       end
     end
   end
@@ -39,6 +40,10 @@ class Game
       @over = true
       raise GameOverException.new
     end
+  end
+
+  def living_players
+    players.reject(&:dead?)
   end
 
   private
