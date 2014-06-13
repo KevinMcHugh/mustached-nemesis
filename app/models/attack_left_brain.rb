@@ -31,6 +31,7 @@ module PlayerBrain
       player.from_hand(Card.bang_card)
     end
     #This method is called if your hand is over the hand limit, it returns the card that you would like to discard.
+    # Returning nil or a card you don't have is a very bad idea. Bad things will happen to you.
     def discard
       player.hand.first
     end
