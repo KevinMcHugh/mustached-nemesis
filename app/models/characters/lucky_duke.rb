@@ -6,7 +6,7 @@
 
 #bug in line 11 for barrel
 module Character
-  class LuckyDuke
+  class LuckyDukePlayer < Player
     def draw!(reason)
       options = 2.times.map { deck.draw! }
       card = options.find { |option| !option.send(reasons_to_methods[reason]) }
