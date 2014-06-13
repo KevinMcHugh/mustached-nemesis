@@ -236,8 +236,8 @@ class Player
 
   def bang_limit; 1; end
 end
-class OutOfRangeException < StandardException; end
-class TooManyBangsPlayedException < StandardException; end
+class OutOfRangeException < StandardError; end
+class TooManyBangsPlayedException < StandardError; end
 
 class PlayerKilledEvent < Event
   attr_reader :killed, :killer
