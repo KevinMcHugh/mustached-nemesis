@@ -65,11 +65,10 @@ end
 class EquipmentCard < Card
   def no_range?;true;end
   def play(player, target_player=nil, target_card=nil)
+    card = player.from_play(self)
+    discard(card) if card
     player.in_play << self
   end
-end
-class GunCard < EquipmentCard
-  def no_range?;false;end
 end
 class DynamiteCard < EquipmentCard; end
 class BarrelCard < EquipmentCard; end
@@ -79,6 +78,15 @@ class BinocularsCard < EquipmentCard; end
 class MustangCard < EquipmentCard; end
 #Dodge City
 class HideoutCard < EquipmentCard; end
+
+class GunCard < Card
+  def play(player, target_player=nil, target_card=nil)
+    player.in_play.each do |c|
+      player.discard(c) if c.gun?
+    end
+    player.in_play << self
+  end
+end
 class RevCarbineCard < GunCard
   def range; 4; end
 end
