@@ -223,6 +223,11 @@ class Player
   def to_s
     "#{self.class} #{health} #{role}"
   end
+
+  def discard_all
+    hand.each { |card| discard(card)}
+    in_play.each { |card| discard(card)}
+  end
 end
 
 class PlayerKilledEvent < Event
@@ -230,8 +235,7 @@ class PlayerKilledEvent < Event
   def initialize(event_listener, killed, killer)
     @killed = killed
     @killer = killer
-    @killed.deck.discard.push(@killed.hand)
-    @killed.deck.discard.push(@killed.in_play)
+    @killed.discard_all
     @killed.left.right = @killed.right
     @killed.right.left = @killed.left
 
