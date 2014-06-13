@@ -32,7 +32,7 @@ class Player
     return if dead?
     return if jail
     draw_for_turn
-
+    @logger.info(hand.map(&:class))
     brain.play
     while hand.size > hand_limit
       discard(brain.discard)
@@ -68,7 +68,9 @@ class Player
 
 
   def target_of_bang(card, targetter)
-    return false if draw!(:barrel).barreled?
+    if from_play(Card.barrel_card)
+      return false if draw!(:barrel).barreled?
+    end
     response = brain.target_of_bang(card, targetter)
     if response.respond_to?(:type) && response.type == Card.missed_card && hand.include?(response) && card.missable?
       discard(response)
@@ -221,6 +223,11 @@ class Player
   def to_s
     "#{self.class} #{health} #{role}"
   end
+
+  def discard_all
+    hand.each { |card| discard(card)}
+    in_play.each { |card| discard(card)}
+  end
 end
 
 class PlayerKilledEvent < Event
@@ -228,12 +235,20 @@ class PlayerKilledEvent < Event
   def initialize(event_listener, killed, killer)
     @killed = killed
     @killer = killer
-    @killed.deck.discard.push(@killed.hand)
-    @killed.deck.discard.push(@killed.in_play)
+    @killed.discard_all
     @killed.left.right = @killed.right
     @killed.right.left = @killed.left
 
+    if @killed.role == 'outlaw'
+      3.times { @killer.draw }
+    elsif @killer.sheriff? && @killed.role == 'deputy'
+      @killer.discard_all
+    end
+
     super(event_listener)
+  end
+  def to_s
+    "#{killed} has been killed by #{killer}"
   end
   def player_killed?; true; end
 end

@@ -79,4 +79,7 @@ class Card
   def self.duel_card
     DuelCard
   end
+  def self.barrel_card
+    BarrelCard
+  end
 end
