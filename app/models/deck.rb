@@ -67,7 +67,7 @@ class Deck
     #   Saloon 5♥
     cards << SaloonCard.new("heart", 5)
     #   Stagecoach 9♠ (x2)
-    cards << 2.times { StageCoachCard.new("spade", 9) }
+    2.times { cards << StageCoachCard.new("spade", 9) }
     #   Wells Fargo 3♥
     cards << WellsFargoCard.new("heart", 3)
     #   Cat Balou 9♦, 10♦, J♦, K♥
