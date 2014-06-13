@@ -115,7 +115,11 @@ class Player
         discard(dynamite_card)
       else
         in_play.delete(dynamite_card)
-        left.in_play << dynamite_card
+        next_player = player.left
+        while player.left.from_play(Card.dynamite_card)
+          next_player = next_player.left
+        end
+        next_player.in_play << dynamite_card
       end
     end
   end
