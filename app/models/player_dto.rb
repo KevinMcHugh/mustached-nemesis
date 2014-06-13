@@ -5,7 +5,7 @@ class PlayerDTO
     @name = player.class
     @health = player.health
     @max_health = player.max_health
-    @in_play = player.in_play.map(&:name)
+    @in_play = player.in_play.map(&:class)
     @hand_size = player.hand_size
     @range_increase = player.range_increase
     @range_decrease = player.range_decrease

@@ -1,18 +1,21 @@
 ## Dodge City
 class SpringfieldCard < Card
   def no_range?;true;end
+  def damage_dealing?; true; end
   def play(player, target_player, target_card=nil)
     target_player.target_of_bang(self, player)
   end
 end
 # Dodge City
 class PunchCard < Card
+  def damage_dealing?; true; end
   def play(player, target_player, target_card=nil)
     target_player.target_of_bang(self, player)
   end
 end
 class BangCard < Card
   def gun_range?;true;end
+  def damage_dealing?; true; end
   def play(player, target_player, target_card=nil)
     target_player.target_of_bang(self, player)
   end
@@ -25,6 +28,7 @@ class BeerCard < Card
 end
 class IndiansCard < Card
   def no_range?;true;end
+  def damage_dealing?; true; end
   def play(player, target_player=nil, target_card=nil)
     target_player = player.left
 
@@ -36,12 +40,14 @@ class IndiansCard < Card
 end
 class DuelCard < Card
   def no_range?;true;end
+  def damage_dealing?; true; end
   def play(player, target_player, target_card=nil)
     target_player.target_of_duel(self, player)
   end
 end
 class GatlingCard < Card
   def no_range?;true;end
+  def damage_dealing?; true; end
   def play(player, target_player=nil, target_card=nil)
     target_player = player.left
 
@@ -64,6 +70,7 @@ class JailCard < Card
 end
 class DynamiteCard < Card
   def no_range?;true;end
+  def damage_dealing?; true; end
   def play(player, target_player=nil, target_card=nil)
     player.in_play << self
   end

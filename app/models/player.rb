@@ -36,7 +36,12 @@ class Player
     @logger.info(hand.map(&:class))
     brain.play
     while hand.size > hand_limit
-      discard(brain.discard)
+      discard_choice = brain.discard
+      if hand.include?(discard_choice)
+        discard(discard_choice)
+      else
+        @hand = hand.first(hand_limit)
+      end
     end
   end
 
@@ -57,7 +62,7 @@ class Player
     end
   end
 
-  def target_of_duel
+  def target_of_duel(card, targetter)
     response = brain.target_of_duel(card, targetter)
     if response.respond_to?(:type) && response.type == Card.bang_card && hand.include?(response)
       discard(response)
@@ -228,12 +233,17 @@ class Player
   end
 
   def to_s
-    "#{self.class} #{health} #{role}"
+    "#{self.class}|#{health}|#{role}|#{brain.class}"
   end
 
   def discard_all
     hand.each { |card| discard(card)}
     in_play.each { |card| discard(card)}
+  end
+
+  def draw_outlaw_killing_bonus
+    3.times { draw }
+    @logger.info("#{self.class} just killed an outlaw! YEEE-HAW!")
   end
 
   def bang_limit; 1; end
@@ -251,15 +261,16 @@ class PlayerKilledEvent < Event
     @killed.right.left = @killed.left
 
     if @killed.role == 'outlaw'
-      3.times { @killer.draw }
-    elsif @killer.sheriff? && @killed.role == 'deputy'
+      @killer.draw_outlaw_killing_bonus if @killer
+    elsif @killer && @killer.sheriff? && @killed.role == 'deputy'
       @killer.discard_all
     end
 
     super(event_listener)
   end
   def to_s
-    "#{killed} has been killed by #{killer}"
+    killer_string = killer || 'DYNAMITE, BITCHES'
+    "#{killed} has been killed by #{killer_string}"
   end
   def player_killed?; true; end
 end

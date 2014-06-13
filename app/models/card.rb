@@ -14,6 +14,8 @@ class Card
   def gun_range?; false; end
   def range; 1; end
 
+  def damage_dealing?; false; end
+
   def type; self.class; end
 
   def barrelable?

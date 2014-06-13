@@ -48,7 +48,7 @@ class GameOverEvent < Event
   end
 
   def to_s
-    "#{winner} has/have prevailed in #{game.round} rounds!\n The following people are still alive: #{game.living_players.map(&:class)}"
+    "#{winner} has/have prevailed in #{game.round} rounds!\n The following people are still alive: #{game.living_players.map(&:to_s)}"
   end
   def game_over?; true; end
 end

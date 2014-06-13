@@ -30,6 +30,10 @@ class PlayerAPI
     players
   end
 
+  def players_in_range_of(card)
+    players.find_all { |p| player.in_range?(card, find_player(p))}
+  end
+
   def health; player.health; end
 
   private
@@ -39,8 +43,8 @@ class PlayerAPI
     target_player = nil
     p = player.left
     while !target_player
-     target_player = p if p.class == player_dto.name
-     p = player.left
+      target_player = p if p.class == player_dto.name
+      p = p.left
     end
     target_player
   end
