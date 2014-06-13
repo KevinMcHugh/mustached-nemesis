@@ -62,17 +62,35 @@ class JailCard < Card
     target_player.in_play << self
   end
 end
-class DynamiteCard < Card
+class EquipmentCard < Card
   def no_range?;true;end
   def play(player, target_player=nil, target_card=nil)
     player.in_play << self
   end
 end
-class BarrelCard < Card
-  def no_range?;true;end
-  def play(player, target_player=nil, target_card=nil)
-    player.in_play << self
-  end
+class GunCard < EquipmentCard
+  def no_range?;false;end
 end
-
-
+class DynamiteCard < EquipmentCard; end
+class BarrelCard < EquipmentCard; end
+class ScopeCard < EquipmentCard; end
+#Dodge City
+class BinocularsCard < EquipmentCard; end
+class MustangCard < EquipmentCard; end
+#Dodge City
+class HideoutCard < EquipmentCard; end
+class RevCarbineCard < GunCard
+  def range; 4; end
+end
+class RemingtonCard < GunCard
+  def range; 3; end
+end
+class SchofieldCard < GunCard
+  def range; 2; end
+end
+class WinchesterCard < GunCard
+  def range; 5; end
+end
+class VolcanicCard < GunCard
+  def range; 1; end
+end
