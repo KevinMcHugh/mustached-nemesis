@@ -47,6 +47,23 @@ class IndiansCard < Card
     end
   end
 end
+class PanicCard < Card
+  def range; 1; end
+  def play(player, target_player, target_card)
+    if target_card == :hand
+      player.hand << target_player.random_from_hand
+    else
+      card = target_player.from_play(target_card)
+      player.hand << card if card
+    end
+  end
+end
+class CatBalouCard < Card
+  def range; 1; end
+  def play(player, target_player, target_card)
+
+  end
+end
 class DuelCard < Card
   def no_range?;true;end
   def damage_dealing?; true; end
