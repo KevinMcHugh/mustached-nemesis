@@ -1,7 +1,7 @@
 class Card
   require 'cards'
-  GUN =  []
-  MISSABLE =  [BangCard, PunchCard, SpringfieldCard, GatlingCard]  #[bang! punch springfield gatling ]
+  GUN =  [RevCarbineCard, RemingtonCard, SchofieldCard, WinchesterCard, VolcanicCard]
+  MISSABLE =  [BangCard, PunchCard, SpringfieldCard, GatlingCard]
 
   attr_reader :suit, :number
 
