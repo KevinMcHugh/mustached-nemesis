@@ -39,16 +39,16 @@ class GameOverEvent < Event
   def winner
     living_players = game.living_players
     if living_players.find { |p| p.sheriff?}
-      'the forces of law'
+      'the forces of law have'
     elsif living_players.map(&:role) == ['renegade']
-      'the renegade'
+      'the renegade has'
     else
-      'the outlaws'
+      'the outlaws have'
     end
   end
 
   def to_s
-    "#{winner} has/have prevailed in #{game.round} rounds!\n The following people are still alive: #{game.living_players.map(&:to_s)}"
+    "#{winner} prevailed in #{game.round} rounds!\n The following people are still alive: #{game.living_players.map(&:to_s)}"
   end
   def game_over?; true; end
 end
