@@ -62,6 +62,7 @@ class Card
   def self.wells_fargo_card; WellsFargoCard; end
   def self.cat_balou_card; CatBalouCard; end
   def self.panic_card; PanicCard; end
+  def self.general_store_card; GeneralStoreCard; end
 
   def self.scope_card; ScopeCard; end
   def self.mustang_card; MustangCard; end
