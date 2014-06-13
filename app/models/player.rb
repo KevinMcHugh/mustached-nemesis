@@ -21,8 +21,8 @@ class Player
     @range_increase = 0
     @range_decrease = 0
     @in_play = []
-    @health = 4
-    @max_health = 4
+    @max_health = sheriff? ? 5 : 4
+    @health = max_health
     @brain = brain ? brain : Brain.new
     @logger = Logger.new(Rails.root.join("log", "game.log"))
   end
@@ -120,8 +120,8 @@ class Player
         discard(dynamite_card)
       else
         in_play.delete(dynamite_card)
-        next_player = self.left
-        while self.left.from_play(Card.dynamite_card)
+        next_player = left
+        while next_player.left.from_play(Card.dynamite_card)
           next_player = next_player.left
         end
         next_player.in_play << dynamite_card
