@@ -68,7 +68,9 @@ class Player
 
 
   def target_of_bang(card, targetter)
-    return false if draw!(:barrel).barreled?
+    if from_play(Card.barrel_card)
+      return false if draw!(:barrel).barreled?
+    end
     response = brain.target_of_bang(card, targetter)
     if response.respond_to?(:type) && response.type == Card.missed_card && hand.include?(response) && card.missable?
       discard(response)

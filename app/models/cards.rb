@@ -68,6 +68,11 @@ class DynamiteCard < Card
     player.in_play << self
   end
 end
-
+class BarrelCard < Card
+  def no_range?;true;end
+  def play(player, target_player=nil, target_card=nil)
+    player.in_play << self
+  end
+end
 
 
