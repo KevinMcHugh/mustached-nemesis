@@ -239,6 +239,12 @@ class PlayerKilledEvent < Event
     @killed.left.right = @killed.right
     @killed.right.left = @killed.left
 
+    if @killed.role == 'outlaw'
+      3.times { @killer.draw }
+    elsif @killer.sheriff? && @killed.role == 'deputy'
+      @killer.discard_all
+    end
+
     super(event_listener)
   end
   def to_s
