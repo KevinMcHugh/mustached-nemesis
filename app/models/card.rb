@@ -3,7 +3,7 @@ class Card
   GUN =  []
   MISSABLE =  [BangCard, PunchCard, SpringfieldCard, GatlingCard]  #[bang! punch springfield gatling ]
 
-  attr_accessor :suit, :number
+  attr_reader :suit, :number
 
   def initialize(suit=nil, number=nil)
     @suit = suit
