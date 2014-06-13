@@ -48,38 +48,15 @@ class Card
     GUN.include?(self.class)
   end
 
-
-  def self.beer_card
-    BeerCard
-  end
-  def self.bang_card
-    BangCard
-  end
-  def self.punch_card
-    PunchCard
-  end
-  def self.springfield_card
-    SpringfieldCard
-  end
-  def self.indians_card
-    IndiansCard
-  end
-  def self.jail_card
-    JailCard
-  end
-  def self.dynamite_card
-    DynamiteCard
-  end
-  def self.gatling_card
-    GatlingCard
-  end
-  def self.missed_card
-    MissedCard
-  end
-  def self.duel_card
-    DuelCard
-  end
-  def self.barrel_card
-    BarrelCard
-  end
+  def self.beer_card;BeerCard;  end
+  def self.bang_card;BangCard;  end
+  def self.punch_card;PunchCard;  end
+  def self.springfield_card;SpringfieldCard;  end
+  def self.indians_card;IndiansCard;  end
+  def self.jail_card;JailCard;  end
+  def self.dynamite_card;DynamiteCard;  end
+  def self.gatling_card;GatlingCard;  end
+  def self.missed_card;MissedCard;  end
+  def self.duel_card;DuelCard;  end
+  def self.barrel_card;BarrelCard;  end
 end
