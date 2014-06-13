@@ -51,12 +51,13 @@ class Card
   def self.beer_card; BeerCard; end
   def self.bang_card; BangCard; end
   def self.indians_card; IndiansCard; end
-  def self.jail_card; JailCard; end
-  def self.dynamite_card; DynamiteCard; end
   def self.gatling_card; GatlingCard; end
   def self.missed_card; MissedCard; end
   def self.duel_card; DuelCard; end
-  def self.barrel_card; BarrelCard; end
+  def self.saloon_card; SallonCard; end
+  def self.stage_coach_card; StageCoachCard; end
+  def self.wells_fargo_card; WellsFargoCard; end
+
   def self.scope_card; ScopeCard; end
   def self.mustang_card; MustangCard; end
   def self.revcarbine_card; RevCarbineCard; end
@@ -64,6 +65,9 @@ class Card
   def self.schofield_card; SchofieldCard; end
   def self.winchester_card; WinchesterCard; end
   def self.volcanic_card; VolcanicCard; end
+  def self.jail_card; JailCard; end
+  def self.dynamite_card; DynamiteCard; end
+  def self.barrel_card; BarrelCard; end
 ## Dodge City Cards
   def self.punch_card; PunchCard; end
   def self.springfield_card; SpringfieldCard; end

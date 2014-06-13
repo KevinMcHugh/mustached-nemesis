@@ -11,6 +11,29 @@ class BeerCard < Card
     player.heal(player.beer_benefit)
   end
 end
+class SaloonCard < Card
+  def no_range?;true;end
+  def play(player, target_player=nil, target_card=nil)
+    player.heal(1)
+    target_player = player.left
+    while target_player != player
+      target_player.heal(1)
+      target_player = target_player.left
+    end
+  end
+end
+class StageCoachCard < Card
+  def no_range?;true;end
+  def play(player, target_player=nil, target_card=nil)
+    2.times{ player.draw }
+  end
+end
+class WellsFargoCard < Card
+  def no_range?;true;end
+  def play(player, target_player=nil, target_card=nil)
+    3.times { player.draw }
+  end
+end
 class IndiansCard < Card
   def no_range?;true;end
   def play(player, target_player=nil, target_card=nil)

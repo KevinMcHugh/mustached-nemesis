@@ -64,12 +64,16 @@ class Deck
     cards << DuelCard.new("diamond", 12)
     cards << DuelCard.new("spade", 11)
     cards << DuelCard.new("club", 8)
+    #   Saloon 5♥
+    cards << SaloonCard.new("heart", 5)
+    #   Stagecoach 9♠ (x2)
+    cards << 2.times { StageCoachCard.new("spade", 9) }
+    #   Wells Fargo 3♥
+    cards << WellsFargoCard.new("heart", 3)
     #   Cat Balou 9♦, 10♦, J♦, K♥
     #   Panic! J♥, Q♥, K♥, 8♦
     #   General Store 9♣, Q♠
-    #   Saloon 5♥
-    #   Stagecoach 9♠ (x2)
-    #   Wells Fargo 3♥
+
     #   Jail 10♠, 4♥, J♠
     cards << JailCard.new("spade", 10)
     cards << JailCard.new("spade", 11)
