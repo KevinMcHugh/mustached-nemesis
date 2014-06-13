@@ -28,6 +28,7 @@ class Player
   end
 
   def play
+    @bangs_played = 0
     dynamite
     return if dead?
     return if jail
@@ -196,11 +197,15 @@ class Player
 
   def play_and_discard(card, target_player=nil, target_card=nil)
     @logger.info("#{self.class}:#{card.class} at #{target_player.class}")
+    if card.type == Card.bang_card
+      bangs_played +=1
+    end
+    raise TooManyBangsPlayedException.new if bangs_played > bang_limit
     if in_range?(card, target_player)
       discard(card)
       card.play(self, target_player, target_card)
     else
-      raise OutOfRangeException
+      raise OutOfRangeException.new
     end
   end
 
@@ -228,7 +233,11 @@ class Player
     hand.each { |card| discard(card)}
     in_play.each { |card| discard(card)}
   end
+
+  def bang_limit; 1; end
 end
+class OutOfRangeException < StandardException; end
+class TooManyBangsPlayedException < StandardException; end
 
 class PlayerKilledEvent < Event
   attr_reader :killed, :killer
