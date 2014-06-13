@@ -96,7 +96,7 @@ class Deck
 
   def check_to_shuffle
     return draw unless draw.empty?
-    @draw += discard.shuffle
+    @draw = discard.shuffle
     discard.clear
     draw
   end
