@@ -1,18 +1,4 @@
-## Dodge City
-class SpringfieldCard < Card
-  def no_range?;true;end
-  def damage_dealing?; true; end
-  def play(player, target_player, target_card=nil)
-    target_player.target_of_bang(self, player)
-  end
-end
-# Dodge City
-class PunchCard < Card
-  def damage_dealing?; true; end
-  def play(player, target_player, target_card=nil)
-    target_player.target_of_bang(self, player)
-  end
-end
+## Brown Cards:
 class BangCard < Card
   def gun_range?;true;end
   def damage_dealing?; true; end
@@ -24,6 +10,29 @@ class BeerCard < Card
   def no_range?;true;end
   def play(player, target_player=nil, target_card=nil)
     player.heal(player.beer_benefit)
+  end
+end
+class SaloonCard < Card
+  def no_range?;true;end
+  def play(player, target_player=nil, target_card=nil)
+    player.heal(1)
+    target_player = player.left
+    while target_player != player
+      target_player.heal(1)
+      target_player = target_player.left
+    end
+  end
+end
+class StageCoachCard < Card
+  def no_range?;true;end
+  def play(player, target_player=nil, target_card=nil)
+    2.times{ player.draw }
+  end
+end
+class WellsFargoCard < Card
+  def no_range?;true;end
+  def play(player, target_player=nil, target_card=nil)
+    3.times { player.draw }
   end
 end
 class IndiansCard < Card
@@ -61,6 +70,10 @@ class MissedCard < Card
   def play(player=nil, target_player=nil, target_card=nil)
   end
 end
+
+
+
+## Blue Cards:
 class JailCard < Card
   def no_range?;true;end
   def play(player, target_player, target_card=nil)
@@ -68,18 +81,54 @@ class JailCard < Card
     target_player.in_play << self
   end
 end
-class DynamiteCard < Card
+class EquipmentCard < Card
   def no_range?;true;end
   def damage_dealing?; true; end
   def play(player, target_player=nil, target_card=nil)
+    card = player.from_play(self)
+    discard(card) if card
     player.in_play << self
   end
 end
-class BarrelCard < Card
-  def no_range?;true;end
+class DynamiteCard < EquipmentCard; end
+class BarrelCard < EquipmentCard; end
+class ScopeCard < EquipmentCard; end
+class MustangCard < EquipmentCard; end
+class GunCard < Card
   def play(player, target_player=nil, target_card=nil)
+    player.in_play.each do |c|
+      player.discard(c) if c.gun?
+    end
     player.in_play << self
   end
 end
+class RevCarbineCard < GunCard
+  def range; 4; end
+end
+class RemingtonCard < GunCard
+  def range; 3; end
+end
+class SchofieldCard < GunCard
+  def range; 2; end
+end
+class WinchesterCard < GunCard
+  def range; 5; end
+end
+class VolcanicCard < GunCard
+  def range; 1; end
+end
 
-
+## Dodge City
+class HideoutCard < EquipmentCard; end
+class BinocularsCard < EquipmentCard; end
+class SpringfieldCard < Card
+  def no_range?;true;end
+  def play(player, target_player, target_card=nil)
+    target_player.target_of_bang(self, player)
+  end
+end
+class PunchCard < Card
+  def play(player, target_player, target_card=nil)
+    target_player.target_of_bang(self, player)
+  end
+end

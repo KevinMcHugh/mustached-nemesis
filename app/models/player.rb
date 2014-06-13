@@ -120,7 +120,11 @@ class Player
         discard(dynamite_card)
       else
         in_play.delete(dynamite_card)
-        left.in_play << dynamite_card
+        next_player = player.left
+        while player.left.from_play(Card.dynamite_card)
+          next_player = next_player.left
+        end
+        next_player.in_play << dynamite_card
       end
     end
   end
@@ -177,11 +181,11 @@ class Player
   end
 
   def range_increase
-    @range_increase
+    @range_increase + in_play.select(&:range_increase?).count
   end
 
   def range_decrease
-    @range_decrease
+    @range_decrease in_play.select(&:range_decrease?).count
   end
 
   def distance_to(target_player)
