@@ -2,7 +2,8 @@ class Card
   require 'cards'
   GUN =  [RevCarbineCard, RemingtonCard, SchofieldCard, WinchesterCard, VolcanicCard]
   MISSABLE =  [BangCard, PunchCard, SpringfieldCard, GatlingCard]
-
+  RANGE_INCREASE = [MustangCard, HideoutCard]
+  RANGE_DECREASE = [ScopeCard, BinocularsCard]
   attr_reader :suit, :number
 
   def initialize(suit=nil, number=nil)
@@ -24,6 +25,14 @@ class Card
     MISSABLE.include?(type)
   end
 
+  def range_increase?
+    RANGE_INCREASE.include?(type)
+  end
+
+  def range_decrease?
+    RANGE_DECREASE.include?(type)
+  end
+
   def explode?
     number >= 2 && number <= 9 && suit == "spade"
   end
@@ -41,8 +50,6 @@ class Card
 
   def self.beer_card; BeerCard; end
   def self.bang_card; BangCard; end
-  def self.punch_card; PunchCard; end
-  def self.springfield_card; SpringfieldCard; end
   def self.indians_card; IndiansCard; end
   def self.jail_card; JailCard; end
   def self.dynamite_card; DynamiteCard; end
@@ -50,4 +57,17 @@ class Card
   def self.missed_card; MissedCard; end
   def self.duel_card; DuelCard; end
   def self.barrel_card; BarrelCard; end
+  def self.scope_card; ScopeCard; end
+  def self.mustang_card; MustangCard; end
+  def self.revcarbine_card; RevCarbineCard; end
+  def self.remington_card; RemingtonCard; end
+  def self.schofield_card; SchofieldCard; end
+  def self.winchester_card; WinchesterCard; end
+  def self.volcanic_card; VolcanicCard; end
+## Dodge City Cards
+  def self.punch_card; PunchCard; end
+  def self.springfield_card; SpringfieldCard; end
+  def self.hideout_card; HideoutCard; end
+  def self.binoculars_card; BinocularsCard; end
+
 end
