@@ -36,11 +36,9 @@ module PlayerBrain
 
     #This is the method that is called on your turn.
     def play
-      begin
-        bang = player.from_hand(Card.bang_card)
-        player.play_and_discard(bang, player.left)
-      rescue
-      end
+      @logger.info("#{player.class} taking turn")
+      bang = player.from_hand(Card.bang_card)
+      player.play_and_discard(bang, player.left) if bang
     end
 
     private
