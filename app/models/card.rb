@@ -57,9 +57,11 @@ class Card
   def self.gatling_card; GatlingCard; end
   def self.missed_card; MissedCard; end
   def self.duel_card; DuelCard; end
-  def self.saloon_card; SallonCard; end
+  def self.saloon_card; SaloonCard; end
   def self.stage_coach_card; StageCoachCard; end
   def self.wells_fargo_card; WellsFargoCard; end
+  def self.cat_balou_card; CatBalouCard; end
+  def self.panic_card; PanicCard; end
 
   def self.scope_card; ScopeCard; end
   def self.mustang_card; MustangCard; end

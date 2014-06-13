@@ -224,6 +224,10 @@ class Player
     health
   end
 
+  def random_from_hand
+    @hand.shuffle.first
+  end
+
   def draw_for_turn
     2.times { draw }
   end
