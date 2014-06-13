@@ -2,4 +2,4 @@
 require 'attack_left_brain'
 require 'murder_brain'
 
-CreateGame.new(brains: [PlayerBrain::MurderBrain,PlayerBrain::MurderBrain,PlayerBrain::MurderBrain,PlayerBrain::MurderBrain]).execute
+CreateGame.new(brains: [PlayerBrain::AttackLeftBrain,PlayerBrain::AttackLeftBrain,PlayerBrain::MurderBrain,PlayerBrain::MurderBrain]).execute

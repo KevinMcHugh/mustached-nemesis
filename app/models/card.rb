@@ -16,6 +16,7 @@ class Card
   def range; 1; end
 
   def damage_dealing?; false; end
+  def equipment?; false; end
 
   def type; self.class; end
 

@@ -83,14 +83,16 @@ class JailCard < Card
 end
 class EquipmentCard < Card
   def no_range?;true;end
-  def damage_dealing?; true; end
+  def equipment?;true; end
   def play(player, target_player=nil, target_card=nil)
     card = player.from_play(self)
     discard(card) if card
     player.in_play << self
   end
 end
-class DynamiteCard < EquipmentCard; end
+class DynamiteCard < EquipmentCard
+  def damage_dealing?; true; end
+end
 class BarrelCard < EquipmentCard; end
 class ScopeCard < EquipmentCard; end
 class MustangCard < EquipmentCard; end
