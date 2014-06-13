@@ -176,11 +176,11 @@ class Player
   end
 
   def range_increase
-    @range_increase
+    @range_increase + in_play.select(&:range_increase?).count
   end
 
   def range_decrease
-    @range_decrease
+    @range_decrease in_play.select(&:range_decrease?).count
   end
 
   def distance_to(target_player)
