@@ -11,8 +11,8 @@ require 'card'
 # changing the API.
 
 class Player
-  attr_writer :hand
-  attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right, :hand, :max_health
+  attr_accessor :hand
+  attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right, :max_health
 
   def initialize(role, deck, brain=nil)
     @deck = deck
@@ -23,7 +23,8 @@ class Player
     @in_play = []
     @health = 4
     @max_health = 4
-    @brain ||= Brain.new
+    @brain = brain ? brain : Brain.new
+    @logger = Logger.new(Rails.root.join("log", "game.log"))
   end
 
   def play
@@ -208,7 +209,7 @@ class Player
   end
 
   def draw
-    hand << deck.take(1)
+    @hand += deck.take(1)
   end
 
   def draw!(reason=nil)

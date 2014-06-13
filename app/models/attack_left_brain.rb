@@ -1,3 +1,4 @@
+
 ## All Brains must be put in the PlayerBrain module to allow them to be picked up by the game initalizer
 module PlayerBrain
   ## This is a sample brain to show basic brain structure and interaction with the player.
@@ -6,6 +7,7 @@ module PlayerBrain
     #The brain is instantiated with it's role.  So that it can be used later in the game
     def initialize(role)
       @role = role
+      @logger = Logger.new(Rails.root.join("log", "game.log"))
     end
 
     def pick(*args)
@@ -36,11 +38,8 @@ module PlayerBrain
     def play
       begin
         bang = player.from_hand(Card.bang_card)
-        #while bang
-          player.play_and_discard(bang, player.left)
-          #bang = player.from_hand(Card.bang_card)
-        #end
-      rescue e
+        player.play_and_discard(bang, player.left)
+      rescue
       end
     end
 
