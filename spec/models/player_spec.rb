@@ -164,7 +164,7 @@ describe Player do
       expect{sheriff.hit!}.to change{sheriff.health}.by(-1)
     end
     it "kills player if it takes last health" do
-      4.times { sheriff.hit! }
+      4.times { sheriff.hit!(outlaw_1) }
       expect(sheriff.dead?).to be_true
     end
     it "plays beer to keep the player alive" do
@@ -174,11 +174,12 @@ describe Player do
     end
   end
 
-  describe "#target_of" do
+  describe "#target_of_bang" do
     it "does not deal damage if barreled" do
       allow(sheriff).to receive(:draw!).and_return(Card.new("heart"))
-      expect(sheriff.target_of(BangCard.new, outlaw_1)).to be_false
-      expect{sheriff.target_of(BangCard.new, outlaw_1)}.to_not change{sheriff.health}
+      sheriff.in_play << BarrelCard.new
+      expect(sheriff.target_of_bang(BangCard.new, outlaw_1)).to be_false
+      expect{sheriff.target_of_bang(BangCard.new, outlaw_1)}.to_not change{sheriff.health}
     end
 
     context "not barreled" do
@@ -187,17 +188,17 @@ describe Player do
       it "discards and does not deal damage if the response is a missed card from the hand" do
         mc = MissedCard.new
         sheriff.hand << mc
-        allow(sheriff.brain).to receive(:target_of).and_return(mc)
-        expect{sheriff.target_of(BangCard.new, outlaw_1)}.to_not change{sheriff.health}
+        allow(sheriff.brain).to receive(:target_of_bang).and_return(mc)
+        expect{sheriff.target_of_bang(BangCard.new, outlaw_1)}.to_not change{sheriff.health}
         expect(deck.discard.last).to be mc
       end
       it "hits if no response" do
-        allow(sheriff.brain).to receive(:target_of)
-        expect{sheriff.target_of(BangCard.new, outlaw_1)}.to change{sheriff.health}.by(-1)
+        allow(sheriff.brain).to receive(:target_of_bang)
+        expect{sheriff.target_of_bang(BangCard.new, outlaw_1)}.to change{sheriff.health}.by(-1)
       end
       it "hits if miss card is faked" do
-        allow(sheriff.brain).to receive(:target_of).and_return(MissedCard.new)
-        expect{sheriff.target_of(BangCard.new, outlaw_1)}.to change{sheriff.health}.by(-1)
+        allow(sheriff.brain).to receive(:target_of_bang).and_return(MissedCard.new)
+        expect{sheriff.target_of_bang(BangCard.new, outlaw_1)}.to change{sheriff.health}.by(-1)
       end
     end
   end
