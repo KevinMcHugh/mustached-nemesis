@@ -101,8 +101,14 @@ class Deck
     #   Rev. Carbine A♣
     cards << RevCarbineCard.new("club", 14)
     #   Volcanic 10♠, 10♣
+    cards << VolcanicCard.new("spade", 10)
+    cards << VolcanicCard.new("club", 10)
     #   Schofield K♠, J♣, Q♣
+    cards << SchofieldCard.new("spade", 13)
+    cards << SchofieldCard.new("club", 11)
+    cards << SchofieldCard.new("club", 12)
     #   Winchester 8♠
+    cards << WinchesterCard.new("spade", 8)
 
     if expansions.include?(:dodge_city)
       #   Bang 5♣, 6♣, K♣, 8♠fff
