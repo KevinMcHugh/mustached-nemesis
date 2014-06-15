@@ -4,8 +4,4 @@ class MonoLogger
   def info(message)
     @@logger.info(message)
   end
-
-  def info(message)
-    @logger.info(message)
-  end
 end
