@@ -44,7 +44,8 @@ module PlayerBrain
         is_a_bang_card = card.type == Card.bang_card
         bangs_played += 1 if is_a_bang_card
         if !is_a_bang_card || bangs_played < 1
-          player.play_card(card, weakest_player_in_range_of(card))
+          target = weakest_player_in_range_of(card)
+          player.play_card(card, target) if target
         end
       end
     end
