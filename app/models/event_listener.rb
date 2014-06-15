@@ -1,10 +1,10 @@
 class EventListener
   attr_reader :game, :subscribers
 
-  def initialize(game)
+  def initialize(game, logger)
     @game = game
     @subscribers = []
-    @logger = Logger.new(Rails.root.join("log", "game.log"))
+    @logger = logger
   end
 
   def subscribe(subscriber)

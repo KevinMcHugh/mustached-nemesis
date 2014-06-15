@@ -24,7 +24,6 @@ class Player
     @max_health = sheriff? ? 5 : 4
     @health = max_health
     @brain = brain ? brain : Brain.new
-    @logger = Logger.new(Rails.root.join("log", "game.log"))
   end
 
   def play
@@ -255,6 +254,7 @@ class Player
   end
 
   def bang_limit; 1; end
+  def logger=(logger); @logger = logger; end
 end
 class OutOfRangeException < StandardError; end
 class TooManyBangsPlayedException < StandardError; end
