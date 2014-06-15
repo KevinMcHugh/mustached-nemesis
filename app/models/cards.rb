@@ -58,6 +58,22 @@ class PanicCard < Card
     end
   end
 end
+class GeneralStoreCard < Card
+  def no_range?; true; end
+  def play(player, target_player=nil, target_card=nil)
+    players = [player]
+    next_player = player.left
+    while next_player != player
+      players << next_player
+    end
+    cards = player.deck.take(players.count)
+    players.each do |p|
+      card = p.pick(cards)
+      p.hand << card
+      cards.delete(card)
+    end
+  end
+end
 class CatBalouCard < Card
   def no_range?; true; end
   def play(player, target_player, target_card)
