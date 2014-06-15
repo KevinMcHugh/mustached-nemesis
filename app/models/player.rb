@@ -81,7 +81,7 @@ class Player
   end
 
   def hit!(hitter=nil)
-    @health -= 1
+    @health -= 1 if @health > 0
     if dead?
       PlayerKilledEvent.new(event_listener, self, hitter) unless beer
     end
@@ -89,6 +89,7 @@ class Player
 
   def beer
     beer_card = from_hand(Card.beer_card)
+    # TODO doesn't work with 2 players remaining
     if beer_card
       play_and_discard(beer_card)
       true
