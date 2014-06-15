@@ -150,6 +150,20 @@ class Player
     player.left = self unless player.left
   end
 
+  def players
+    unless @players
+      @players = []
+      next_player = left
+      while next_player != self
+        players << next_player
+        next_player = next_player.left
+      end
+    end
+    @players
+  end
+
+  def blank_players; @players = nil; end
+
   def from_play(card_type)
     in_play.detect { |card| card.type == card_type }
   end
@@ -266,6 +280,7 @@ class PlayerKilledEvent < Event
     @killed = killed
     @killer = killer
     @killed.discard_all
+    @killed.players.map(&:blank_players)
     @killed.left.right = @killed.right
     @killed.right.left = @killed.left
 

@@ -26,13 +26,7 @@ class PlayerAPI
   end
 
   def players
-    players = []
-    next_player = player.left
-    while next_player != player
-      players << PlayerDTO.new(next_player, player)
-      next_player = next_player.left
-    end
-    players
+    player.players.map { |p| PlayerDTO.new(p, player) }
   end
 
   def players_in_range_of(card)
@@ -45,12 +39,6 @@ class PlayerAPI
   attr_reader :player, :brain, :dtos_to_players
 
   def find_player(player_dto)
-    target_player = nil
-    p = player.left
-    while !target_player
-      target_player = p if p.class == player_dto.name
-      p = p.left
-    end
-    target_player
+    player.players.find { |p| p.class == player_dto.name }
   end
 end
