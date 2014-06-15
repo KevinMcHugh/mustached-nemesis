@@ -2,13 +2,14 @@
 require 'attack_left_brain'
 require 'attack_right_brain'
 require 'murder_brain'
+require 'mildly_intelligent_brain'
 require 'pp'
 Rails.logger.level = Logger::WARN # turns off logging
 iterations = ARGV.first.to_i || 1000
 games = iterations.times.map do |i|
-  puts i if i % 200 == 0
-  CreateGame.new(brains: [PlayerBrain::AttackLeftBrain,PlayerBrain::AttackLeftBrain,
-    PlayerBrain::AttackRightBrain,PlayerBrain::AttackRightBrain,PlayerBrain::MurderBrain,PlayerBrain::MurderBrain]).execute
+  puts i if i % 500 == 0
+  CreateGame.new(brains: [PlayerBrain::AttackLeftBrain, PlayerBrain::AttackRightBrain,
+    PlayerBrain::MurderBrain,PlayerBrain::MildlyIntelligentBrain]).execute
 end
 
 winners = games.map(&:winners)
@@ -26,7 +27,7 @@ games.map(&:round).reduce(round_counter){ |h, e| h[e] += 1 ; h }
 
 pp brain_counter.sort_by {|key, value| value}
 pp role_counter.sort_by {|key, value| value}
-pp player_counter.sort_by {|key, value| value}
+pp player_counter.sort_by {|key, value| -value}
 pp round_counter.sort_by {|key, value| key}
 
 brain_counter = Hash.new(0)
