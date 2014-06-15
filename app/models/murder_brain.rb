@@ -40,6 +40,10 @@ module PlayerBrain
     #This is the method that is called on your turn.
     def play
       bangs_played = 0
+      player.hand.find_all(&:equipment?).each do |card|
+        target = weakest_player_in_range_of(card)
+        player.play_card(card, target)
+      end
       player.hand.find_all(&:damage_dealing?).each do |card|
         is_a_bang_card = card.type == Card.bang_card
         bangs_played += 1 if is_a_bang_card
