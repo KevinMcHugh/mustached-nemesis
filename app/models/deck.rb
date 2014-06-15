@@ -32,7 +32,6 @@
 class Deck
   require 'card'
   def initialize(seed = nil, expansions = nil)
-    cards =
     @seed = seed ? seed : Random.new.seed
     @draw = create_deck.shuffle(random: Random.new(@seed))
     @discard = []

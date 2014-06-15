@@ -35,6 +35,7 @@ class PlayerAPI
 
   def health; player.health; end
 
+# TO DO cards in play??
   private
   attr_reader :player, :brain, :dtos_to_players
 

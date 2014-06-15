@@ -38,7 +38,12 @@ module PlayerBrain
     #This is the method that is called on your turn.
     def play
       bang = player.from_hand(Card.bang_card)
-      player.play_card(bang, player.players.first) if bang
+      if bang
+        left_player = player.players.first
+        if left_player.distance_to <= 1
+          player.play_card(bang, left_player)
+        end
+      end
     end
 
     private
