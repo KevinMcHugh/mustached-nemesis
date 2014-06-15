@@ -200,13 +200,18 @@ class Player
     if card.type == Card.bang_card
       @bangs_played +=1
     end
-    raise TooManyBangsPlayedException.new if @bangs_played > bang_limit
+    raise TooManyBangsPlayedException.new if over_bang_limit?
     if in_range?(card, target_player)
       discard(card)
       card.play(self, target_player, target_card)
     else
       raise OutOfRangeException.new
     end
+  end
+
+  def over_bang_limit?
+    volcanic = from_play(Card.volcanic_card)
+    volcanic ? false : @bangs_played  > 1
   end
 
   def discard_all
@@ -225,7 +230,7 @@ class Player
   def draw_for_turn; 2.times { draw }; end
   def draw; @hand += deck.take(1); end
   def draw!(reason=nil); deck.draw!; end
-  def bang_limit; 1; end
+
   def sheriff?; role == "sheriff"; end
 
   def to_s
