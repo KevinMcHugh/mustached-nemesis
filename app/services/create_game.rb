@@ -26,6 +26,8 @@ class CreateGame
       player.right = right_player
       right_player = player
     end
-    Game.new(players, @deck).start
+    game = Game.new(players, @deck)
+    game.start
+    game
   end
 end
