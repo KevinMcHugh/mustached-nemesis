@@ -1,5 +1,5 @@
 class Game
-  attr_reader :players, :over, :event_listener, :round, :winners
+  attr_reader :deck, :players, :over, :event_listener, :round, :winners
 
   def initialize(players, deck)
     @players = players
