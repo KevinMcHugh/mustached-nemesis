@@ -7,7 +7,6 @@ module PlayerBrain
     #The brain is instantiated with it's role.  So that it can be used later in the game
     def initialize(role)
       @role = role
-      @logger = Logger.new(Rails.root.join("log", "game.log"))
     end
 
     # you have the option of picking from many cards, pick the best one.

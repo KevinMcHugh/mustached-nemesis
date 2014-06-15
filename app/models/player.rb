@@ -24,6 +24,7 @@ class Player
     @max_health = sheriff? ? 5 : 4
     @health = max_health
     @brain = brain ? brain : Brain.new
+    @bangs_played = 0
   end
 
   def play
