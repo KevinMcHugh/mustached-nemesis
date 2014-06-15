@@ -7,7 +7,11 @@ module Character
     end
     def hit!(hitter=nil)
       super(hitter)
-      hitter.hand.sample if hitter
+      if hitter
+        card = hitter.random_from_hand
+        hitter.hand.delete(card)
+        hand << card if card
+      end
     end
   end
 end

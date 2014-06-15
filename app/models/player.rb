@@ -221,7 +221,7 @@ class Player
 
   def hand_limit; health; end
   def hand_size; hand.size; end
-  def random_from_hand; @hand.shuffle.first; end
+  def random_from_hand; @hand.sample; end
   def draw_for_turn; 2.times { draw }; end
   def draw; @hand += deck.take(1); end
   def draw!(reason=nil); deck.draw!; end
