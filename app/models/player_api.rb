@@ -10,7 +10,7 @@ class PlayerAPI
     @player.from_hand(card_type)
   end
 
-  def from_hand(card_type)
+  def from_play(card_type)
     @player.from_play(card_type)
   end
 
@@ -29,7 +29,7 @@ class PlayerAPI
     rescue OutOfRangeException => e
       @player.discard(card)
     rescue => e
-      binding.pry
+      @player.discard(card)
     end
   end
 
