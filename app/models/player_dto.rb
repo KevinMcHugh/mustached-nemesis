@@ -10,5 +10,10 @@ class PlayerDTO
     @range_increase = player.range_increase
     @range_decrease = player.range_decrease
     @distance_to = for_player.distance_to(player)
+    @sheriff = player.sheriff?
+  end
+
+  def sheriff?
+    @sheriff
   end
 end

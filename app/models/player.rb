@@ -40,7 +40,10 @@ class Player
       if hand.include?(discard_choice)
         discard(discard_choice)
       else
-        @hand = hand.first(hand_limit)
+        x = hand.shift(hand_limit)
+        @deck.discard += hand
+        @hand = x
+
       end
     end
   end
@@ -77,7 +80,7 @@ class Player
     response = brain.target_of_bang(card, targetter, missed_needed)
     response.each do |response_card|
       if can_play?(response_card, Card.missed_card) && card.missable?
-        discard(response)
+        discard(response_card)
         missed_count += 1
         return false if missed_needed <= missed_count
       end
