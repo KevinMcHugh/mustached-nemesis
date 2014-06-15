@@ -33,7 +33,7 @@ class Player
     return if dead?
     return if jail
     draw_for_turn
-    @logger.info(hand.map(&:class))
+    log(hand.map(&:class))
     brain.play
     while hand.size > hand_limit
       discard_choice = brain.discard
@@ -173,7 +173,7 @@ class Player
   end
 
   def discard(card)
-    @logger.info("#{self.class} discarding #{card.class}")
+    log("#{self.class} discarding #{card.class}")
     deck.discard << card
     in_play.delete(card)
     hand.delete(card)
@@ -221,7 +221,7 @@ class Player
   end
 
   def play_and_discard(card, target_player=nil, target_card=nil)
-    @logger.info("#{self.class}:#{card.class} at #{target_player.class}")
+    log("#{self.class}:#{card.class} at #{target_player.class}")
     if card.type == Card.bang_card
       @bangs_played +=1
     end
@@ -265,11 +265,14 @@ class Player
 
   def draw_outlaw_killing_bonus
     3.times { draw }
-    @logger.info("#{self.class} just killed an outlaw! YEEE-HAW!")
+    log("#{self.class} just killed an outlaw! YEEE-HAW!")
   end
 
   def bang_limit; 1; end
   def logger=(logger); @logger = logger; end
+  def log(message)
+    @logger.info(message) if @logger
+  end
 end
 class OutOfRangeException < StandardError; end
 class TooManyBangsPlayedException < StandardError; end

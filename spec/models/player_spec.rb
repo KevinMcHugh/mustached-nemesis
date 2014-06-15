@@ -164,12 +164,12 @@ describe Player do
       expect{sheriff.hit!}.to change{sheriff.health}.by(-1)
     end
     it "kills player if it takes last health" do
-      4.times { sheriff.hit!(outlaw_1) }
+      5.times { sheriff.hit!(outlaw_1) }
       expect(sheriff.dead?).to be_true
     end
     it "plays beer to keep the player alive" do
       sheriff.hand << BeerCard.new
-      4.times { sheriff.hit! }
+      5.times { sheriff.hit! }
       expect(sheriff.dead?).to be_false
     end
   end
