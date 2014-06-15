@@ -29,20 +29,23 @@ class EventListener
 end
 
 class GameOverEvent < Event
-  attr_reader :player_killed_event, :game
+  attr_reader :player_killed_event, :game, :winners
   def initialize(event_listener, player_killed_event, game)
     @player_killed_event = player_killed_event
     @game = game
+    @winners = winner
     super(event_listener)
   end
 
   def winner
     living_players = game.living_players
+    @winners = living_players
     if living_players.find { |p| p.sheriff?}
       'the forces of law have'
     elsif living_players.map(&:role) == ['renegade']
       'the renegade has'
     else
+      @winners = living_players.find_all { |player| player.role == 'outlaw'}
       'the outlaws have'
     end
   end

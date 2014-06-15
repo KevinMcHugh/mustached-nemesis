@@ -1,5 +1,5 @@
 class Game
-  attr_reader :deck, :players, :over, :event_listener, :round
+  attr_reader :players, :over, :event_listener, :round, :winners
 
   def initialize(players, deck)
     @players = players
@@ -39,6 +39,7 @@ class Game
   def notify(event)
     if event.game_over?
       @over = true
+      @winners = event.winners
       raise GameOverException.new
     end
   end
