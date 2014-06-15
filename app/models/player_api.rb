@@ -11,7 +11,7 @@ class PlayerAPI
   end
 
   def from_hand(card_type)
-    player.from_play(card_type)
+    @player.from_play(card_type)
   end
 
   def play_card(card, target_player=nil, target_card=nil)
@@ -23,10 +23,11 @@ class PlayerAPI
         card.play(@player, target_player, target_card)
       else
         @player.play_and_discard(card, target_player, target_card)
+      end
     rescue TooManyBangsPlayedException => e
-      player.discard(card)
+      @player.discard(card)
     rescue OutOfRangeException => e
-      player.discard(card)
+      @player.discard(card)
     rescue => e
       binding.pry
     end
