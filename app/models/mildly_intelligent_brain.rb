@@ -61,6 +61,7 @@ module PlayerBrain
       while !player.hand.find_all(&:draws_cards?).empty?
         player.hand.find_all(&:draws_cards?).each {|card| player.play_card(card)}
       end
+      play_guns
       player.hand.find_all(&:equipment?).each do |card|
         target = weakest_player_in_range_of(card)
         player.play_card(card, target)
@@ -81,6 +82,14 @@ module PlayerBrain
     def weakest_player_in_range_of(card)
       in_range = player.players_in_range_of(card)
       in_range.min_by { |p| p.health } || in_range.first
+    end
+
+    def play_guns
+      guns = player.hand.find_all(&:gun?)
+      return if guns.empty?
+      longest_ranged_gun = guns.max { |gun| gun.range }
+      existing_gun = player.in_play.find(&:gun?)
+      player.play_card(longest_ranged_gun) if !existing_gun || (longest_ranged_gun && longest_ranged_gun.range > existing_gun.range)
     end
   end
 end

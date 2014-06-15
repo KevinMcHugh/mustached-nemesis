@@ -135,6 +135,7 @@ class BarrelCard < EquipmentCard; end
 class ScopeCard < EquipmentCard; end
 class MustangCard < EquipmentCard; end
 class GunCard < Card
+  def equipment?;true; end
   def play(player, target_player=nil, target_card=nil)
     player.in_play.each do |c|
       player.discard(c) if c.gun?
