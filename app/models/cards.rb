@@ -99,7 +99,7 @@ class GatlingCard < Card
     target_player = player.left
 
     while target_player != player
-      target_player.target_of_bang(BangCard.new(self.suit, self.number), player)
+      target_player.target_of_bang(self, player)
       target_player = target_player.left
     end
   end
