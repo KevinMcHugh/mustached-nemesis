@@ -1,5 +1,37 @@
 module Character
   class CalamityJanetPlayer < Player
-   # TODO
- end
+    ### Allows player to send a bang as a response to being bang attacked.
+    def target_of_bang(card, targetter)
+      if from_play(Card.barrel_card)
+        return false if draw!(:barrel).barreled?
+      end
+      response = brain.target_of_bang(card, targetter)
+      if (can_play?(response, Card.missed_card) || can_play?(response, Card.bang_card)) && card.missable?
+        discard(response)
+      else
+        hit!(targetter)
+      end
+    end
+    ### This assumes that if you play a missed card on your turn you mean for it to be a bang, because there is not a use case for playing misseds on your turn.
+    def play_and_discard(card, target_player=nil, target_card=nil)
+      if(card.type == Card.missed_card)
+        log("#{self.class}:#{card.class} at #{target_player.class} as a BangCard")
+        actual_card = card
+        card = BangCard.new(card.suit, card.number)
+      else
+        log("#{self.class}:#{card.class} at #{target_player.class}")
+        actual_card = card
+      end
+      if card.type == Card.bang_card
+        @bangs_played +=1
+      end
+      raise TooManyBangsPlayedException.new if over_bang_limit?
+      if in_range?(card, target_player)
+        discard(actual_card)
+        card.play(self, target_player, target_card)
+      else
+        raise OutOfRangeException.new
+      end
+    end
+  end
 end
