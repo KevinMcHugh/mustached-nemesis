@@ -1,7 +1,8 @@
 class MonoLogger
+  @@logger = Logger.new(Rails.root.join("log", "game.log"))
 
-  def initialize
-    @logger = Logger.new(Rails.root.join("log", "game.log"))
+  def info(message)
+    @@logger.info(message)
   end
 
   def info(message)
