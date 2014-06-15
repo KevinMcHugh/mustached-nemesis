@@ -33,19 +33,21 @@ class GameOverEvent < Event
   def initialize(event_listener, player_killed_event, game)
     @player_killed_event = player_killed_event
     @game = game
-    @winners = winner
+    winner
     super(event_listener)
   end
 
   def winner
     living_players = game.living_players
-    @winners = living_players
+    @winners = []
     if living_players.find { |p| p.sheriff?}
+      @winners = game.players.find_all { |player| ['deputy', 'sheriff'].include?(player.role)}.uniq
       'the forces of law have'
     elsif living_players.map(&:role) == ['renegade']
+      @winners = living_players
       'the renegade has'
     else
-      @winners = living_players.find_all { |player| player.role == 'outlaw'}
+      @winners = game.players.find_all { |player| player.role == 'outlaw'}.uniq
       'the outlaws have'
     end
   end

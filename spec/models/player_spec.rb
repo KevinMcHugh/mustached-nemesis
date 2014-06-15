@@ -7,10 +7,10 @@ describe Player do
   let(:outlaw_2) { described_class.new("outlaw", deck) }
   let(:renegade) { described_class.new("renagade", deck) }
   before do
-    sheriff.left = renegade
-    outlaw_1.left = sheriff
-    outlaw_2.left = outlaw_1
-    renegade.left = outlaw_2
+    sheriff.right  = outlaw_1
+    outlaw_1.right = outlaw_2
+    outlaw_2.right = renegade
+    renegade.right = sheriff
   end
 
   it "sets left and right" do

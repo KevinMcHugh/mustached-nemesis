@@ -43,12 +43,17 @@ class Card
   def still_in_jail?
     suit != "heart"
   end
+
   def barreled?
     suit == "heart"
   end
 
   def gun?
     GUN.include?(self.class)
+  end
+
+  def red?
+    ["heart", "diamond"].include?(suit)
   end
 
   def self.beer_card; BeerCard; end

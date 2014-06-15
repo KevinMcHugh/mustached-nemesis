@@ -45,17 +45,9 @@ class Player
     end
   end
 
-  def sheriff?
-    role == "sheriff"
-  end
-
-  def hand_size
-    hand.size
-  end
-
   def target_of_indians(card, targetter)
     response = brain.target_of_indians(card, targetter)
-    if response.respond_to?(:type) && response.type == Card.bang_card && hand.include?(response)
+    if can_play?(response, Card.bang_card)
       discard(response)
     else
       hit!(targetter)
@@ -64,7 +56,7 @@ class Player
 
   def target_of_duel(card, targetter)
     response = brain.target_of_duel(card, targetter)
-    if response.respond_to?(:type) && response.type == Card.bang_card && hand.include?(response)
+    if can_play?(response, Card.bang_card)
       discard(response)
       targetter.target_of_duel(card, self)
     else
@@ -72,21 +64,24 @@ class Player
     end
   end
 
-
   def target_of_bang(card, targetter)
     if from_play(Card.barrel_card)
       return false if draw!(:barrel).barreled?
     end
     response = brain.target_of_bang(card, targetter)
-    if response.respond_to?(:type) && response.type == Card.missed_card && hand.include?(response) && card.missable?
+    if can_play?(response, Card.missed_card) && card.missable?
       discard(response)
     else
       hit!(targetter)
     end
   end
 
+  def can_play?(response, type)
+    response.respond_to?(:type) && response.type == type && hand.include?(response)
+  end
+
   def hit!(hitter=nil)
-    @health -= 1
+    @health -= 1 if @health > 0
     if dead?
       PlayerKilledEvent.new(event_listener, self, hitter) unless beer
     end
@@ -94,6 +89,7 @@ class Player
 
   def beer
     beer_card = from_hand(Card.beer_card)
+    # TODO doesn't work with 2 players remaining
     if beer_card
       play_and_discard(beer_card)
       true
@@ -102,15 +98,12 @@ class Player
     end
   end
 
-  def heal(regained_health=1)
-    regained_health.times do
-      @health += 1 if health < max_health
-    end
-  end
+  def beer_benefit; 1; end
 
-  def dead?
-    health <= 0
+  def heal(regained_health=1)
+    regained_health.times { @health += 1 if health < max_health }
   end
+  def dead?; health <= 0; end
 
   def dynamite
     dynamite_card = from_play(Card.dynamite_card)
@@ -138,17 +131,12 @@ class Player
     false
   end
 
-  def beer_benefit; 1; end
-
-  def left=(player)
-    @left = player
-    player.right = self unless player.right
-  end
-
   def right=(player)
     @right = player
-    player.left = self unless player.left
+    player.left = self
   end
+
+  def left=(player); @left= player; end
 
   def players
     unless @players
@@ -203,20 +191,8 @@ class Player
   end
 
   def distance_to(target_player)
-    left_distance = 1
-    right_distance = 1
-    player = self.left
-    while player != target_player
-      left_distance += 1
-      raise ArgumentError.new if left_distance > 25
-      player = player.left
-    end
-    player = self.right
-    while player != target_player
-      right_distance += 1
-      raise ArgumentError.new if right_distance > 25
-      player = player.right
-    end
+    left_distance = 1 + players.index(target_player)
+    right_distance = players.size - players.index(target_player)
     [left_distance, right_distance].min + target_player.range_increase - self.range_decrease
   end
 
@@ -225,7 +201,7 @@ class Player
     if card.type == Card.bang_card
       @bangs_played +=1
     end
-    raise TooManyBangsPlayedException.new if @bangs_played > bang_limit
+    raise TooManyBangsPlayedException.new if over_bang_limit?
     if in_range?(card, target_player)
       discard(card)
       card.play(self, target_player, target_card)
@@ -234,28 +210,9 @@ class Player
     end
   end
 
-  def hand_limit
-    health
-  end
-
-  def random_from_hand
-    @hand.shuffle.first
-  end
-
-  def draw_for_turn
-    2.times { draw }
-  end
-
-  def draw
-    @hand += deck.take(1)
-  end
-
-  def draw!(reason=nil)
-    deck.draw!
-  end
-
-  def to_s
-    "#{self.class}|#{health}|#{role}|#{brain.class}"
+  def over_bang_limit?
+    volcanic = from_play(Card.volcanic_card)
+    volcanic ? false : @bangs_played  > 1
   end
 
   def discard_all
@@ -268,7 +225,18 @@ class Player
     log("#{self.class} just killed an outlaw! YEEE-HAW!")
   end
 
-  def bang_limit; 1; end
+  def hand_limit; health; end
+  def hand_size; hand.size; end
+  def random_from_hand; @hand.sample; end
+  def draw_for_turn; 2.times { draw }; end
+  def draw; @hand += deck.take(1); end
+  def draw!(reason=nil); deck.draw!; end
+
+  def sheriff?; role == "sheriff"; end
+
+  def to_s
+    "#{self.class}|#{health}|#{role}|#{brain.class}"
+  end
   def logger=(logger); @logger = logger; end
   def log(message)
     @logger.info(message) if @logger
@@ -285,7 +253,6 @@ class PlayerKilledEvent < Event
     @killed.discard_all
     @killed.players.map(&:blank_players)
     @killed.left.right = @killed.right
-    @killed.right.left = @killed.left
 
     if @killed.role == 'outlaw'
       @killer.draw_outlaw_killing_bonus if @killer
@@ -296,7 +263,7 @@ class PlayerKilledEvent < Event
     super(event_listener)
   end
   def to_s
-    killer_string = killer || 'DYNAMITE, BITCHES'
+    killer_string = killer || 'DYNAMITE, CATS AND KITTENS'
     "#{killed} has been killed by #{killer_string}"
   end
   def player_killed?; true; end

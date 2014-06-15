@@ -68,7 +68,7 @@ class GeneralStoreCard < Card
     end
     cards = player.deck.take(players.count)
     players.each do |p|
-      card = p.pick(cards)
+      card = p.pick(1, cards)
       p.hand << card
       cards.delete(card)
     end

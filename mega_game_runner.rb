@@ -6,14 +6,15 @@ require 'pp'
 Rails.logger.level = Logger::WARN # turns off logging
 iterations = ARGV.first.to_i || 1000
 games = iterations.times.map do
-  CreateGame.new(brains: [PlayerBrain::AttackLeftBrain,PlayerBrain::AttackLeftBrain,PlayerBrain::AttackRightBrain,PlayerBrain::AttackRightBrain]).execute
+  CreateGame.new(brains: [PlayerBrain::AttackLeftBrain,PlayerBrain::AttackLeftBrain,
+    PlayerBrain::AttackRightBrain,PlayerBrain::AttackRightBrain,PlayerBrain::MurderBrain,PlayerBrain::MurderBrain]).execute
 end
-games += iterations.times.map do
-  CreateGame.new(brains: [PlayerBrain::MurderBrain,PlayerBrain::MurderBrain,PlayerBrain::AttackRightBrain,PlayerBrain::AttackRightBrain]).execute
-end
-games += iterations.times.map do
-  CreateGame.new(brains: [PlayerBrain::MurderBrain,PlayerBrain::MurderBrain,PlayerBrain::AttackLeftBrain,PlayerBrain::AttackLeftBrain]).execute
-end
+# games += iterations.times.map do
+#   CreateGame.new(brains: [PlayerBrain::MurderBrain,PlayerBrain::MurderBrain,PlayerBrain::AttackRightBrain,PlayerBrain::AttackRightBrain]).execute
+# end
+# games += iterations.times.map do
+#   CreateGame.new(brains: [PlayerBrain::MurderBrain,PlayerBrain::MurderBrain,PlayerBrain::AttackLeftBrain,PlayerBrain::AttackLeftBrain]).execute
+# end
 
 winners = games.map(&:winners)
 brain_counter = Hash.new(0)

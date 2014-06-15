@@ -32,7 +32,6 @@
 class Deck
   require 'card'
   def initialize(seed = nil, expansions = nil)
-    cards =
     @seed = seed ? seed : Random.new.seed
     @draw = create_deck.shuffle(random: Random.new(@seed))
     @discard = []
@@ -159,7 +158,9 @@ class Deck
   end
 
   def take(number_of_cards=1)
-    check_to_shuffle.pop(number_of_cards)
+    number_of_cards.times.flat_map do
+      check_to_shuffle.pop(1)
+    end
   end
 
   def draw!

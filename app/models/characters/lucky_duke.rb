@@ -3,19 +3,21 @@
 # Imagine you're the deputy, you have 4 health, and
 # the sheriff has 1. You're dynamited and have the
 # option to take the explosion.
-
-#bug in line 11 for barrel
 module Character
   class LuckyDukePlayer < Player
     def draw!(reason)
       options = 2.times.map { deck.draw! }
-      card = options.find { |option| !option.send(reasons_to_methods[reason]) }
+      if [:jail, :dynamite].include?(reason)
+        card = options.find { |option| !option.send(reasons_to_methods[reason]) }
+      elsif reason == barrel
+        card = options.find { |option| option.barreled? }
+      end
       card ? card : options.first
     end
 
     private
     def reasons_to_methods
-      { jail: :stll_in_jail?, barrel: :barreled?, dynamite: :explode? }
+      { jail: :stll_in_jail?, dynamite: :explode? }
     end
 
   end
