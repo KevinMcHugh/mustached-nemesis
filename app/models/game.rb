@@ -26,6 +26,11 @@ class Game
       begin
         player = sheriff
         while true
+          # paul regret, because he's 1 away, can cause stalemates against the dumb bots
+          if round > 150
+            @winners = []
+            return
+          end
           @round += 1 if player.sheriff?
           @logger.info("#{player.class} #{player.health} #{player.role}")
           player.play

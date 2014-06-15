@@ -9,7 +9,7 @@ module Character
       options = 2.times.map { deck.draw! }
       if [:jail, :dynamite].include?(reason)
         card = options.find { |option| !option.send(reasons_to_methods[reason]) }
-      elsif reason == barrel
+      elsif reason == :barrel
         card = options.find { |option| option.barreled? }
       end
       card ? card : options.first

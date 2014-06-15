@@ -4,6 +4,7 @@ class Card
   MISSABLE =  [BangCard, PunchCard, SpringfieldCard, GatlingCard]
   RANGE_INCREASE = [MustangCard, HideoutCard]
   RANGE_DECREASE = [ScopeCard, BinocularsCard]
+  DRAWS_CARDS = [WellsFargoCard, StageCoachCard]
   attr_reader :suit, :number
 
   def initialize(suit=nil, number=nil)
@@ -34,6 +35,10 @@ class Card
 
   def range_decrease?
     RANGE_DECREASE.include?(type)
+  end
+
+  def draws_cards?
+    DRAWS_CARDS.include?(type)
   end
 
   def explode?

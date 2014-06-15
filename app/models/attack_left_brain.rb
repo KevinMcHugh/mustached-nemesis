@@ -44,7 +44,7 @@ module PlayerBrain
       bang = player.from_hand(Card.bang_card)
       if bang
         left_player = player.players.first
-        if left_player.distance_to <= 1
+        if left_player && left_player.distance_to <= 1
           player.play_card(bang, left_player)
         end
       end
