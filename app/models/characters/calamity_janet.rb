@@ -1,4 +1,5 @@
 module Character
   class CalamityJanetPlayer < Player
-  end
+   # TODO
+ end
 end

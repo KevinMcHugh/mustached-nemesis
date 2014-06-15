@@ -10,8 +10,8 @@ module PlayerBrain
     end
 
     # you have the option of picking from many cards, pick the best one.
-    def pick(*args)
-      args.first
+    def pick(number, *cards)
+      cards.flatten.first(number)
     end
 
     #After instantiation the Game will pass the brain two characters from the characters in the models/characters folder, the choose_character method must return one of the two characters.

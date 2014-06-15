@@ -152,7 +152,9 @@ class Deck
   end
 
   def take(number_of_cards=1)
-    check_to_shuffle.pop(number_of_cards)
+    number_of_cards.times.flat_map do
+      check_to_shuffle.pop(1)
+    end
   end
 
   def draw!

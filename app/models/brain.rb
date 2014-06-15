@@ -8,6 +8,8 @@ class Brain
   end
   def play()
   end
+  def pick(number, *cards)
+  end
 end
 
 
