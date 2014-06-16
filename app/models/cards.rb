@@ -51,7 +51,8 @@ class PanicCard < Card
   def range; 1; end
   def play(player, target_player, target_card)
     if target_card == :hand
-      player.hand << target_player.random_from_hand
+      card = target_player.random_from_hand
+      player.hand << card if card
     else
       card = target_player.from_play(target_card)
       target_player.in_play.delete(target_card)
@@ -80,7 +81,8 @@ class CatBalouCard < Card
   def no_range?; true; end
   def play(player, target_player, target_card)
     if target_card == :hand
-      target_player.discard(target_player.random_from_hand)
+      card = target_player.random_from_hand
+      target_player.discard(target_player.random_from_hand) if card
     else
       card = target_player.from_play(target_card)
       target_player.discard(card) if card
