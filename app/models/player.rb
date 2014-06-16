@@ -43,7 +43,6 @@ class Player
         x = hand.shift(hand_limit)
         @deck.discard += hand
         @hand = x
-
       end
     end
   end

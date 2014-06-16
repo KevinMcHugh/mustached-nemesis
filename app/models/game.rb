@@ -32,7 +32,7 @@ class Game
             return
           end
           @round += 1 if player.sheriff?
-          @logger.info("#{player.class} #{player.health} #{player.role}")
+          @logger.info("#{player.to_s}")
           player.play
           player = player.left
         end
