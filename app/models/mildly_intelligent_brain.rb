@@ -31,15 +31,19 @@ module PlayerBrain
     def character_preference
       [:PaulRegretPlayer,:JourdonnaisPlayer,:RoseDoolanPlayer,
        :VeraCusterPlayer,:BlackJackPlayer,:BartCassidyPlayer,
-       :SidKetchumPlayerTODO,:SlabTheKillerPlayerTODO,:JesseJonesPlayerTODO,
+       :SidKetchumPlayerTODO,:SlabTheKillerPlayer,:JesseJonesPlayerTODO,
        :LuckyDukePlayer,:SuzyLafayettePlayer,:WillyTheKidPlayer,
-       :VultureSamPlayerTODO,:CalamityJanetPlayerTODO,:PedroRamirezPlayerTODO,:KitCarlsonPlayer,
+       :VultureSamPlayerTODO,:CalamityJanetPlayer,:PedroRamirezPlayerTODO,:KitCarlsonPlayer,
        :ElGringoPlayer,]
     end
 
     #This method is called on your brain when you are the target of a card that has a bang action (a missable attack). Your brain is given the card that attacked them.  The method should return a card from your hand
-    def target_of_bang(card, targetter)
-      player.from_hand(Card.missed_card)
+    def target_of_bang(card, targette, missed_needed)
+      if player.hand.count{ |x| x.type == Card.missed_card } >= missed_needed
+        player.hand.select{|x| x.type == Card.missed_card}.first(missed_needed)
+      else
+        []
+      end
     end
     def target_of_indians(card, targetter)
       player.from_hand(Card.bang_card)

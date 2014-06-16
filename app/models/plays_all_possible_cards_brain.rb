@@ -2,7 +2,7 @@
 ## All Brains must be put in the PlayerBrain module to allow them to be picked up by the game initalizer
 module PlayerBrain
   ## This is a sample brain to show basic brain structure and interaction with the player.
-  class AttackLeftBrain < Brain
+  class PlaysAllPossibleCardsBrain < Brain
 
     #The brain is instantiated with it's role.  So that it can be used later in the game
     def initialize(role)
@@ -41,11 +41,17 @@ module PlayerBrain
 
     #This is the method that is called on your turn.
     def play
-      bang = player.from_hand(Card.bang_card)
-      if bang
-        left_player = player.players.first
-        if left_player && left_player.distance_to <= 1
-          player.play_card(bang, left_player)
+      player.hand.each do |card|
+        # player.play_card(card) if !player.from_play(card.type) && card.equipment?
+        # player.play_play(card) if card.gun? && !player.from_play.bsearch{|x| x.gun?}
+        # player.play_card(card, player.players_in_range_of(card).first) if card.damage_dealing?
+        #binding.pry
+        next if card.type == Card.missed_card || !player.players_in_range_of(card).first
+        if card.type == Card.jail_card && player.players_in_range_of(card).first.sheriff?
+          next if !player.players_in_range_of(card)[1]
+          player.play_card(card, player.players_in_range_of(card)[1], :hand)
+        else
+          player.play_card(card, player.players_in_range_of(card).first, :hand)
         end
       end
     end

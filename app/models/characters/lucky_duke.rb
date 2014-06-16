@@ -17,7 +17,7 @@ module Character
 
     private
     def reasons_to_methods
-      { jail: :stll_in_jail?, dynamite: :explode? }
+      { jail: :still_in_jail?, dynamite: :explode? }
     end
 
   end

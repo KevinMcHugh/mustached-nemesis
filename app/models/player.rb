@@ -40,7 +40,10 @@ class Player
       if hand.include?(discard_choice)
         discard(discard_choice)
       else
-        @hand = hand.first(hand_limit)
+        x = hand.shift(hand_limit)
+        @deck.discard += hand
+        @hand = x
+
       end
     end
   end
@@ -65,15 +68,24 @@ class Player
   end
 
   def target_of_bang(card, targetter)
+    missed_needed = 1
+    missed_count = 0
+    if card.type == Card.bang_card && targetter.class.to_s == 'SlabTheKillerPlayer'
+      missed_needed = 2
+    end
     if from_play(Card.barrel_card)
-      return false if draw!(:barrel).barreled?
+      missed_count += 1 if draw!(:barrel).barreled?
+      return false if missed_needed <= missed_count
     end
-    response = brain.target_of_bang(card, targetter)
-    if can_play?(response, Card.missed_card) && card.missable?
-      discard(response)
-    else
-      hit!(targetter)
+    response = brain.target_of_bang(card, targetter, missed_needed)
+    response.each do |response_card|
+      if can_play?(response_card, Card.missed_card) && card.missable?
+        discard(response_card)
+        missed_count += 1
+        return false if missed_needed <= missed_count
+      end
     end
+    hit!(targetter)
   end
 
   def can_play?(response, type)

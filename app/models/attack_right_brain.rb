@@ -19,9 +19,14 @@ module PlayerBrain
       character_1
     end
 
-    #This method is called on your brain when you are the target of a card that has a bang action (a missable attack). Your brain is given the card that attacked them.  The method should return a card from your hand
-    def target_of_bang(card, targetter)
-      player.from_hand(Card.missed_card)
+    #This method is called on your brain when you are the target of a card that has a bang action (a missable attack). Your brain is given the card that attacked them.  The method should return an array of cards from your hand.
+    #The third argument is for Slab the Killer and his need for 2 missed cards as a response
+    def target_of_bang(card, targetter, missed_needed)
+      if player.hand.count{ |x| x.type == Card.missed_card } >= missed_needed
+        player.hand.select{|x| x.type == Card.missed_card}.first(missed_needed)
+      else
+        []
+      end
     end
     def target_of_indians(card, targetter)
       player.from_hand(Card.bang_card)

@@ -80,7 +80,8 @@ class Deck
     cards << PanicCard.new("heart", 13)
     cards << PanicCard.new("diamond", 8)
     #   General Store 9♣, Q♠
-
+    cards << GeneralStoreCard.new("club", 9)
+    cards << GeneralStoreCard.new("spade", 12)
     #   Jail 10♠, 4♥, J♠
     cards << JailCard.new("spade", 10)
     cards << JailCard.new("spade", 11)

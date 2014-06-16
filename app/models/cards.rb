@@ -54,6 +54,7 @@ class PanicCard < Card
       player.hand << target_player.random_from_hand
     else
       card = target_player.from_play(target_card)
+      target_player.in_play.delete(target_card)
       player.hand << card if card
     end
   end
@@ -65,11 +66,12 @@ class GeneralStoreCard < Card
     next_player = player.left
     while next_player != player
       players << next_player
+      next_player = next_player.left
     end
     cards = player.deck.take(players.count)
     players.each do |p|
-      card = p.pick(1, cards)
-      p.hand << card
+      card = p.brain.pick(1, cards)
+      p.hand += card
       cards.delete(card)
     end
   end
@@ -78,10 +80,10 @@ class CatBalouCard < Card
   def no_range?; true; end
   def play(player, target_player, target_card)
     if target_card == :hand
-      duscard(target_player.random_from_hand)
+      target_player.discard(target_player.random_from_hand)
     else
       card = target_player.from_play(target_card)
-      discard(card) if card
+      target_player.discard(card) if card
     end
   end
 end
@@ -99,7 +101,7 @@ class GatlingCard < Card
     target_player = player.left
 
     while target_player != player
-      target_player.target_of_bang(BangCard.new(self.suit, self.number), player)
+      target_player.target_of_bang(self, player)
       target_player = target_player.left
     end
   end
@@ -114,6 +116,7 @@ end
 ## Blue Cards:
 class JailCard < Card
   def no_range?;true;end
+  def equipment?;true; end
   def play(player, target_player, target_card=nil)
     raise ArgumentError, "Cannot Jail Sheriff" if target_player.sheriff?
     target_player.in_play << self
