@@ -31,11 +31,16 @@ pp role_counter.sort_by {|key, value| value}
 pp player_counter.sort_by {|key, value| -value}
 pp round_counter.sort_by {|key, value| key}
 
-brain_counter = Hash.new(0)
-renegade_wins = winners.find_all { |array| array.map(&:role).include?('renegade')}
+['renegade', 'sheriff', 'outlaw', 'deputy'].each do |role|
+  brain_counter = Hash.new(0)
 
-renegade_wins.map(&:first).map(&:brain).map(&:class).reduce(brain_counter){ |h, e| h[e] += 1 ; h }
+  role_wins = winners.find_all { |array| array.map(&:role).include?(role)}
+  winning_players_for_role = role_wins.flatten.find_all { |player| player.role == role }
+  winning_players_for_role.map(&:brain).map(&:class).reduce(brain_counter){ |h, e| h[e] += 1 ; h }
 
-brains = brain_counter.sort_by {|key, value| value}
-puts "renegade won #{renegade_wins.size} times as"
-pp brains
+  brains = brain_counter.sort_by {|key, value| value}
+  unless role_wins.empty?
+    puts "#{role} won #{role_wins.size} times as"
+    pp brains
+  end
+end
