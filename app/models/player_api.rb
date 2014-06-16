@@ -52,7 +52,6 @@ class PlayerAPI
   def character; @player.class.to_s; end
   def health; @player.health; end
 
-# TO DO cards in play??
   private
   attr_reader :brain
   def instance_variable_get(variable); end #hahaha, eat it.
