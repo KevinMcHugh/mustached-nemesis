@@ -6,7 +6,7 @@ module Character
       raise StandardError.new unless response.length == 2
       @hand += response
       (cards - response).each do |card|
-        deck.discard.push(card)
+        deck.draw.push(card)
       end
     end
   rescue

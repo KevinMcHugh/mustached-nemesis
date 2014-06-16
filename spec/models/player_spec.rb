@@ -188,7 +188,7 @@ describe Player do
       it "discards and does not deal damage if the response is a missed card from the hand" do
         mc = MissedCard.new
         sheriff.hand << mc
-        allow(sheriff.brain).to receive(:target_of_bang).and_return(mc)
+        allow(sheriff.brain).to receive(:target_of_bang).and_return([mc])
         expect{sheriff.target_of_bang(BangCard.new, outlaw_1)}.to_not change{sheriff.health}
         expect(deck.discard.last).to be mc
       end
@@ -197,7 +197,7 @@ describe Player do
         expect{sheriff.target_of_bang(BangCard.new, outlaw_1)}.to change{sheriff.health}.by(-1)
       end
       it "hits if miss card is faked" do
-        allow(sheriff.brain).to receive(:target_of_bang).and_return(MissedCard.new)
+        allow(sheriff.brain).to receive(:target_of_bang).and_return([MissedCard.new])
         expect{sheriff.target_of_bang(BangCard.new, outlaw_1)}.to change{sheriff.health}.by(-1)
       end
     end
