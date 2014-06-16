@@ -3,13 +3,14 @@ require 'attack_left_brain'
 require 'attack_right_brain'
 require 'murder_brain'
 require 'mildly_intelligent_brain'
+require 'plays_all_possible_cards_brain'
 require 'pp'
 Rails.logger.level = Logger::WARN # turns off logging
 iterations = ARGV.first.to_i || 1000
 games = iterations.times.map do |i|
-  puts i if i % 500 == 0
+  puts i if i % 1000 == 0
   CreateGame.new(brains: [PlayerBrain::AttackLeftBrain, PlayerBrain::AttackRightBrain,
-    PlayerBrain::MurderBrain,PlayerBrain::MildlyIntelligentBrain]).execute
+    PlayerBrain::MurderBrain,PlayerBrain::MildlyIntelligentBrain, PlayerBrain::PlaysAllPossibleCardsBrain]).execute
 end
 
 winners = games.map(&:winners)
