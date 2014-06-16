@@ -70,7 +70,7 @@ class Player
   def target_of_bang(card, targetter)
     missed_needed = 1
     missed_count = 0
-    if card.type == Card.bang_card && targetter.class.to_s == 'SlabTheKillerPlayer'
+    if card.type == Card.bang_card && targetter.class.to_s == 'Character::SlabTheKillerPlayer'
       missed_needed = 2
     end
     if from_play(Card.barrel_card)
