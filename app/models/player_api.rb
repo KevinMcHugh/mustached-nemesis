@@ -37,6 +37,10 @@ class PlayerAPI
     @player.hand.clone
   end
 
+  def in_play
+    @player.in_play.clone
+  end
+
   def players
     @player.players.map { |p| PlayerDTO.new(p, @player) }
   end

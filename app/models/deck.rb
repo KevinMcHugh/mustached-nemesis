@@ -111,7 +111,7 @@ class Deck
     cards << WinchesterCard.new("spade", 8)
 
     if expansions.include?(:dodge_city)
-      #   Bang 5♣, 6♣, K♣, 8♠fff
+      #   Bang 5♣, 6♣, K♣, 8♠
       cards << BangCard.new("club", 5)
       cards << BangCard.new("club", 6)
       cards << BangCard.new("club", 13)
