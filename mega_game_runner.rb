@@ -6,7 +6,8 @@ require 'mildly_intelligent_brain'
 require 'plays_all_possible_cards_brain'
 require 'pp'
 Rails.logger.level = Logger::WARN # turns off logging
-iterations = ARGV.first.to_i || 1000
+arg = ARGV.first.to_i
+iterations = arg.zero? ?  1000 : arg
 games = iterations.times.map do |i|
   puts i if i % 1000 == 0
   CreateGame.new(brains: [PlayerBrain::AttackLeftBrain, PlayerBrain::AttackRightBrain,
