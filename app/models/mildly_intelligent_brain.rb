@@ -62,6 +62,9 @@ module PlayerBrain
         player.hand.find_all(&:draws_cards?).each {|card| player.play_card(card)}
       end
       play_guns
+      player.hand.find_all { |card| card.type === Card.beer_card }.each do |card|
+        player.play_card(beer)
+      end
       player.hand.find_all(&:equipment?).each do |card|
         target = weakest_player_in_range_of(card)
         player.play_card(card, target)
