@@ -144,7 +144,7 @@ class Player
 
   def right=(player)
     @right = player
-    player.left = self
+    player.left = dead? ? left : self
   end
 
   def left=(player); @left= player; end
