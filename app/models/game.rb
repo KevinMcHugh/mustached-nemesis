@@ -58,11 +58,6 @@ class Game
     @sheriff ||= players.find { |p| p.sheriff?}
   end
 
-
-  def self.roles_for_players(number_of_players)
-    all[0..number_of_players]
-  end
-
   def self.all_roles
     %w{sheriff renegade outlaw outlaw
       deputy outlaw deputy renegade}
