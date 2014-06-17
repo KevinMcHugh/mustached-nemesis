@@ -122,8 +122,8 @@ class Player
     dynamite_card = from_play(Card.dynamite_card)
     if dynamite_card
       if draw!(:dynamite).explode?
-        3.times { hit!  }
         discard(dynamite_card)
+        3.times { hit!  }
       else
         in_play.delete(dynamite_card)
         next_player = left
@@ -286,9 +286,20 @@ class PlayerKilledEvent < Event
   def initialize(event_listener, killed, killer)
     @killed = killed
     @killer = killer
-    @killed.discard_all
+
     @killed.players.map(&:blank_players)
     @killed.left.right = @killed.right
+
+    # Vulture Sam takes dead players cards See Character::VultureSamPlayer
+    vs = @killed.players.detect {|p| p.class.to_s == "Character::VultureSamPlayer"}
+    if vs
+      @killed.hand.each { |card| vs.hand << card }
+      @killed.in_play.each { |card| vs.hand << card }
+      @killed.hand.clear
+      @killed.in_play.clear
+    else
+      @killed.discard_all
+    end
 
     if @killed.role == 'outlaw'
       @killer.draw_outlaw_killing_bonus if @killer
