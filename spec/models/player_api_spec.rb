@@ -44,4 +44,14 @@ describe PlayerAPI do
       expect(subject.players.map(&:class).uniq).to eql([PlayerDTO])
     end
   end
+  context '#health' do
+    it 'returns the players health' do
+      expect(subject.health).to eql(player.health)
+    end
+  end
+  context '#character' do
+    it 'returns the name of the players character' do
+      expect(subject.character).to eql('Player')
+    end
+  end
 end
