@@ -255,7 +255,7 @@ class Player
     3.times { draw }
     log("#{self.class} just killed an outlaw! YEEE-HAW!")
   end
-
+  def play_as_beer(x,y); end
   def hand_limit; health; end
   def hand_size; hand.size; end
   def random_from_hand; @hand.sample; end

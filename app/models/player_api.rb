@@ -35,6 +35,10 @@ class PlayerAPI
     end
   end
 
+  #For Sid Ketchum
+  def play_as_beer(card_1, card_2)
+    @player.play_as_beer(card_1, card_2)
+  end
   def hand
     @player.hand.map(&:to_dto)
   end
