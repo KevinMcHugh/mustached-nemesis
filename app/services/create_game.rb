@@ -16,7 +16,6 @@ class CreateGame
       @characters += expansion_module.constants.select { |c| expansion_module.const_get(c).is_a?(Class) }
     end
     @characters.shuffle!
-    binding.pry
     @roles.shuffle.each do |role|
       brain = @brains.shift.new(role)
       character_class = Character.const_get(brain.choose_character(@characters.shift, @characters.shift))
