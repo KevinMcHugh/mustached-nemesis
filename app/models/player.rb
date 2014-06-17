@@ -229,7 +229,13 @@ class Player
       target_player.equip(card)
     else
       duplicate_card = from_play(card.type)
-      discard(duplicate_card) if duplicate_card
+      if duplicate_card
+        if card.type == Card.gun_card
+          discard(duplicate_card)
+        else
+          raise DuplicateCardPlayedException.new(card.type)
+        end
+      end
       in_play << card
       hand.delete(card)
     end
@@ -269,7 +275,12 @@ class Player
 end
 class OutOfRangeException < StandardError; end
 class TooManyBangsPlayedException < StandardError; end
-
+class DuplicateCardPlayedException < StandardError;
+  attr_reader :card_type
+  def initialize(card_type)
+    @card_type = card_type
+  end
+end
 class PlayerKilledEvent < Event
   attr_reader :killed, :killer
   def initialize(event_listener, killed, killer)

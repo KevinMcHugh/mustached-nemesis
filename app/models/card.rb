@@ -76,6 +76,7 @@ class Card
 
   def self.scope_card; ScopeCard; end
   def self.mustang_card; MustangCard; end
+  def self.gun_card; GunCard; end
   def self.revcarbine_card; RevCarbineCard; end
   def self.remington_card; RemingtonCard; end
   def self.schofield_card; SchofieldCard; end
