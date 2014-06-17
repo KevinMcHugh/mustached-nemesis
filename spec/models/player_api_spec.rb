@@ -3,6 +3,7 @@ require 'spec_helper'
 describe PlayerAPI do
   let(:deck) { Deck.new }
   let(:player) { Player.new("sheriff", deck) }
+  let(:other_player) { Player.new("renegade", deck) }
   let(:brain) { double("brain") }
   let(:jail_card) { JailCard.new }
   let(:barrel_card) { BarrelCard.new }
@@ -11,6 +12,8 @@ describe PlayerAPI do
   before do
     player.in_play << jail_card
     player.hand << barrel_card
+    player.right = other_player
+    other_player.right = player
   end
   context '#from_hand' do
     it 'finds a card in hand from the type specified' do
@@ -26,6 +29,19 @@ describe PlayerAPI do
     end
     it 'does not find a card in play that is not in play' do
       expect(subject.from_play(Card.barrel_card)).to eql(nil)
+    end
+  end
+  context '#instance_variable_get' do
+    it 'is private' do
+      expect{subject.instance_variable_get('fartzilla')}.to raise_exception
+    end
+  end
+  context '#players' do
+    it 'returns all other players in the game' do
+      expect(subject.players.size).to eql(1)
+    end
+    it 'returns PlayerDTOs' do
+      expect(subject.players.map(&:class).uniq).to eql([PlayerDTO])
     end
   end
 end
