@@ -4,7 +4,7 @@ class CreateGame
     @params = params
     @brains = params[:brains]
     @expansions = params[:expansions]
-    @deck = Deck.new(params[:seed], @expansions)
+    @deck = Deck.new(seed: params[:seed], expansions: @expansions)
     @roles = Game.all_roles.take(@brains.size)
   end
 

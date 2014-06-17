@@ -31,7 +31,8 @@
 
 class Deck
   require 'card'
-  def initialize(seed = nil, expansions = nil)
+  def initialize(seed:nil, expansions:[])
+    @expansions = expansions
     @seed = seed ? seed : Random.new.seed
     @draw = create_deck.shuffle(random: Random.new(@seed))
     @discard = []
@@ -39,26 +40,26 @@ class Deck
 
 
   #TODO figure out a way to assign suits
-  def create_deck(expansions=[])
+  def create_deck
     cards = []
-    #   Bang 2-9♣, 2-A♦, Q-K♥,  A♠
+    #   Bang 2-9♣, 2-A♦, Q-A♥,  A♠
     13.times { |n| cards << BangCard.new("diamond", n+2 ) }
-    7.times { |n| cards << BangCard.new("club", n+2 ) }
+    8.times { |n| cards << BangCard.new("club", n+2 ) }
     cards << BangCard.new("heart", 12)
     cards << BangCard.new("heart", 13)
+    cards << BangCard.new("heart", 14)
     cards << BangCard.new("spade", 14)
     #   Gatling 10♥
     cards << GatlingCard.new("heart", 10)
     #   Indians  A♦, K♦
     cards << IndiansCard.new("diamond", 13)
     cards << IndiansCard.new("diamond", 14)
-    #   Beer 6♥, 7-J♥
-    5.times { |n| cards << BeerCard.new("heart", n+7) }
-    cards << BeerCard.new("heart", 6)
+    #   Beer 6-J♥
+    6.times { |n| cards << BeerCard.new("heart", n+6) }
 
     #   Missed 10-A♣, 2-8♠
-    4.times { |n| cards << MissedCard.new("club", n+10) }
-    6.times { |n| cards << MissedCard.new("spade", n+2) }
+    5.times { |n| cards << MissedCard.new("club", n+10) }
+    7.times { |n| cards << MissedCard.new("spade", n+2) }
     #   Duel Q♦, J♠, 8♣
     cards << DuelCard.new("diamond", 12)
     cards << DuelCard.new("spade", 11)
@@ -74,7 +75,7 @@ class Deck
     cards << CatBalouCard.new("diamond", 10)
     cards << CatBalouCard.new("diamond", 11)
     cards << CatBalouCard.new("heart", 13)
-    #   Panic! J♥, Q♥, K♥, 8♦
+    #   Panic! J♥, Q♥, A♥, 8♦
     cards << PanicCard.new("heart", 11)
     cards << PanicCard.new("heart", 12)
     cards << PanicCard.new("heart", 13)
@@ -110,7 +111,7 @@ class Deck
     #   Winchester 8♠
     cards << WinchesterCard.new("spade", 8)
 
-    if expansions.include?(:dodge_city)
+    if @expansions.include?(:dodge_city)
       #   Bang 5♣, 6♣, K♣, 8♠
       cards << BangCard.new("club", 5)
       cards << BangCard.new("club", 6)
@@ -183,7 +184,7 @@ class Deck
   end
 
   def top_card
-    check_to_shuffle.first
+    check_to_shuffle.last
   end
 
   attr_reader :draw, :discard
