@@ -55,9 +55,8 @@ describe PlayerAPI do
     end
   end
   context '#play_card' do
-    let(:beer_card) { BeerCard.new }
-
     context 'a brown card' do
+      let(:beer_card) { BeerCard.new }
       before do
         allow(player).to receive(:play_and_discard)
         subject.play_card(beer_card)
@@ -69,7 +68,6 @@ describe PlayerAPI do
         expect(subject.hand).not_to include(beer_card)
       end
     end
-
     context 'a blue card' do
       before do
         subject.play_card(barrel_card)

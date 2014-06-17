@@ -119,12 +119,7 @@ end
 class EquipmentCard < Card
   def no_range?;true;end
   def equipment?;true; end
-  def play(player, target_player=nil, target_card=nil)
-    card = player.from_play(self) #TODO this should pass type. Also be in a different file
-    discard(card) if card
-    player.in_play << self
-    player.hand.delete(self)
-  end
+  def play(player, target_player=nil, target_card=nil); end
 end
 class DynamiteCard < EquipmentCard
   def damage_dealing?; true; end
@@ -134,12 +129,7 @@ class ScopeCard < EquipmentCard; end
 class MustangCard < EquipmentCard; end
 class GunCard < Card
   def equipment?;true; end
-  def play(player, target_player=nil, target_card=nil)
-    player.in_play.each do |c|
-      player.discard(c) if c.gun?
-    end
-    player.in_play << self
-  end
+  def type; GunCard; end
 end
 class RevCarbineCard < GunCard
   def range; 4; end

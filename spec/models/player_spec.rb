@@ -224,4 +224,44 @@ describe Player do
       expect{sheriff.discard(card_1)}.to change{deck.discard}.from([]).to([card_1])
     end
   end
+
+  describe "equip" do
+    context "for non-guns" do
+      let(:barrel_card_1) { BarrelCard.new }
+      let(:barrel_card_2) { BarrelCard.new "suit", "number" }
+      before do
+        allow(sheriff).to receive(:discard).and_call_original
+        sheriff.equip(barrel_card_1)
+        sheriff.equip(barrel_card_2)
+      end
+      it 'moves the card into play' do
+        expect(sheriff.in_play).to include(barrel_card_2)
+      end
+      it 'removes the card from hand' do
+        expect(sheriff.hand).not_to include(barrel_card_2)
+      end
+      it 'discards a duplicate card' do
+        expect(sheriff).to have_received(:discard).with(barrel_card_1)
+      end
+    end
+    context "for guns" do
+      let(:schofield_card) { SchofieldCard.new }
+      let(:rev_carbine_card) { RevCarbineCard.new }
+
+      before do
+        allow(sheriff).to receive(:discard).and_call_original
+        sheriff.equip(schofield_card)
+        sheriff.equip(rev_carbine_card)
+      end
+      it 'moves the card into play' do
+        expect(sheriff.in_play).to include(rev_carbine_card)
+      end
+      it 'removes the card from hand' do
+        expect(sheriff.hand).not_to include(rev_carbine_card)
+      end
+      it 'discards another gun' do
+        expect(sheriff).to have_received(:discard).with(schofield_card)
+      end
+    end
+  end
 end

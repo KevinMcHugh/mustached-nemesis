@@ -223,6 +223,18 @@ class Player
     end
   end
 
+  def equip(card, target_player=nil)
+    # binding.pry
+    if card.type == Card.jail_card
+      target_player.equip(card)
+    else
+      duplicate_card = from_play(card.type)
+      discard(duplicate_card) if duplicate_card
+      in_play << card
+      hand.delete(card)
+    end
+  end
+
   def over_bang_limit?
     volcanic = from_play(Card.volcanic_card)
     volcanic ? false : @bangs_played  > 1

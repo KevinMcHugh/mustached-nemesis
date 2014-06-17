@@ -20,7 +20,7 @@ class PlayerAPI
         target_player = @dtos_to_players[target_player]
       end
       if card.equipment?
-        card.play(@player, target_player, target_card)
+        @player.equip(card, target_player)
       else
         @player.play_and_discard(card, target_player, target_card)
       end
