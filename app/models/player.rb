@@ -43,7 +43,6 @@ class Player
         x = hand.shift(hand_limit)
         @deck.discard += hand
         @hand = x
-
       end
     end
   end
@@ -147,7 +146,7 @@ class Player
 
   def right=(player)
     @right = player
-    player.left = self
+    player.left = dead? ? left : self
   end
 
   def left=(player); @left= player; end

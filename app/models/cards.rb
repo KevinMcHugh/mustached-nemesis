@@ -16,11 +16,7 @@ class SaloonCard < Card
   def no_range?;true;end
   def play(player, target_player=nil, target_card=nil)
     player.heal(1)
-    target_player = player.left
-    while target_player != player
-      target_player.heal(1)
-      target_player = target_player.left
-    end
+    player.players.map(&:heal)
   end
 end
 class StageCoachCard < Card
@@ -64,11 +60,7 @@ class GeneralStoreCard < Card
   def no_range?; true; end
   def play(player, target_player=nil, target_card=nil)
     players = [player]
-    next_player = player.left
-    while next_player != player
-      players << next_player
-      next_player = next_player.left
-    end
+    players += player.players
     cards = player.deck.take(players.count)
     players.each do |p|
       card = p.brain.pick(1, cards)

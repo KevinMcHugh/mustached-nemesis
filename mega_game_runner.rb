@@ -3,13 +3,15 @@ require 'attack_left_brain'
 require 'attack_right_brain'
 require 'murder_brain'
 require 'mildly_intelligent_brain'
+require 'plays_all_possible_cards_brain'
 require 'pp'
 Rails.logger.level = Logger::WARN # turns off logging
-iterations = ARGV.first.to_i || 1000
+arg = ARGV.first.to_i
+iterations = arg.zero? ?  1000 : arg
 games = iterations.times.map do |i|
-  puts i if i % 500 == 0
+  puts i if i % 1000 == 0
   CreateGame.new(brains: [PlayerBrain::AttackLeftBrain, PlayerBrain::AttackRightBrain,
-    PlayerBrain::MurderBrain,PlayerBrain::MildlyIntelligentBrain]).execute
+    PlayerBrain::MurderBrain,PlayerBrain::MildlyIntelligentBrain, PlayerBrain::PlaysAllPossibleCardsBrain]).execute
 end
 
 winners = games.map(&:winners)
@@ -30,11 +32,16 @@ pp role_counter.sort_by {|key, value| value}
 pp player_counter.sort_by {|key, value| -value}
 pp round_counter.sort_by {|key, value| key}
 
-brain_counter = Hash.new(0)
-renegade_wins = winners.find_all { |array| array.map(&:role).include?('renegade')}
+['renegade', 'sheriff', 'outlaw', 'deputy'].each do |role|
+  brain_counter = Hash.new(0)
 
-renegade_wins.map(&:first).map(&:brain).map(&:class).reduce(brain_counter){ |h, e| h[e] += 1 ; h }
+  role_wins = winners.find_all { |array| array.map(&:role).include?(role)}
+  winning_players_for_role = role_wins.flatten.find_all { |player| player.role == role }
+  winning_players_for_role.map(&:brain).map(&:class).reduce(brain_counter){ |h, e| h[e] += 1 ; h }
 
-brains = brain_counter.sort_by {|key, value| value}
-puts "renegade won #{renegade_wins.size} times as"
-pp brains
+  brains = brain_counter.sort_by {|key, value| value}
+  unless role_wins.empty?
+    puts "#{role} won #{role_wins.size} times as"
+    pp brains
+  end
+end

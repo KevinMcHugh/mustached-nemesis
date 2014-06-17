@@ -61,24 +61,20 @@ module PlayerBrain
 
     #This is the method that is called on your turn.
     def play
-      bangs_played = 0
+      # bangs_played = 0
+
       while !player.hand.find_all(&:draws_cards?).empty?
         player.hand.find_all(&:draws_cards?).each {|card| player.play_card(card)}
       end
       play_guns
-      player.hand.find_all { |card| card.type === Card.beer_card }.each do |card|
-        player.play_card(beer)
-      end
-      player.hand.find_all(&:equipment?).each do |card|
-        target = weakest_player_in_range_of(card)
-        player.play_card(card, target)
-      end
-      player.hand.find_all(&:damage_dealing?).each do |card|
-        is_a_bang_card = card.type == Card.bang_card
-        bangs_played += 1 if is_a_bang_card
-        if !is_a_bang_card || bangs_played < 1
-          target = find_target(card)
-          player.play_card(card, target) if target
+      player.hand.each do |card|
+        target = find_target(card)
+        next if card.type == Card.missed_card || !target
+        if card.type == Card.jail_card && target.sheriff?
+          next if !target
+          player.play_card(card, target, :hand)
+        else
+          player.play_card(card, target, :hand)
         end
       end
     end

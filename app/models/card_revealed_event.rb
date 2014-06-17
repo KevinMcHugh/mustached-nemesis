@@ -5,4 +5,8 @@ class CardRevealedEvent < Event
     @player = player
     super(event_listener)
   end
+
+  def to_s
+    "#{card} revealed by #{player}"
+  end
 end
