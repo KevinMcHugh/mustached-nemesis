@@ -54,4 +54,42 @@ describe PlayerAPI do
       expect(subject.character).to eql('Player')
     end
   end
+  context '#play_card' do
+    let(:beer_card) { BeerCard.new }
+
+    context 'a brown card' do
+      before do
+        allow(player).to receive(:play_and_discard)
+        subject.play_card(beer_card)
+      end
+      it 'calls to player' do
+        expect(player).to have_received(:play_and_discard).with(beer_card, nil, nil)
+      end
+      it 'the card is no longer in the players hand' do
+        expect(subject.hand).not_to include(beer_card)
+      end
+    end
+
+    context 'a blue card' do
+      before do
+        subject.play_card(barrel_card)
+      end
+      it 'puts the card in play' do
+        expect(subject.in_play).to include(barrel_card)
+      end
+      it 'removes the card from the hand' do
+        expect(subject.hand).not_to include(barrel_card)
+      end
+    end
+    context 'any exception' do
+      let(:dummy) { double("dummy", :equipment? => false) }
+      before do
+        allow(player).to receive(:play_and_discard).with(dummy, nil, nil).and_raise(OutOfRangeException)
+      end
+      it 'swallows the exception and discards the card' do
+        expect(player).to receive(:discard).with(dummy)
+        expect{subject.play_card(dummy, nil, nil)}.not_to raise_error
+      end
+    end
+  end
 end

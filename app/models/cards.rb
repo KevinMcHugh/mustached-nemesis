@@ -120,9 +120,10 @@ class EquipmentCard < Card
   def no_range?;true;end
   def equipment?;true; end
   def play(player, target_player=nil, target_card=nil)
-    card = player.from_play(self)
+    card = player.from_play(self) #TODO this should pass type. Also be in a different file
     discard(card) if card
     player.in_play << self
+    player.hand.delete(self)
   end
 end
 class DynamiteCard < EquipmentCard
