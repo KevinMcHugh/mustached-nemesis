@@ -61,6 +61,10 @@ class Card
     ["heart", "diamond"].include?(suit)
   end
 
+  def to_dto
+    @dto ||= CardDTO.new(self)
+  end
+
   def self.beer_card; BeerCard; end
   def self.bang_card; BangCard; end
   def self.indians_card; IndiansCard; end
@@ -90,5 +94,33 @@ class Card
   def self.springfield_card; SpringfieldCard; end
   def self.hideout_card; HideoutCard; end
   def self.binoculars_card; BinocularsCard; end
-
 end
+
+class CardDTO
+  attr_reader :type, :suit, :number, :range, :no_range,
+    :equipment, :draws_cards, :range_increase, :range_decrease,
+    :gun, :gun_range, :damage_dealing
+  def initialize(card)
+    @type = card.type
+    @suit = card.suit
+    @number = card.number
+    @range = card.range
+    @no_range = card.no_range?
+    @equipment = card.equipment?
+    @draws_cards = card.draws_cards?
+    @range_increase = card.range_increase?
+    @gun = card.gun?
+    @damage_dealing = card.damage_dealing?
+    @gun_range = card.gun_range?
+  end
+
+  alias_method :no_range?, :no_range
+  alias_method :equipment?, :equipment
+  alias_method :draws_cards?, :draws_cards
+  alias_method :range_increase?, :range_increase
+  alias_method :range_decrease?, :range_decrease
+  alias_method :gun?, :gun
+  alias_method :damage_dealing?, :damage_dealing
+  alias_method :gun_range?, :gun_range
+end
+

@@ -7,15 +7,17 @@ class PlayerAPI
   end
 
   def from_hand(card_type)
-    @player.from_hand(card_type)
+    @player.from_hand(card_type).try(:to_dto)
   end
 
   def from_play(card_type)
-    @player.from_play(card_type)
+    @player.from_play(card_type).try(:to_dto)
   end
 
-  def play_card(card, target_player=nil, target_card=nil)
+  def play_card(card_dto, target_player=nil, target_card=nil)
     begin
+      card = @player.hand.find { |c| c.to_dto == card_dto }
+      return unless card
       if target_player
         target_player = @dtos_to_players[target_player]
       end
@@ -34,11 +36,11 @@ class PlayerAPI
   end
 
   def hand
-    @player.hand.clone
+    @player.hand.map(&:to_dto)
   end
 
   def in_play
-    @player.in_play.clone
+    @player.in_play.map(&:to_dto)
   end
 
   def players

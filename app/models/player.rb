@@ -41,7 +41,7 @@ class Player
         discard(discard_choice)
       else
         x = hand.shift(hand_limit)
-        @deck.discard += hand
+        hand.each { |card| @deck.discard << card }
         @hand = x
       end
     end

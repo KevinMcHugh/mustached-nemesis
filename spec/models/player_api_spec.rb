@@ -17,7 +17,7 @@ describe PlayerAPI do
   end
   context '#from_hand' do
     it 'finds a card in hand from the type specified' do
-      expect(subject.from_hand(Card.barrel_card)).to eql(barrel_card)
+      expect(subject.from_hand(Card.barrel_card)).to eql(barrel_card.to_dto)
     end
     it 'does not find a card in hand that is not in hand' do
       expect(subject.from_hand(Card.jail_card)).to eql(nil)
@@ -25,7 +25,7 @@ describe PlayerAPI do
   end
   context '#from_play' do
     it 'finds a card in play from the type specified' do
-      expect(subject.from_play(Card.jail_card)).to eql(jail_card)
+      expect(subject.from_play(Card.jail_card)).to eql(jail_card.to_dto)
     end
     it 'does not find a card in play that is not in play' do
       expect(subject.from_play(Card.barrel_card)).to eql(nil)
@@ -59,7 +59,8 @@ describe PlayerAPI do
       let(:beer_card) { BeerCard.new }
       before do
         allow(player).to receive(:play_and_discard)
-        subject.play_card(beer_card)
+        player.hand << beer_card
+        subject.play_card(beer_card.to_dto)
       end
       it 'calls to player' do
         expect(player).to have_received(:play_and_discard).with(beer_card, nil, nil)
@@ -70,23 +71,24 @@ describe PlayerAPI do
     end
     context 'a blue card' do
       before do
-        subject.play_card(barrel_card)
+        subject.play_card(barrel_card.to_dto)
       end
       it 'puts the card in play' do
-        expect(subject.in_play).to include(barrel_card)
+        expect(subject.in_play).to include(barrel_card.to_dto)
       end
       it 'removes the card from the hand' do
-        expect(subject.hand).not_to include(barrel_card)
+        expect(subject.hand).not_to include(barrel_card.to_dto)
       end
     end
     context 'any exception' do
-      let(:dummy) { double("dummy", :equipment? => false) }
+      let(:dummy) { double("dummy", :equipment? => false, to_dto: {}) }
       before do
+        player.hand << dummy
         allow(player).to receive(:play_and_discard).with(dummy, nil, nil).and_raise(OutOfRangeException)
       end
       it 'swallows the exception and discards the card' do
         expect(player).to receive(:discard).with(dummy)
-        expect{subject.play_card(dummy, nil, nil)}.not_to raise_error
+        expect{subject.play_card(dummy.to_dto, nil, nil)}.not_to raise_error
       end
     end
   end
