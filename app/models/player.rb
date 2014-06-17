@@ -224,21 +224,21 @@ class Player
   end
 
   def equip(card, target_player=nil)
-    # binding.pry
     if card.type == Card.jail_card
-      target_player.equip(card)
+      target = target_player
     else
-      duplicate_card = from_play(card.type)
-      if duplicate_card
-        if card.type == Card.gun_card
-          discard(duplicate_card)
-        else
-          raise DuplicateCardPlayedException.new(card.type)
-        end
-      end
-      in_play << card
-      hand.delete(card)
+      target = self
     end
+    duplicate_card = target.from_play(card.type)
+    if duplicate_card
+      if card.type == Card.gun_card
+        discard(duplicate_card)
+      else
+        raise DuplicateCardPlayedException.new(card.type)
+      end
+    end
+    target.in_play << card
+    hand.delete(card)
   end
 
   def over_bang_limit?

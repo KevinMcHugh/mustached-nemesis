@@ -28,7 +28,7 @@ class PlayerAPI
       @player.discard(card)
     rescue OutOfRangeException => e
       @player.discard(card)
-    rescue => e
+    rescue DuplicateCardPlayedException => e
       @player.discard(card)
     end
   end

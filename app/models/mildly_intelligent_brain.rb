@@ -70,8 +70,8 @@ module PlayerBrain
       player.hand.each do |card|
         target = find_target(card)
         next if card.type == Card.missed_card || !target
-        if card.type == Card.jail_card && target.sheriff?
-          next if !target
+        if card.type == Card.jail_card
+          next if !target || target.sheriff?
           player.play_card(card, target, :hand)
         else
           player.play_card(card, target, :hand)

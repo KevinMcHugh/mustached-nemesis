@@ -109,7 +109,12 @@ end
 
 
 ## Blue Cards:
-class JailCard < Card
+class EquipmentCard < Card
+  def no_range?;true;end
+  def equipment?;true; end
+  def play(player, target_player=nil, target_card=nil); end
+end
+class JailCard < EquipmentCard
   def no_range?;true;end
   def equipment?;true; end
   def play(player, target_player, target_card=nil)
@@ -117,19 +122,14 @@ class JailCard < Card
     target_player.in_play << self
   end
 end
-class EquipmentCard < Card
-  def no_range?;true;end
-  def equipment?;true; end
-  def play(player, target_player=nil, target_card=nil); end
-end
 class DynamiteCard < EquipmentCard
   def damage_dealing?; true; end
 end
 class BarrelCard < EquipmentCard; end
 class ScopeCard < EquipmentCard; end
 class MustangCard < EquipmentCard; end
-class GunCard < Card
-  def equipment?;true; end
+class GunCard < EquipmentCard
+  def no_range; false; end
   def type; GunCard; end
 end
 class RevCarbineCard < GunCard
