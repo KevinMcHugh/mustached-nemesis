@@ -18,7 +18,9 @@ class CreateGame
     @characters.shuffle!
     @roles.shuffle.each do |role|
       brain = @brains.shift.new(role)
-      character_class = Character.const_get(brain.choose_character(@characters.shift, @characters.shift))
+      choosing_from = [@characters.shift, @characters.shift]
+      choice = brain.choose_character(choosing_from.first, choosing_from.second)
+      character_class = Character.const_get(choice)
       player = character_class.new(role, @deck, brain)
       brain.player = PlayerAPI.new(player, brain)
       if role == 'sheriff'

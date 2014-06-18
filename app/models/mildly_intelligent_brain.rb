@@ -31,9 +31,9 @@ module PlayerBrain
     def character_preference
       [:PaulRegretPlayer,:JourdonnaisPlayer,:RoseDoolanPlayer,
        :VeraCusterPlayer,:BlackJackPlayer,:BartCassidyPlayer,
-       :SidKetchumPlayerTODO,:SlabTheKillerPlayer,:JesseJonesPlayerTODO,
+       :SidKetchumPlayer,:SlabTheKillerPlayer,:JesseJonesPlayer,
        :LuckyDukePlayer,:SuzyLafayettePlayer,:WillyTheKidPlayer,
-       :VultureSamPlayerTODO,:CalamityJanetPlayer,:PedroRamirezPlayerTODO,:KitCarlsonPlayer,
+       :VultureSamPlayer,:CalamityJanetPlayer,:PedroRamirezPlayer,:KitCarlsonPlayer,
        :ElGringoPlayer,]
     end
 

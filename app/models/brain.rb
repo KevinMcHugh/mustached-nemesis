@@ -10,6 +10,8 @@ class Brain
   end
   def pick(number, *cards)
   end
+  def draw_choice(*choices)
+  end
 end
 
 
