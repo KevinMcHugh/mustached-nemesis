@@ -35,7 +35,7 @@ class Player
     draw_for_turn
     brain.play
     while hand.size > hand_limit
-      discard_choice = brain.discard
+     discard_choice = from_hand_dto_to_card(brain.discard)
       if hand.include?(discard_choice)
         discard(discard_choice)
       else
@@ -46,8 +46,12 @@ class Player
     end
   end
 
+  def from_hand_dto_to_card(card_dto)
+    hand.detect{|card| card.to_dto == card_dto}
+  end
+
   def target_of_indians(card, targetter)
-    response = brain.target_of_indians(card, targetter)
+    response = from_hand_dto_to_card(brain.target_of_indians(card, targetter))
     if can_play?(response, Card.bang_card)
       discard(response)
     else
@@ -56,7 +60,7 @@ class Player
   end
 
   def target_of_duel(card, targetter)
-    response = brain.target_of_duel(card, targetter)
+    response = from_hand_dto_to_card(brain.target_of_duel(card, targetter))
     if can_play?(response, Card.bang_card)
       discard(response)
       targetter.target_of_duel(card, self)
@@ -79,6 +83,7 @@ class Player
     response = brain.target_of_bang(card, targetter, missed_needed)
     if response
       response.each do |response_card|
+        response_card = from_hand_dto_to_card(response_card)
         if can_play?(response_card, Card.missed_card) && card.missable?
           discard(response_card)
           missed_count += 1

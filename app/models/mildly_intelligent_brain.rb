@@ -61,7 +61,7 @@ module PlayerBrain
 
     #This is the method that is called on your turn.
     def play
-      # bangs_played = 0
+      bangs_played = 0
 
       while !player.hand.find_all(&:draws_cards?).empty?
         player.hand.find_all(&:draws_cards?).each {|card| player.play_card(card)}
@@ -70,17 +70,22 @@ module PlayerBrain
       player.hand.each do |card|
         target = find_target(card)
         next if card.type == Card.missed_card || !target
-        if card.type == Card.jail_card
-          next if !target || target.sheriff?
-          player.play_card(card, target, :hand)
-        else
-          player.play_card(card, target, :hand)
-        end
+        next if card.type == Card.jail_card && !target || target.sheriff?
+        next if card.type == Card.bang_card && over_bang_limit(bangs_played)
+        bangs_played += 1 if card.type == Card.bang_card
+        player.play_card(card, target, :hand)
       end
     end
 
     private
     attr_reader :role
+
+    def over_bang_limit(n)
+      return false if player.character == "Character::WillyTheKidPlayer"
+      return false if player.in_play.detect{ |x| x.type == Card.volcanic_card }
+      return false if n < 1
+      true
+    end
 
     def find_target(card)
       if role == 'sheriff'
