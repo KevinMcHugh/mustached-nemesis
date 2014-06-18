@@ -39,14 +39,14 @@ all_players = games.flat_map(&:players)
 appearance_counter = Hash.new(0)
 total_appearances_per_player = all_players.map(&:class).reduce(appearance_counter){ |h, e| h[e] += 1 ; h }
 stats = total_appearances_per_player.merge(player_counter) do |key, oldval, newval|
-  { win_percentage: newval.to_f / oldval, games_won: newval,  games_played: oldval, percentage_played: oldval.to_f / games.size }
+  { win_percentage: newval.to_f / oldval, games_won: newval,  games_played: oldval, played_percentage: oldval.to_f / games.size }
 end
 stats.each_pair do |key, value|
-  stats[key] = { percentage: 0, games_played: value, games_won: 0 } if value.is_a? Fixnum
+  stats[key] = { win_percentage: 0, games_played: value, games_won: 0, played_percentage: 0} if value.is_a? Fixnum
 end
 
 puts "winningness / character"
-pp stats.sort_by {|key, value| value[:percentage]}
+pp stats.sort_by {|key, value| value[:win_percentage]}
 
 ['renegade', 'sheriff', 'outlaw', 'deputy'].each do |role|
   brain_counter = Hash.new(0)
