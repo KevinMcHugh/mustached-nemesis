@@ -5,6 +5,7 @@ require 'murder_brain'
 require 'mildly_intelligent_brain'
 require 'plays_all_possible_cards_brain'
 require 'pp'
+
 Rails.logger.level = Logger::WARN # turns off logging
 arg = ARGV.first.to_i
 iterations = arg.zero? ?  1000 : arg
@@ -27,10 +28,25 @@ end
 
 games.map(&:round).reduce(round_counter){ |h, e| h[e] += 1 ; h }
 
+puts "wins / brain"
 pp brain_counter.sort_by {|key, value| value}
+puts "wins / role:"
 pp role_counter.sort_by {|key, value| value}
-pp player_counter.sort_by {|key, value| -value}
+puts "rounds: "
 pp round_counter.sort_by {|key, value| key}
+
+all_players = games.flat_map(&:players)
+appearance_counter = Hash.new(0)
+total_appearances_per_player = all_players.map(&:class).reduce(appearance_counter){ |h, e| h[e] += 1 ; h }
+stats = total_appearances_per_player.merge(player_counter) do |key, oldval, newval|
+  { win_percentage: newval.to_f / oldval, games_won: newval,  games_played: oldval, percentage_played: oldval.to_f / games.size }
+end
+stats.each_pair do |key, value|
+  stats[key] = { percentage: 0, games_played: value, games_won: 0 } if value.is_a? Fixnum
+end
+
+puts "winningness / character"
+pp stats.sort_by {|key, value| value[:percentage]}
 
 ['renegade', 'sheriff', 'outlaw', 'deputy'].each do |role|
   brain_counter = Hash.new(0)
