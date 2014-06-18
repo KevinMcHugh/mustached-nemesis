@@ -9,8 +9,9 @@ end
 class BeerCard < Card
   def no_range?;true;end
   def play(player, target_player=nil, target_card=nil)
-    return if player.players.size == 1
-    player.heal(player.beer_benefit)
+    # if player.players.size >= 1
+      player.heal(player.beer_benefit)
+    # end
   end
 end
 class SaloonCard < Card
@@ -36,12 +37,7 @@ class IndiansCard < Card
   def no_range?;true;end
   def damage_dealing?; true; end
   def play(player, target_player=nil, target_card=nil)
-    target_player = player.left
-
-    while target_player != player
-      target_player.target_of_indians(self, player)
-      target_player = target_player.left
-    end
+    player.players.map { |p| p.target_of_indians(self, player)}
   end
 end
 class PanicCard < Card
@@ -93,12 +89,7 @@ class GatlingCard < Card
   def no_range?;true;end
   def damage_dealing?; true; end
   def play(player, target_player=nil, target_card=nil)
-    target_player = player.left
-
-    while target_player != player
-      target_player.target_of_bang(self, player)
-      target_player = target_player.left
-    end
+    player.players.map { |p| p.target_of_bang(self, player)}
   end
 end
 class MissedCard < Card

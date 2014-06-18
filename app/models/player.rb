@@ -33,7 +33,6 @@ class Player
     return if dead?
     return if jail
     draw_for_turn
-    log(hand.map(&:class))
     brain.play
     while hand.size > hand_limit
       discard_choice = brain.discard
@@ -67,6 +66,7 @@ class Player
   end
 
   def target_of_bang(card, targetter)
+    log("#{self.class} targetted for bang by #{targetter.class}")
     missed_needed = 1
     missed_count = 0
     if card.type == Card.bang_card && targetter.class.to_s == 'Character::SlabTheKillerPlayer'
@@ -95,19 +95,18 @@ class Player
 
   def hit!(hitter=nil)
     @health -= 1 if @health > 0
+    log("#{self.class} hit by #{hitter.class}, now at #{health} health")
     if dead?
-      PlayerKilledEvent.new(event_listener, self, hitter) unless beer
+      beer
+      PlayerKilledEvent.new(event_listener, self, hitter) if dead? #The beer *may* have brought you back to life.
     end
   end
 
   def beer
     beer_card = from_hand(Card.beer_card)
-    # TODO doesn't work with 2 players remaining
+    log("just found this beer card: #{beer_card.to_s}")
     if beer_card
       play_and_discard(beer_card)
-      true
-    else
-      false
     end
   end
 
@@ -115,6 +114,7 @@ class Player
 
   def heal(regained_health=1)
     regained_health.times { @health += 1 if health < max_health }
+    log("#{self.class} beering up to #{health} health")
   end
   def dead?; health <= 0; end
 
@@ -237,6 +237,7 @@ class Player
         raise DuplicateCardPlayedException.new(card.type)
       end
     end
+    log("#{self.class} equipping #{card.class}")
     target.in_play << card
     hand.delete(card)
   end

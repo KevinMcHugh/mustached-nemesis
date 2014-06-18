@@ -2,7 +2,7 @@ module Character
   class BartCassidyPlayer < Player
     def hit!(hitter=nil)
       super(hitter)
-      draw
+      draw unless dead?
     end
   end
 end
