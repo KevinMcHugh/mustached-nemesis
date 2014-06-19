@@ -43,8 +43,8 @@ class Deck
   def create_deck
     cards = []
     #   Bang 2-9♣, 2-A♦, Q-A♥,  A♠
-    13.times { |n| cards << BangCard.new("diamond", n+2 ) }
-    8.times { |n| cards << BangCard.new("club", n+2 ) }
+    13.times { |n| cards << BangCard.new("diamond", n+2) }
+    8.times { |n| cards << BangCard.new("club", n+2) }
     cards << BangCard.new("heart", 12)
     cards << BangCard.new("heart", 13)
     cards << BangCard.new("heart", 14)
@@ -67,7 +67,7 @@ class Deck
     #   Saloon 5♥
     cards << SaloonCard.new("heart", 5)
     #   Stagecoach 9♠ (x2)
-     2.times { cards << StageCoachCard.new("spade", 9) }
+     2.times { |i| cards << StageCoachCard.new("spade", 9, i) }
     #   Wells Fargo 3♥
     cards << WellsFargoCard.new("heart", 3)
     #   Cat Balou 9♦, 10♦, J♦, K♥
@@ -173,7 +173,7 @@ class Deck
 
   def check_to_shuffle
     return draw unless draw.empty?
-    @draw = discard.shuffle
+    @draw = discard.shuffle.uniq
     discard.clear
     draw
   end

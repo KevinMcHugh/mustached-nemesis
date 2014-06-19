@@ -5,11 +5,12 @@ class Card
   RANGE_INCREASE = [MustangCard, HideoutCard]
   RANGE_DECREASE = [ScopeCard, BinocularsCard]
   DRAWS_CARDS = [WellsFargoCard, StageCoachCard]
-  attr_reader :suit, :number
+  attr_reader :suit, :number, :iterator
 
-  def initialize(suit=nil, number=nil)
+  def initialize(suit=nil, number=nil, iterator=nil)
     @suit = suit
     @number = number
+    @iterator = iterator
   end
 
   def no_range?; false; end
@@ -65,7 +66,8 @@ class Card
     suits = self.suit == other.suit
     numbers = self.number == other.number
     types = self.type == other.type
-    suits && types && numbers
+    iterators = self.iterator == other.iterator
+    suits && types && numbers && iterators
   end
 
   def to_dto
