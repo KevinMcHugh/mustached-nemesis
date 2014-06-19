@@ -28,11 +28,15 @@ class Player
   end
 
   def play
+    @logger.info("#{self.to_s} starting turn")
+    @logger.info("in_play: #{self.in_play.map(&:class)}")
     @bangs_played = 0
     dynamite
     return if dead?
     return if jail
     draw_for_turn
+    @logger.info("hand: #{self.hand.map(&:class)}")
+
     brain.play
     while hand.size > hand_limit
      discard_choice = from_hand_dto_to_card(brain.discard)
@@ -44,6 +48,7 @@ class Player
         @hand = x
       end
     end
+    @bangs_played = 0
   end
 
   def from_hand_dto_to_card(card_dto)
@@ -224,7 +229,7 @@ class Player
     if card.type == Card.bang_card
       @bangs_played +=1
     end
-    raise TooManyBangsPlayedException.new if over_bang_limit?
+    raise TooManyBangsPlayedException.new if over_bang_limit? && card.type == Card.bang_card
     if in_range?(card, target_player)
       discard(card)
       card.play(self, target_player, target_card)

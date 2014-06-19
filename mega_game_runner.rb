@@ -11,8 +11,8 @@ arg = ARGV.first.to_i
 iterations = arg.zero? ?  1000 : arg
 games = iterations.times.map do |i|
   puts i if i % 1000 == 0
-  CreateGame.new(brains: [PlayerBrain::MildlyIntelligentBrain, PlayerBrain::MildlyIntelligentBrain,
-    PlayerBrain::MildlyIntelligentBrain,PlayerBrain::MildlyIntelligentBrain, PlayerBrain::MildlyIntelligentBrain]).execute
+  CreateGame.new(brains: [PlayerBrain::AttackRightBrain, PlayerBrain::AttackLeftBrain,
+    PlayerBrain::PlaysAllPossibleCardsBrain,PlayerBrain::MurderBrain, PlayerBrain::MildlyIntelligentBrain]).execute
 end
 
 winners = games.map(&:winners)

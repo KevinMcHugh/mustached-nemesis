@@ -31,9 +31,6 @@ class Game
           return
         end
         @round += 1 if player.sheriff?
-        @logger.info("#{player.to_s} starting turn")
-        @logger.info("hand: #{player.hand.map(&:class)}")
-        @logger.info("in_play: #{player.in_play.map(&:class)}")
         player.play
         if player == player.left || living_players.size == 1
           raise ArgumentError.new
