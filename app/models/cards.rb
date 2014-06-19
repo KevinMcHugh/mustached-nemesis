@@ -60,9 +60,11 @@ class GeneralStoreCard < Card
     players += player.players
     cards = player.deck.take(players.count)
     players.each do |p|
-      card = p.brain.pick(1, cards)
-      p.hand += card
-      cards.delete(card)
+      # card_dto = p.brain.pick(1, cards.map(&:to_dto)).first
+      # card = cards.find { |c| card_dto == c.to_dto}
+      # binding.pry if card.nil?
+      # p.hand << card
+      # cards.delete(card)
     end
   end
 end

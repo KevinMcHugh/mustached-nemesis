@@ -13,6 +13,7 @@ module Character
       end
       response = brain.target_of_bang(card, targetter, missed_needed)
       response.each do |response_card|
+        response_card = from_hand_dto_to_card(response_card)
         if (can_play?(response_card, Card.missed_card) || can_play?(response_card, Card.bang_card)) && card.missable?
           discard(response_card)
           missed_count += 1

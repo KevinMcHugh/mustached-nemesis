@@ -61,6 +61,13 @@ class Card
     ["heart", "diamond"].include?(suit)
   end
 
+  def ==(other)
+    suits = self.suit == other.suit
+    numbers = self.number == other.number
+    types = self.type == other.type
+    suits && types && numbers
+  end
+
   def to_dto
     @dto ||= CardDTO.new(self)
   end
@@ -112,6 +119,10 @@ class CardDTO
     @gun = card.gun?
     @damage_dealing = card.damage_dealing?
     @gun_range = card.gun_range?
+  end
+
+  def to_s
+    type
   end
 
   alias_method :no_range?, :no_range

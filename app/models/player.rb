@@ -70,7 +70,6 @@ class Player
   end
 
   def target_of_bang(card, targetter)
-    log("#{self.class} targetted for bang by #{targetter.class}")
     missed_needed = 1
     missed_count = 0
     if card.type == Card.bang_card && targetter.class.to_s == 'Character::SlabTheKillerPlayer'
@@ -84,6 +83,7 @@ class Player
     if response
       response.each do |response_card|
         response_card = from_hand_dto_to_card(response_card)
+
         if can_play?(response_card, Card.missed_card) && card.missable?
           discard(response_card)
           missed_count += 1
@@ -100,7 +100,6 @@ class Player
 
   def hit!(hitter=nil)
     @health -= 1 if @health > 0
-    log("#{self.class} hit by #{hitter.class}, now at #{health} health")
     if dead?
       beer
       if dead? #The beer *may* have brought you back to life.
@@ -112,7 +111,6 @@ class Player
 
   def beer
     beer_card = from_hand(Card.beer_card)
-    log("just found this beer card: #{beer_card.to_s}")
     if beer_card
       play_and_discard(beer_card)
     end
@@ -122,7 +120,6 @@ class Player
 
   def heal(regained_health=1)
     regained_health.times { @health += 1 if health < max_health }
-    log("#{self.class} beering up to #{health} health")
   end
   def dead?; health <= 0; end
 
@@ -183,8 +180,14 @@ class Player
   def discard(card)
     log("#{self.class} discarding #{card.class}")
     deck.discard << card
-    in_play.delete(card)
-    hand.delete(card)
+
+    card_from_hand = hand.find { |c| c == card }
+    card_from_play = in_play.find { |c| c == card }
+    hand.delete(card_from_hand) if card_from_hand
+    in_play.delete(card_from_play) if card_from_play
+    if from_hand(card) || from_play(card)
+      raise ArgumentError.new
+    end
   end
 
   def in_range?(card, target_player)
@@ -261,7 +264,6 @@ class Player
 
   def draw_outlaw_killing_bonus
     3.times { draw }
-    log("#{self.class} just killed an outlaw! YEEE-HAW!")
   end
   def play_as_beer(x,y); end
   def hand_limit; health; end

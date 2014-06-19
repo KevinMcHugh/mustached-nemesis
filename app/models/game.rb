@@ -34,9 +34,8 @@ class Game
         @logger.info("#{player.to_s} starting turn")
         @logger.info("hand: #{player.hand.map(&:class)}")
         @logger.info("in_play: #{player.in_play.map(&:class)}")
-
         player.play
-        if player == player.left
+        if player == player.left || living_players.size == 1
           raise ArgumentError.new
         end
         if player.players.size != living_players.size - 1 && !player.dead?

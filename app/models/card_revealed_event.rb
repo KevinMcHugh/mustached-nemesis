@@ -7,6 +7,6 @@ class CardRevealedEvent < Event
   end
 
   def to_s
-    "#{card.to_s} revealed by #{player}"
+    "#{card} revealed by #{player}"
   end
 end
