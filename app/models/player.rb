@@ -3,6 +3,7 @@
 # special ability.
 class Player
   include TargetOfIndians
+  include TargetOfDuel
 
   attr_accessor :hand, :event_listener
   attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right, :max_health
@@ -46,16 +47,6 @@ class Player
 
   def from_hand_dto_to_card(card_dto)
     hand.detect{|card| card.to_dto == card_dto}
-  end
-
-  def target_of_duel(card, targetter)
-    response = from_hand_dto_to_card(brain.target_of_duel(card, targetter))
-    if can_play?(response, Card.bang_card)
-      discard(response)
-      targetter.target_of_duel(card, self)
-    else
-      hit!(targetter)
-    end
   end
 
   def target_of_bang(card, targetter)
