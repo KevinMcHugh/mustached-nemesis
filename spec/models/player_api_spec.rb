@@ -13,7 +13,9 @@ describe PlayerAPI do
     player.in_play << jail_card
     player.hand << barrel_card
     player.right = other_player
+    player.left = other_player
     other_player.right = player
+    other_player.left = player
   end
   context '#from_hand' do
     it 'finds a card in hand from the type specified' do

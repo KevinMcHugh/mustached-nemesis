@@ -8,16 +8,13 @@ describe Player do
   let(:renegade) { described_class.new("renagade", deck) }
   before do
     sheriff.right  = outlaw_1
+    outlaw_1.left = sheriff
     outlaw_1.right = outlaw_2
+    outlaw_2.left = outlaw_1
     outlaw_2.right = renegade
+    renegade.left = outlaw_2
     renegade.right = sheriff
-  end
-
-  it "sets left and right" do
-    expect(sheriff.right).to eq(outlaw_1)
-    expect(outlaw_1.right).to eq(outlaw_2)
-    expect(outlaw_2.right).to eq(renegade)
-    expect(renegade.right).to eq(sheriff)
+    sheriff.left = renegade
   end
 
   describe "#distance_to" do
@@ -164,7 +161,7 @@ describe Player do
       expect{sheriff.hit!}.to change{sheriff.health}.by(-1)
     end
     it "kills player if it takes last health" do
-      5.times { sheriff.hit!(outlaw_1) }
+      expect { 5.times { sheriff.hit!(outlaw_1) } }.to raise_error
       expect(sheriff.dead?).to be_true
     end
     it "plays beer to keep the player alive" do
@@ -188,7 +185,7 @@ describe Player do
       it "discards and does not deal damage if the response is a missed card from the hand" do
         mc = MissedCard.new
         sheriff.hand << mc
-        allow(sheriff.brain).to receive(:target_of_bang).and_return([mc])
+        allow(sheriff.brain).to receive(:target_of_bang).and_return([mc.to_dto])
         expect{sheriff.target_of_bang(BangCard.new, outlaw_1)}.to_not change{sheriff.health}
         expect(deck.discard.last).to be mc
       end
