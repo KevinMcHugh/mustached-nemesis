@@ -5,6 +5,7 @@ class Player
   include TargetOfIndians
   include TargetOfDuel
   include TargetOfBang
+  include Hit
 
   attr_accessor :hand, :event_listener
   attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right, :max_health
@@ -52,18 +53,6 @@ class Player
 
   def can_play?(response, type)
     response.respond_to?(:type) && response.type == type && hand.include?(response)
-  end
-
-  def hit!(hitter=nil)
-    @health -= 1 if @health > 0
-    log("#{self.class} hit by #{hitter.class}, at #{health}")
-    if dead?
-      beer
-      if dead? #The beer *may* have brought you back to life.
-        PlayerKilledEvent.new(event_listener, self, hitter)
-        raise PlayerKilledException.new
-      end
-    end
   end
 
   def beer
