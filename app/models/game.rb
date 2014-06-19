@@ -22,27 +22,30 @@ class Game
     deck.deal_to(players)
     @round = 0
 
+    player = sheriff
     while !over do
       begin
-        player = sheriff
-        while true
-          # paul regret, because he's 1 away, can cause stalemates against the dumb bots
-          if round > 150
-            @winners = []
-            return
-          end
-          @round += 1 if player.sheriff?
-          @logger.info("#{player.to_s} starting turn")
-          @logger.info("hand: #{player.hand.map(&:class)}")
-          @logger.info("in_play: #{player.in_play.map(&:class)}")
-
-          player.play
-          if player == player.left
-            break
-          end
-          player = player.left
+        # paul regret, because he's 1 away, can cause stalemates against the dumb bots
+        if round > 150
+          @winners = []
+          return
         end
+        @round += 1 if player.sheriff?
+        @logger.info("#{player.to_s} starting turn")
+        @logger.info("hand: #{player.hand.map(&:class)}")
+        @logger.info("in_play: #{player.in_play.map(&:class)}")
+
+        player.play
+        if player == player.left
+          raise ArgumentError.new
+        end
+        if player.players.size != living_players.size - 1 && !player.dead?
+          raise ArgumentError.new
+        end
+        player = player.left
       rescue GameOverException => e
+      rescue PlayerKilledException => e
+        next if player.dead?
       end
     end
   end

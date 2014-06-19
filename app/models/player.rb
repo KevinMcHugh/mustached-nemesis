@@ -103,7 +103,10 @@ class Player
     log("#{self.class} hit by #{hitter.class}, now at #{health} health")
     if dead?
       beer
-      PlayerKilledEvent.new(event_listener, self, hitter) if dead? #The beer *may* have brought you back to life.
+      if dead? #The beer *may* have brought you back to life.
+        PlayerKilledEvent.new(event_listener, self, hitter)
+        raise PlayerKilledException.new
+      end
     end
   end
 
@@ -151,7 +154,6 @@ class Player
 
   def right=(player)
     @right = player
-    player.left = dead? ? left : self
   end
 
   def left=(player); @left= player; end
@@ -281,6 +283,7 @@ class Player
 end
 class OutOfRangeException < StandardError; end
 class TooManyBangsPlayedException < StandardError; end
+class PlayerKilledException < StandardError; end
 class DuplicateCardPlayedException < StandardError;
   attr_reader :card_type
   def initialize(card_type)
@@ -295,6 +298,7 @@ class PlayerKilledEvent < Event
 
     @killed.players.map(&:blank_players)
     @killed.left.right = @killed.right
+    @killed.right.left = @killed.left
 
     # Vulture Sam takes dead players cards See Character::VultureSamPlayer
     vs = @killed.players.detect {|p| p.class.to_s == "Character::VultureSamPlayer"}

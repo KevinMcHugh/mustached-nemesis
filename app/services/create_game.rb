@@ -32,6 +32,7 @@ class CreateGame
     right_player = players.last
     players.each do |player|
       player.right = right_player
+      right_player.left = player
       right_player = player
     end
     game = Game.new(players, @deck)
