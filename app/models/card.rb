@@ -62,14 +62,6 @@ class Card
     ["heart", "diamond"].include?(suit)
   end
 
-  def ==(other)
-    suits = self.suit == other.suit
-    numbers = self.number == other.number
-    types = self.type == other.type
-    iterators = self.iterator == other.iterator
-    suits && types && numbers && iterators
-  end
-
   def to_dto
     @dto ||= CardDTO.new(self)
   end

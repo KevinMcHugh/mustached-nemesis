@@ -1,15 +1,6 @@
-require 'card'
-
 # for each character, there should be a subclass of player
-# that uses a refinement implementing that character's
-# special ability. You have to create that subclass because
-# `using` cannot be called from within a method. Blech.
-#
-# For `method`,  where `method` is subject to being overriden
-# by a refinement, `method` should internally call `_method`,
-# so that the refinement can use the original behavior without
-# changing the API.
-
+# that implements that character's
+# special ability.
 class Player
   attr_accessor :hand, :event_listener
   attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right, :max_health
@@ -297,38 +288,4 @@ class DuplicateCardPlayedException < StandardError;
     @card_type = card_type
   end
 end
-class PlayerKilledEvent < Event
-  attr_reader :killed, :killer
-  def initialize(event_listener, killed, killer)
-    @killed = killed
-    @killer = killer
 
-    @killed.players.map(&:blank_players)
-    @killed.left.right = @killed.right
-    @killed.right.left = @killed.left
-
-    # Vulture Sam takes dead players cards See Character::VultureSamPlayer
-    vs = @killed.players.detect {|p| p.class.to_s == "Character::VultureSamPlayer"}
-    if vs
-      @killed.hand.each { |card| vs.hand << card }
-      @killed.in_play.each { |card| vs.hand << card }
-      @killed.hand.clear
-      @killed.in_play.clear
-    else
-      @killed.discard_all
-    end
-
-    if @killed.role == 'outlaw'
-      @killer.draw_outlaw_killing_bonus if @killer
-    elsif @killer && @killer.sheriff? && @killed.role == 'deputy'
-      @killer.discard_all
-    end
-
-    super(event_listener)
-  end
-  def to_s
-    killer_string = killer || 'DYNAMITE, CATS AND KITTENS'
-    "#{killed} has been killed by #{killer_string}"
-  end
-  def player_killed?; true; end
-end
