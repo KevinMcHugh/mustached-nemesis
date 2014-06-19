@@ -1,21 +1,20 @@
 module TargetOfIndians
 
   def target_of_indians(card, targetter)
-    Event.new(event_listener, self, card, targetter)
+    response = from_hand_dto_to_card(brain.target_of_indians(card, targetter))
+    if can_play?(response, Card.bang_card)
+      discard(response)
+    else
+      hit!(targetter)
+    end
+    Event.new(event_listener, self, targetter)
   end
 
   class Event < ::Event
-
     attr_reader :target, :targetter
-    def initialize(event_listener, target, card, targetter)
+    def initialize(event_listener, target, targetter)
       @target = target
       @targetter = targetter
-      response = target.from_hand_dto_to_card(target.brain.target_of_indians(card, targetter))
-      if target.can_play?(response, Card.bang_card)
-        target.discard(response)
-      else
-        target.hit!(targetter)
-      end
       super(event_listener)
     end
     def to_s

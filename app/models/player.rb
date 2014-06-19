@@ -80,6 +80,7 @@ class Player
 
   def hit!(hitter=nil)
     @health -= 1 if @health > 0
+    log("#{self.class} hit by #{hitter.class}, at #{health}")
     if dead?
       beer
       if dead? #The beer *may* have brought you back to life.
