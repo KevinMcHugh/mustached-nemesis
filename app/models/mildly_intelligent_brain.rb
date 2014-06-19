@@ -94,17 +94,19 @@ module PlayerBrain
         player.players_in_range_of(card).include?(sheriff) ? sheriff : weakest_player_in_range_of(card)
       elsif role == 'renegade'
         if player.players.size > 1
-          players_in_range = player.players_in_range_of(card)
-          weakest_players = players_in_range.sort_by { |player| player.health }
-          weakest_players.find { |player| !player.sheriff? }
+          weakest_non_sheriff_in_range_of(card)
         else
           sheriff
         end
       elsif role == 'deputy'
-        players_in_range = player.players_in_range_of(card)
-        weakest_players = players_in_range.sort_by { |player| player.health }
-        weakest_players.find { |player| !player.sheriff? }
+        weakest_non_sheriff_in_range_of(card)
       end
+    end
+
+    def weakest_non_sheriff_in_range_of(card)
+      players_in_range = player.players_in_range_of(card)
+      weakest_players = players_in_range.sort_by { |player| player.health }
+      weakest_players.find { |player| !player.sheriff? }
     end
 
     def weakest_player_in_range_of(card)
