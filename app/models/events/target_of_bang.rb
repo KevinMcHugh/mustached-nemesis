@@ -7,6 +7,10 @@ module TargetOfBang
     if card.type == Card.bang_card && targetter.class.to_s == 'Character::SlabTheKillerPlayer'
       missed_needed = 2
     end
+
+    missed_count += 1 if jourdonnais_ability(card)
+
+    return false if missed_needed <= missed_count
     if from_play(Card.barrel_card)
       missed_count += 1 if draw!(:barrel).barreled?
       return false if missed_needed <= missed_count
@@ -16,7 +20,7 @@ module TargetOfBang
       response.each do |response_card|
         response_card = from_hand_dto_to_card(response_card)
 
-        if can_play?(response_card, Card.missed_card) && card.missable?
+        if response_is_a_playable_missed?(response_card) && card.missable?
           discard(response_card)
           missed_count += 1
           return false if missed_needed <= missed_count
@@ -25,6 +29,12 @@ module TargetOfBang
     end
     hit!(targetter)
   end
+
+  def response_is_a_playable_missed?(response_card)
+    can_play?(response_card, Card.missed_card)
+  end
+
+  def jourdonnais_ability(card); false; end
 
   class Event < ::Event
     attr_reader :target, :targetter
