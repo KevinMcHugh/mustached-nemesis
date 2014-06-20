@@ -10,9 +10,9 @@ end
 class BeerCard < Card
   def no_range?;true;end
   def play(player, target_player=nil, target_card=nil)
-    # if player.players.size >= 1
+    if player.players.size >= 1
       player.heal(player.beer_benefit)
-    # end
+    end
   end
 end
 class SaloonCard < Card
