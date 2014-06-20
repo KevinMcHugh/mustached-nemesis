@@ -1,5 +1,5 @@
 class Game
-  attr_reader :deck, :players, :over, :event_listener, :round, :winners
+  attr_reader :deck, :players, :over, :event_listener, :round, :winners, :events
 
   def initialize(players, deck)
     @players = players
@@ -9,6 +9,7 @@ class Game
     event_listener.subscribe(self)
     @players.each { |p| p.event_listener = event_listener }
     @players.each { |p| p.logger = @logger }
+    @events = []
 
     @logger.info("STARTING A NEWWWWW GAMEEEEEE")
     @logger.info("YEEEEE-HAWWWWWWWWWWWWWWWWWWW")
@@ -47,6 +48,7 @@ class Game
   end
 
   def notify(event)
+    @events << event
     if event.game_over?
       @over = true
       @winners = event.winners
