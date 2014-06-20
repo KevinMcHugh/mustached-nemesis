@@ -8,6 +8,8 @@ class Player
   include Hit
   include DynamiteCheck
   include Discard
+  include PlayAndDiscard
+  include Equip
 
   attr_accessor :hand, :event_listener
   attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right, :max_health
@@ -26,14 +28,14 @@ class Player
   end
 
   def play
-    @logger.info("#{self.to_s} starting turn")
-    @logger.info("in_play: #{self.in_play.map(&:class)}")
+    log("#{self.to_s} starting turn")
+    log("in_play: #{self.in_play.map(&:class)}")
     @bangs_played = 0
     dynamite
     return if dead?
     return if jail
     draw_for_turn
-    @logger.info("hand: #{self.hand.map(&:class)}")
+    log("hand: #{self.hand.map(&:class)}")
 
     brain.play
     while hand.size > hand_limit
@@ -135,39 +137,6 @@ class Player
     left_distance = 1 + players.index(target_player)
     right_distance = players.size - players.index(target_player)
     [left_distance, right_distance].min + target_player.range_increase - self.range_decrease
-  end
-
-  def play_and_discard(card, target_player=nil, target_card=nil)
-    log("#{self.class}:#{card.class} at #{target_player.class}")
-    if card.type == Card.bang_card
-      @bangs_played +=1
-    end
-    raise TooManyBangsPlayedException.new if over_bang_limit? && card.type == Card.bang_card
-    if in_range?(card, target_player)
-      discard(card)
-      card.play(self, target_player, target_card)
-    else
-      raise OutOfRangeException.new
-    end
-  end
-
-  def equip(card, target_player=nil)
-    if card.type == Card.jail_card
-      target = target_player
-    else
-      target = self
-    end
-    duplicate_card = target.from_play(card.type)
-    if duplicate_card
-      if card.type == Card.gun_card
-        discard(duplicate_card)
-      else
-        raise DuplicateCardPlayedException.new(card.type)
-      end
-    end
-    log("#{self.class} equipping #{card.class}")
-    target.in_play << card
-    hand.delete(card)
   end
 
   def over_bang_limit?
