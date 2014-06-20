@@ -12,15 +12,16 @@ module Hit
   end
 
   class Event < ::Event
-    attr_reader :player, :hitter
+    attr_reader :player, :hitter, :health
     def initialize(event_listener, player, hitter)
       @player = player
+      @health = player.health
       @hitter = hitter
       super(event_listener)
     end
 
     def to_s
-      "#{player.class} hit by #{hitter ? hitter.class : DynamiteCard.killer}, at #{player.health}"
+      "#{player.class} hit by #{hitter ? hitter.class : DynamiteCard.killer}, at #{health}"
     end
   end
 end

@@ -7,6 +7,7 @@ class PlayerKilledEvent < Event
     @killed.players.map(&:blank_players)
     @killed.left.right = @killed.right
     @killed.right.left = @killed.left
+    super(event_listener)
 
     # Vulture Sam takes dead players cards See Character::VultureSamPlayer
     vs = @killed.players.detect {|p| p.class.to_s == "Character::VultureSamPlayer"}
@@ -25,7 +26,6 @@ class PlayerKilledEvent < Event
       @killer.discard_all
     end
 
-    super(event_listener)
   end
   def to_s
     killer_string = killer || DynamiteCard.killer

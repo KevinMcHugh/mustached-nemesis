@@ -5,14 +5,15 @@ module Heal
   end
 
   class Event < ::Event
-    attr_reader :player
+    attr_reader :player, :health
     def initialize(event_listener, player)
       @player = player
+      @health = player.health
       super(event_listener)
     end
 
     def to_s
-      "#{player.class} healed up to #{player.health}"
+      "#{player.class} healed up to #{health}"
     end
   end
 end

@@ -1,11 +1,12 @@
 module PlayAndDiscard
 
   def play_and_discard(card, target_player=nil, target_card=nil)
-    Event.new(event_listener, self, card, target_player, target_card)
     if card.type == Card.bang_card
       @bangs_played +=1
     end
     raise TooManyBangsPlayedException.new if over_bang_limit? && card.type == Card.bang_card
+    Event.new(event_listener, self, card, target_player, target_card)
+
     if in_range?(card, target_player)
       discard(card)
       card.play(self, target_player, target_card)
