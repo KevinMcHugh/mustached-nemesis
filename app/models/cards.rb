@@ -42,6 +42,7 @@ class IndiansCard < Card
 end
 class PanicCard < Card
   def range; 1; end
+  def targets_cards?; true; end
   def play(player, target_player, target_card)
     if target_card == :hand
       card = target_player.random_from_hand
@@ -72,6 +73,7 @@ class GeneralStoreCard < Card
 end
 class CatBalouCard < Card
   def no_range?; true; end
+  def targets_cards?; true; end
   def play(player, target_player, target_card)
     if target_card == :hand
       card = target_player.random_from_hand
@@ -119,6 +121,7 @@ class JailCard < EquipmentCard
 end
 class DynamiteCard < EquipmentCard
   def damage_dealing?; true; end
+  def self.killer; 'DYNAMITE, CATS AND KITTENS'; end
 end
 class BarrelCard < EquipmentCard; end
 class ScopeCard < EquipmentCard; end

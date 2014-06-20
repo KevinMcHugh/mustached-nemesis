@@ -29,7 +29,11 @@ module Equip
     end
 
     def to_s
-      target_player ? "#{player.class} equipped #{card.class} on #{target_player.class}" : "#{player.class} equipped #{card.class}"
+      if card.type == Card.jail_card
+        "#{player.class} jailed #{target_player.class}"
+      else
+        "#{player.class} equipped #{card.class}"
+      end
     end
   end
 end

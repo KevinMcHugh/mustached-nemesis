@@ -1,6 +1,6 @@
 module Hit
   def hit!(hitter=nil)
-    @health -= 1 if @health > 0
+    @health -= 1
     Event.new(event_listener, self, hitter)
     if dead?
       beer
@@ -20,7 +20,7 @@ module Hit
     end
 
     def to_s
-      "#{player.class} hit by #{hitter.class}, at #{player.health}"
+      "#{player.class} hit by #{hitter ? hitter.class : DynamiteCard.killer}, at #{player.health}"
     end
   end
 end

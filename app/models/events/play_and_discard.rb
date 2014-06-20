@@ -26,10 +26,12 @@ module PlayAndDiscard
 
     def to_s
       if target_player
-        if target_card.is_a? Symbol
-          "#{player.class} playing #{card.class} at #{target_player.class}'s #{target_card}"
-        elsif target_card
-          "#{player.class} playing #{card.class} at #{target_player.class}'s #{target_card.class}"
+        if card.targets_cards?
+          if target_card.is_a? Symbol
+            "#{player.class} playing #{card.class} at #{target_player.class}'s #{target_card}"
+          else
+            "#{player.class} playing #{card.class} at #{target_player.class}'s #{target_card.class}"
+          end
         else
           "#{player.class} playing #{card.class} at #{target_player.class}"
         end

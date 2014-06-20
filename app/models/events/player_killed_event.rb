@@ -28,7 +28,7 @@ class PlayerKilledEvent < Event
     super(event_listener)
   end
   def to_s
-    killer_string = killer || 'DYNAMITE, CATS AND KITTENS'
+    killer_string = killer || DynamiteCard.killer
     "#{killed} has been killed by #{killer_string}"
   end
   def player_killed?; true; end

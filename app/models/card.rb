@@ -19,6 +19,7 @@ class Card
 
   def damage_dealing?; false; end
   def equipment?; false; end
+  def targets_cards?; false; end
 
   def type; self.class; end
 
