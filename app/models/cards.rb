@@ -62,12 +62,13 @@ class GeneralStoreCard < Card
     players = [player]
     players += player.players
     cards = player.deck.take(players.count)
-    player.log("General Store's army has arrived in town! #{cards.map(&:to_s)}")
+    #TODO event for this
+    # player.log("General Store's army has arrived in town! #{cards.map(&:to_s)}")
     players.each do |p|
       card_dto = p.brain.pick(1, cards.map(&:to_dto)).first
       card = cards.find { |c| card_dto == c.to_dto}
 
-      p.log("#{p.class} picked #{card.to_s}")
+      # p.log("#{p.class} picked #{card.to_s}")
       p.hand << card
       cards.delete_if { |c| c === card }
     end

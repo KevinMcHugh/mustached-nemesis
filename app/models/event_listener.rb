@@ -1,10 +1,10 @@
 class EventListener
   attr_reader :game, :subscribers
 
-  def initialize(game, logger)
+  def initialize(game)
     @game = game
     @subscribers = []
-    @logger = logger
+    @logger = MonoLogger.new
   end
 
   def subscribe(subscriber)
@@ -18,6 +18,8 @@ class EventListener
       if event.killed.sheriff? || sheriff_win?
         GameOverEvent.new(self, event, game) #TODO double renegades
       end
+    elsif event.game_over?
+      @logger.close
     end
   end
 

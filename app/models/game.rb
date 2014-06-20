@@ -4,19 +4,11 @@ class Game
   def initialize(players, deck)
     @players = players
     @deck = deck
-    @logger = MonoLogger.new
-    @event_listener = EventListener.new(self, @logger)
+    @event_listener = EventListener.new(self)
     event_listener.subscribe(self)
     @players.each { |p| p.event_listener = event_listener }
-    @players.each { |p| p.logger = @logger }
     @events = []
-
-    @logger.info("STARTING A NEWWWWW GAMEEEEEE")
-    @logger.info("YEEEEE-HAWWWWWWWWWWWWWWWWWWW")
-    @logger.info("\n")
-    @logger.info("\n")
-    @logger.info("\n")
-    @logger.info("\n")
+    NewGameStarted.new(event_listener)
   end
 
   def start
