@@ -1,6 +1,7 @@
 module TargetOfBang
 
   def target_of_bang(card, targetter)
+    Event.new(event_listener, self, targetter)
     missed_needed = 1
     missed_count = 0
     if card.type == Card.bang_card && targetter.class.to_s == 'Character::SlabTheKillerPlayer'
