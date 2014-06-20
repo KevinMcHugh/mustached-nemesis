@@ -1,8 +1,8 @@
 require 'spec_helper'
 describe Deck do
-  let(:deck) { Deck.new }
-  let(:seeded_deck) { Deck.new(seed:123) }
-  let(:dodge_city_deck) { Deck.new(expansions:[:dodge_city]) }
+  let(:deck) { Deck.new(seed: Random.new) }
+  let(:seeded_deck) { Deck.new(seed:Random.new(123)) }
+  let(:dodge_city_deck) { Deck.new(seed: Random.new, expansions:[:dodge_city]) }
   it "should create the deck" do
     expect(deck.draw.size).to eq 80
     # 2-7 1x of each 8-A 2x of each
@@ -12,7 +12,7 @@ describe Deck do
     expect(deck.draw.select{|card| card.suit == "club"}.size).to eq 20
   end
   it "should shuffle the deck" do
-    deck_2 = Deck.new
+    deck_2 = Deck.new(seed:Random.new)
     # Does not keep order
     expect(deck.draw.map(&:class)).to_not eq deck_2.draw.map(&:class)
     expect(deck.draw.map(&:suit)).to_not eq deck_2.draw.map(&:suit)
@@ -23,7 +23,7 @@ describe Deck do
     expect(deck.draw.map(&:number)).to match_array deck_2.draw.map(&:number)
   end
   it "should shuffle in a repeatable manner" do
-    deck_2 = Deck.new(seed:123)
+    deck_2 = Deck.new(seed:Random.new(123))
     expect(seeded_deck.draw.map(&:class)).to eq deck_2.draw.map(&:class)
     expect(seeded_deck.draw.map(&:suit)).to eq deck_2.draw.map(&:suit)
     expect(seeded_deck.draw.map(&:number)).to eq deck_2.draw.map(&:number)

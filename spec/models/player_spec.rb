@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Player do
-  let(:deck) { Deck.new }
+  let(:deck) { Deck.new(seed:Random.new) }
   let(:sheriff) { described_class.new("sheriff", deck) }
   let(:outlaw_1) { described_class.new("outlaw", deck) }
   let(:outlaw_2) { described_class.new("outlaw", deck) }
