@@ -13,12 +13,12 @@ class EventListener
 
   def notify(event)
     @logger.info(event.to_s)
+    subscribers.each {|sub| sub.notify(event)}
     if event.player_killed?
       if event.killed.sheriff? || sheriff_win?
         GameOverEvent.new(self, event, game) #TODO double renegades
       end
     end
-    subscribers.each {|sub| sub.notify(event)}
   end
 
   def sheriff_win?
