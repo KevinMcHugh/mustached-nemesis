@@ -31,10 +31,9 @@
 
 class Deck
   require 'card'
-  def initialize(seed:nil, expansions:[])
+  def initialize(seed:, expansions:[])
     @expansions = expansions
-    @seed = seed ? seed : Random.new.seed
-    @draw = create_deck.shuffle(random: Random.new(@seed))
+    @draw = create_deck.shuffle(random: seed)
     @discard = []
   end
 

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe PlayerAPI do
-  let(:deck) { Deck.new }
+  let(:deck) { Deck.new(seed: Random.new) }
   let(:player) { Player.new("sheriff", deck) }
   let(:other_player) { Player.new("renegade", deck) }
   let(:brain) { double("brain") }
