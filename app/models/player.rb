@@ -6,6 +6,8 @@ class Player
   include TargetOfDuel
   include TargetOfBang
   include Hit
+  include DynamiteCheck
+  include Discard
 
   attr_accessor :hand, :event_listener
   attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right, :max_health
@@ -69,23 +71,6 @@ class Player
   end
   def dead?; health <= 0; end
 
-  def dynamite
-    dynamite_card = from_play(Card.dynamite_card)
-    if dynamite_card
-      if draw!(:dynamite).explode?
-        discard(dynamite_card)
-        3.times { hit!  }
-      else
-        in_play.delete(dynamite_card)
-        next_player = left
-        while next_player.left.from_play(Card.dynamite_card)
-          next_player = next_player.left
-        end
-        next_player.in_play << dynamite_card
-      end
-    end
-  end
-
   def jail
     jail_card = from_play(Card.jail_card)
     if jail_card
@@ -121,19 +106,6 @@ class Player
 
   def from_hand(card_type)
     hand.detect { |card| card.type == card_type }
-  end
-
-  def discard(card)
-    log("#{self.class} discarding #{card.class}")
-    deck.discard << card
-
-    card_from_hand = hand.find { |c| c == card }
-    card_from_play = in_play.find { |c| c == card }
-    hand.delete(card_from_hand) if card_from_hand
-    in_play.delete(card_from_play) if card_from_play
-    if from_hand(card) || from_play(card)
-      raise ArgumentError.new
-    end
   end
 
   def in_range?(card, target_player)
