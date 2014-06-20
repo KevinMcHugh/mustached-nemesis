@@ -11,7 +11,7 @@ module Equip
     if duplicate_card
       if card.type == Card.gun_card
         Event.new(event_listener, self, card, target_player, duplicate_card)
-        discard(duplicate_card)
+        discard(duplicate_card, true)
         event_created = true
       else
         raise DuplicateCardPlayedException.new(card.type)

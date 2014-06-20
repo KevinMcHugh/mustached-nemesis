@@ -8,7 +8,7 @@ module PlayAndDiscard
     Event.new(event_listener, self, card, target_player, target_card)
 
     if in_range?(card, target_player)
-      discard(card)
+      discard(card, true)
       card.play(self, target_player, target_card)
     else
       raise OutOfRangeException.new
@@ -26,19 +26,23 @@ module PlayAndDiscard
     end
 
     def to_s
-      if target_player
+      if card.type == Card.beer_card
+        return ["#{player.class} is enjoying a nice cold Miller® Lite®. It's Miller® Time®!",
+          "#{player.class} is sipping an ice cold Coors® Light®. Taste the Rockies®!",
+          "#{player.class} playing and discarding #{card.type}"].sample
+      end
+      string = "#{player.class} playing and discarding #{card.type}"
+      if target_player && card.targets_players?
+        string += " at #{target_player.class}"
         if card.targets_cards?
           if target_card.is_a? Symbol
-            "#{player.class} playing #{card.class} at #{target_player.class}'s #{target_card}"
+            string += "'s #{target_card}"
           else
-            "#{player.class} playing #{card.class} at #{target_player.class}'s #{target_card.class}"
+            string += "'s #{target_card.type}"
           end
-        else
-          "#{player.class} playing #{card.class} at #{target_player.class}"
         end
-      else
-        "#{player.class} playing #{card.class}"
       end
+      string
     end
   end
 end

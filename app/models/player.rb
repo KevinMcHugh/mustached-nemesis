@@ -12,6 +12,7 @@ class Player
   include Equip
   include Heal
   include Jail
+  include StartTurn
 
   attr_accessor :hand, :event_listener
   attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right, :max_health
@@ -30,14 +31,12 @@ class Player
   end
 
   def play
-    log("#{self.to_s} starting turn")
-    log("in_play: #{self.in_play.map(&:class)}")
     @bangs_played = 0
     dynamite
     return if dead?
     return if jail
     draw_for_turn
-    log("hand: #{self.hand.map(&:class)}")
+    start_turn
 
     brain.play
     while hand.size > hand_limit
@@ -154,10 +153,6 @@ class Player
 
   def to_s
     "#{self.class}|#{health}|#{role}|#{brain.class}"
-  end
-  def logger=(logger); @logger = logger; end
-  def log(message)
-    @logger.info(message) if @logger
   end
 end
 class OutOfRangeException < StandardError; end

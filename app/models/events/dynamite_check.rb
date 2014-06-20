@@ -29,7 +29,7 @@ module DynamiteCheck
 
     def to_s
       blown_up ? "#{player.class} was blown up!" :
-        "#{player.class} was not blown up"
+        "#{player.class} was not blown up, and passed the dynamite."
     end
   end
 end

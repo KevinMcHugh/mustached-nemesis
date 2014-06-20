@@ -21,7 +21,9 @@ module Hit
     end
 
     def to_s
-      "#{player.class} hit by #{hitter ? hitter.class : DynamiteCard.killer}, at #{health}"
+      from = hitter ? hitter.class : DynamiteCard.killer
+      ["#{player.class} hit by #{from}, at #{health}", "#{player.class} has dropped down to #{health} because of #{from}",
+       "#{player.class} is feelin' the pain at #{health}, thanks to #{from}"].sample
     end
   end
 end

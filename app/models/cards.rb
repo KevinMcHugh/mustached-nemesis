@@ -2,6 +2,7 @@
 class BangCard < Card
   def gun_range?;true;end
   def damage_dealing?; true; end
+  def targets_players?; true; end
   def play(player, target_player, target_card=nil)
     target_player.target_of_bang(self, player)
   end
@@ -43,6 +44,7 @@ end
 class PanicCard < Card
   def range; 1; end
   def targets_cards?; true; end
+  def targets_players?; true; end
   def play(player, target_player, target_card)
     if target_card == :hand
       card = target_player.random_from_hand
@@ -73,6 +75,7 @@ class GeneralStoreCard < Card
 end
 class CatBalouCard < Card
   def no_range?; true; end
+  def targets_players?; true; end
   def targets_cards?; true; end
   def play(player, target_player, target_card)
     if target_card == :hand
@@ -87,6 +90,7 @@ end
 class DuelCard < Card
   def no_range?;true;end
   def damage_dealing?; true; end
+  def targets_players?; true; end
   def play(player, target_player, target_card=nil)
     target_player.target_of_duel(self, player)
   end
