@@ -10,6 +10,8 @@ class Player
   include Discard
   include PlayAndDiscard
   include Equip
+  include Heal
+  include Jail
 
   attr_accessor :hand, :event_listener
   attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right, :max_health
@@ -68,19 +70,7 @@ class Player
 
   def beer_benefit; 1; end
 
-  def heal(regained_health=1)
-    regained_health.times { @health += 1 if health < max_health }
-  end
   def dead?; health <= 0; end
-
-  def jail
-    jail_card = from_play(Card.jail_card)
-    if jail_card
-      discard(jail_card)
-      return true if draw!(:jail).still_in_jail?
-    end
-    false
-  end
 
   def right=(player)
     @right = player
