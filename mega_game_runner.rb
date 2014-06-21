@@ -12,7 +12,7 @@ iterations = arg.zero? ?  1000 : arg
 games = iterations.times.map do |i|
   puts i if i % 1000 == 0
   CreateGame.new(brains: [PlayerBrain::AttackRightBrain, PlayerBrain::AttackLeftBrain,
-    PlayerBrain::PlaysAllPossibleCardsBrain,PlayerBrain::MurderBrain, PlayerBrain::MildlyIntelligentBrain]).execute
+    PlayerBrain::PlaysAllPossibleCardsBrain,PlayerBrain::MurderBrain, PlayerBrain::MildlyIntelligentBrain, KevinsPropietaryBrain::Brain]).execute
 end
 
 winners = games.map(&:winners)
