@@ -20,7 +20,7 @@ module StartTurn
     end
 
     def as_json(options={})
-      {:@type => self.class, :@player => player.as_json}
+      {:@type => self.class.to_s, :@player => player.as_json}
     end
   end
 

@@ -4,7 +4,7 @@ class Event
   end
   def as_json(options={})
     hash = {}
-    hash[:type] = self.class.to_s
+    hash[:@type] = self.class.to_s
 
     instance_variables.each do |variable|
       hash[variable] = instance_variable_get(variable).as_json

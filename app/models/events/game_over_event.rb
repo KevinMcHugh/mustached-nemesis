@@ -27,7 +27,7 @@ class GameOverEvent < Event
   end
 
   def as_json(options={})
-    {:@type => self.class, winners: @winners.map(&:as_json)}
+    {:@type => self.class.to_s, winners: @winners.map(&:as_json)}
   end
   def game_over?; true; end
 end
