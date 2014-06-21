@@ -4,8 +4,8 @@ class CreateGame
     @params = params
     @seed = params[:seed] || Random.new.seed
     @random = Random.new(@seed)
-    @initial_brains = params[:brains]
     @brains = params[:brains].shuffle(random: @random)
+    @brains_copy = @brains.clone
     @expansions = params[:expansions] || []
     @deck = Deck.new(seed: @random, expansions: @expansions)
     @roles = Game.all_roles.take(@brains.size)
@@ -44,13 +44,15 @@ class CreateGame
     persist(game) if @persist
     game
   end
+
   def persist(game)
     gr = GameRecord.create(seed: @seed)
     game.events.each_with_index do |event, index|
       EventRecord.create(game_record_id: gr.id, order: index, event_json: event.to_json)
     end
-    @brains.each_with_index do |brain, index|
-      PlayerRecord.create(game_record_id: gr.id, order: index, brain: brain, role: @roles[index], won: true == game.winners.detect{ |player| player.role == @roles[index] && player.brain.class == brain } )
+    @brains_copy.each_with_index do |brain, index|
+      won = !!game.winners.detect{ |player| player.role == @roles[index] && player.brain.class == brain }
+      PlayerRecord.create(game_record_id: gr.id, order: index, brain: brain.to_s, role: @roles[index], won: won)
     end
     @expansions.each do |expansion|
       Expansion.create(game_record_id: gr.id, name: expansion)
