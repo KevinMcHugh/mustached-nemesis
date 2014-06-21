@@ -1,5 +1,7 @@
 module Character
   class SlabTheKillerPlayer < Player
-    # Ability is represented in the general player class in the target_of_bang method
+    def missed_needed(card)
+      card.type == Card.bang_card ? 2 : 1
+    end
   end
 end

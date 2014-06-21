@@ -2,11 +2,8 @@ module TargetOfBang
 
   def target_of_bang(card, targetter)
     Event.new(event_listener, self, targetter)
-    missed_needed = 1
     missed_count = 0
-    if card.type == Card.bang_card && targetter.class.to_s == 'Character::SlabTheKillerPlayer'
-      missed_needed = 2
-    end
+    missed_needed = targetter.missed_needed(card)
 
     missed_count += 1 if jourdonnais_ability(card)
 
@@ -33,6 +30,9 @@ module TargetOfBang
   def response_is_a_playable_missed?(response_card)
     can_play?(response_card, Card.missed_card)
   end
+
+  def missed_needed(card); 1; end
+
 
   def jourdonnais_ability(card); false; end
 
