@@ -68,6 +68,10 @@ class Card
     @dto ||= CardDTO.new(self)
   end
 
+  def as_json(options={})
+    {:@type => type.to_s, :@number => number, :@suit => suit }
+  end
+
   def self.beer_card; BeerCard; end
   def self.bang_card; BangCard; end
   def self.indians_card; IndiansCard; end

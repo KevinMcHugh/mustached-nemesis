@@ -25,5 +25,9 @@ class GameOverEvent < Event
   def to_s
     "#{winner} prevailed in #{game.round} rounds!\n The following people are still alive: #{game.living_players.map(&:to_s)}"
   end
+
+  def as_json(options={})
+    {:@type => self.class, winners: @winners.map(&:as_json)}
+  end
   def game_over?; true; end
 end

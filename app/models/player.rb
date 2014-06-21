@@ -151,6 +151,9 @@ class Player
 
   def sheriff?; role == "sheriff"; end
 
+  def as_json(options={})
+    {name: self.class.to_s}
+  end
   def to_s
     "#{self.class}|#{health}|#{role}|#{brain.class}"
   end
