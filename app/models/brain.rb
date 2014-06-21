@@ -1,12 +1,18 @@
 class Brain
   attr_accessor :player
-  def initialize()
+  def initialize(role)
   end
-  def target_of(card)
+  def choose_character(character_1, character_2)
   end
-  def discard()
+  def target_of_bang(card, targetter, missed_needed)
   end
-  def play()
+  def target_of_indians(card, targetter)
+  end
+  def target_of_duel(card, targetter)
+  end
+  def discard
+  end
+  def play
   end
   def pick(number, *cards)
   end
