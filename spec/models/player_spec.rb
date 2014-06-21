@@ -255,7 +255,7 @@ describe Player do
         expect(sheriff.hand).not_to include(rev_carbine_card)
       end
       it 'discards the first gun' do
-        expect(sheriff).to have_received(:discard).with(schofield_card)
+        expect(sheriff).to have_received(:discard).with(schofield_card, true)
       end
     end
   end
