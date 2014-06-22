@@ -12,13 +12,10 @@ class CreateGame
     @persist = params[:persist]
   end
 
-  def execute()
+  def execute
     players = []
     @characters = Character.constants.select { |c| Character.const_get(c).is_a?(Class) }
-    @expansions.each do |expansion|
-      expansion_module = (expansion.to_s.camelize + "Character").constantize
-      @characters += expansion_module.constants.select { |c| expansion_module.const_get(c).is_a?(Class) }
-    end
+    load_expansions
     @characters.sort.shuffle!(random: @random)
     @roles.shuffle!(random: Random.new(@seed + 42)).each do |role|
       brain = @brains.shift.new(role)
@@ -40,6 +37,13 @@ class CreateGame
 
 
   private
+
+  def load_expansions
+    @expansions.each do |expansion|
+      expansion_module = (expansion.to_s.camelize + "Character").constantize
+      @characters += expansion_module.constants.select { |c| expansion_module.const_get(c).is_a?(Class) }
+    end
+  end
 
   def connect(players)
     right_player = players.last
