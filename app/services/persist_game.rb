@@ -9,7 +9,7 @@ class PersistGame
   end
 
   def execute
-    gr = GameRecord.create(seed: @seed)
+    gr = GameRecord.create(seed: @seed, rounds: @game.round)
     @game.events.each_with_index do |event, index|
       EventRecord.create(game_record_id: gr.id, order: index, event_json: event.to_json)
     end

@@ -3,6 +3,9 @@
 %h3 Here's a buncha games:
 - @game_records.each do |game_record|
   %p
-    = link_to("#{game_record.created_at}, #{game_record.winners}", game_record_path(game_record))
-
-
+  = link_to("#{game_record.id}", game_record_path(game_record))
+  %p
+    %ul
+    %li Created at: #{game_record.created_at}
+    %li Winners: #{game_record.winners.map {|player| player.role + ", " + player.brain}}
+    %li Rounds: "#{game_record.rounds}"
