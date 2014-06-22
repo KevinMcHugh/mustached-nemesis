@@ -23,7 +23,7 @@ class CreateGame
     @roles.shuffle!(random: Random.new(@seed + 42)).each do |role|
       brain = @brains.shift.new(role)
       choosing_from = [@characters.shift, @characters.shift]
-      player = character_class(choosing_from,brain).new(role, @deck, brain)
+      player = character_class(choosing_from, brain).new(role, @deck, brain)
       brain.player = PlayerAPI.new(player, brain)
       if role == 'sheriff'
         players.unshift(player)

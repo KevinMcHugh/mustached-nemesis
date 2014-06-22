@@ -21,5 +21,3 @@ class Brain
   def notify(event)
   end
 end
-
-

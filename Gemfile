@@ -28,6 +28,8 @@ gem 'spring',        group: :development
 gem "kevins_propietary_brain", git: 'https://github.com/KevinMcHugh/kevins_propietary_brain.git', branch: "master"
 gem "basic_brain", git: 'https://github.com/KevinMcHugh/basic_brain.git', branch: "master"
 
+gem 'haml-rails'
+
 group :development, :test do
   gem 'rspec-rails', '~> 2.14.0'
   gem 'pry'
