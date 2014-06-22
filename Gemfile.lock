@@ -1,3 +1,17 @@
+GIT
+  remote: https://github.com/KevinMcHugh/basic_brain.git
+  revision: ba5c66406c3fc1ca3fc955f42eefd04e8053aabb
+  branch: master
+  specs:
+    basic_brain (0.0.4)
+
+GIT
+  remote: https://github.com/KevinMcHugh/kevins_propietary_brain.git
+  revision: 20483bb44d39fc192cc993ee18b62f1d5033c255
+  branch: master
+  specs:
+    kevins_propietary_brain (0.0.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -28,7 +42,6 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
     arel (5.0.1.20140414130214)
-    basic_brain (0.0.1)
     builder (3.2.2)
     coderay (1.1.0)
     coffee-rails (4.0.1)
@@ -57,7 +70,6 @@ GEM
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     json (1.8.1)
-    kevins_propietary_brain (0.0.1)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -145,11 +157,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  basic_brain
+  basic_brain!
   coffee-rails (~> 4.0.0)
   jbuilder (~> 2.0)
   jquery-rails
-  kevins_propietary_brain
+  kevins_propietary_brain!
   pry
   pry-debugger
   rails (= 4.1.1)
