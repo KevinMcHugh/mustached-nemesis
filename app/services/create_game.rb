@@ -16,7 +16,7 @@ class CreateGame
     players = []
     @characters = Character.constants.select { |c| Character.const_get(c).is_a?(Class) }
     load_expansions
-    @characters.sort.shuffle!(random: @random)
+    @characters.sort!.shuffle!(random: @random)
     @roles.shuffle!(random: Random.new(@seed + 42)).each do |role|
       brain = @brains.shift.new(role)
       choosing_from = [@characters.shift, @characters.shift]
