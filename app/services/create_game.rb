@@ -23,9 +23,7 @@ class CreateGame
     @roles.shuffle!(random: Random.new(@seed + 42)).each do |role|
       brain = @brains.shift.new(role)
       choosing_from = [@characters.shift, @characters.shift]
-      choice = brain.choose_character(choosing_from.first, choosing_from.second)
-      character_class = Character.const_get(choice)
-      player = character_class.new(role, @deck, brain)
+      player = character_class(choosing_from,brain).new(role, @deck, brain)
       brain.player = PlayerAPI.new(player, brain)
       if role == 'sheriff'
         players.unshift(player)
@@ -33,29 +31,32 @@ class CreateGame
         players << player
       end
     end
-    right_player = players.last
-    players.each do |player|
-      player.right = right_player
-      right_player.left = player
-      right_player = player
-    end
+    connect(players)
     game = Game.new(players, @deck)
     game.start
     persist(game) if @persist
     game
   end
 
+
+  private
+
+  def connect(players)
+    right_player = players.last
+    players.each do |player|
+      player.right = right_player
+      right_player.left = player
+      right_player = player
+    end
+  end
+
+  def character_class(choosing_from, brain)
+    choice = brain.choose_character(choosing_from.first, choosing_from.second)
+    Character.const_get(choice)
+  end
+
   def persist(game)
-    gr = GameRecord.create(seed: @seed)
-    game.events.each_with_index do |event, index|
-      EventRecord.create(game_record_id: gr.id, order: index, event_json: event.to_json)
-    end
-    @brains_copy.each_with_index do |brain, index|
-      won = !!game.winners.detect{ |player| player.role == @roles[index] && player.brain.class == brain }
-      PlayerRecord.create(game_record_id: gr.id, order: index, brain: brain.to_s, role: @roles[index], won: won)
-    end
-    @expansions.each do |expansion|
-      Expansion.create(game_record_id: gr.id, name: expansion)
-    end
+    options = {game: game, brains: @brains, role: @roles, seed: @seed, expansions: @expansions}
+    PersistGame.new(options).execute
   end
 end
