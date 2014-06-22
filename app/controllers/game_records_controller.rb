@@ -1,11 +1,18 @@
-require 'mildly_intelligent_brain'
+require 'player_brain'
 class GameRecordsController < ApplicationController
 
   def create
-    brains = [PlayerBrain::MildlyIntelligentBrain,PlayerBrain::MildlyIntelligentBrain,
-      PlayerBrain::MildlyIntelligentBrain,PlayerBrain::MildlyIntelligentBrain]
-    @game = CreateGame.new(brains: brains, persist: true).execute
-    redirect_to game_record_path(@game.id)
+    brains = params[:game_record][:brains].reject(&:empty?)
+    brain_classes = brains.map(&:constantize)
+    @game = CreateGame.new(brains: brain_classes, persist: true).execute
+    redirect_to game_record_path(GameRecord.last)
+  end
+
+  def new
+    @brains = [[PlayerBrain::MildlyIntelligentBrain, PlayerBrain::MildlyIntelligentBrain],
+                [PlayerBrain::AttackLeftBrain,PlayerBrain::AttackLeftBrain],
+                [PlayerBrain::AttackRightBrain,PlayerBrain::AttackRightBrain],
+                [PlayerBrain::PlaysAllPossibleCardsBrain,PlayerBrain::PlaysAllPossibleCardsBrain]]
   end
 
   def show

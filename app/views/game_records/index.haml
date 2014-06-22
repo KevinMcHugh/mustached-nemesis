@@ -1,6 +1,6 @@
 = link_to 'Create a new game', new_game_record_path
 
-%h3 #Here's a buncha games:
+%h3 Here's a buncha games:
 - @game_records.each do |game_record|
   %p
     = link_to("#{game_record.created_at}, #{game_record.winners}", game_record_path(game_record))

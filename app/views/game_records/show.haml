@@ -1,3 +1,5 @@
+= link_to 'View All Games', game_records_path
+
 %h3 Game. #{@game_record.created_at}
 - @game_record.event_records.each do |event_record|
   %p
