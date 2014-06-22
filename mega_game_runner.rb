@@ -1,5 +1,4 @@
 # RUN as 'rails r demo_game.rb'
-require 'player_brain'
 require 'pp'
 
 Rails.logger.level = Logger::WARN # turns off logging

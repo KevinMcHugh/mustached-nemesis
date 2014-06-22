@@ -1,4 +1,3 @@
-require 'player_brain'
 class GameRecordsController < ApplicationController
 
   def create
