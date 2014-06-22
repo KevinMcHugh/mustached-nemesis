@@ -18,6 +18,8 @@ class Brain
   end
   def draw_choice(*choices)
   end
+  def notify(event)
+  end
 end
 
 

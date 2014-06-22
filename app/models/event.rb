@@ -3,14 +3,38 @@ class Event
     event_listener.notify(self) if event_listener
   end
   def as_json(options={})
+    each_instance_variable do |variable|
+      variable.as_json
+    end
+  end
+
+  def to_brainsafe
+    each_instance_variable do |variable|
+      convert(variable)
+    end
+  end
+
+  def game_over?; false; end
+  def player_killed?; false; end
+
+  private
+  def convert(object)
+    if object.is_a? Player
+      PlayerDTO.new(object)
+    elsif object.is_a? Card
+      object.to_dto
+    else
+      object
+    end
+  end
+
+  def each_instance_variable(&block)
     hash = {}
     hash[:@type] = self.class.to_s
-
     instance_variables.each do |variable|
-      hash[variable] = instance_variable_get(variable).as_json
+      hash[variable] = block.call(instance_variable_get(variable))
     end
     hash
   end
-  def game_over?; false; end
-  def player_killed?; false; end
+
 end

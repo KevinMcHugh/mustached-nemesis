@@ -55,6 +55,10 @@ class PlayerAPI
     players.find_all { |p| @player.in_range?(card, @dtos_to_players[p])}
   end
 
+  def notify(event)
+    brain.notify(event.to_brainsafe)
+  end
+
   def character; @player.class.to_s; end
   def health; @player.health; end
 
