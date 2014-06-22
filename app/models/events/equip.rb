@@ -9,7 +9,7 @@ module Equip
     duplicate_card = target.from_play(card.type)
     event_created = false
     if duplicate_card
-      if card.type == Card.gun_card
+      if card.gun?
         Event.new(event_listener, self, card, target_player, duplicate_card)
         discard(duplicate_card, true)
         event_created = true

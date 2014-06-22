@@ -133,7 +133,6 @@ class ScopeCard < EquipmentCard; end
 class MustangCard < EquipmentCard; end
 class GunCard < EquipmentCard
   def no_range; false; end
-  def type; GunCard; end
 end
 class RevCarbineCard < GunCard
   def range; 4; end
