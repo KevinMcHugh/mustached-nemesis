@@ -1,9 +1,5 @@
 # RUN as 'rails r demo_game.rb'
-require 'attack_left_brain'
-require 'attack_right_brain'
-require 'murder_brain'
-require 'mildly_intelligent_brain'
-require 'plays_all_possible_cards_brain'
+require 'player_brain'
 require 'pp'
 
 Rails.logger.level = Logger::WARN # turns off logging
