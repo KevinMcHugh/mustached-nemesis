@@ -14,7 +14,7 @@ class PersistGame
       EventRecord.create(game_record_id: gr.id, order: index, event_json: event.to_json)
     end
     @brains.each_with_index do |brain, index|
-      won = !!game.winners.detect{ |player| player.role == @roles[index] && player.brain.class == brain }
+      won = !!@game.winners.detect{ |player| player.role == @roles[index] && player.brain.class == brain }
       PlayerRecord.create(game_record_id: gr.id, order: index, brain: brain.to_s, role: @roles[index], won: won)
     end
     @expansions.each do |expansion|

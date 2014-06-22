@@ -56,7 +56,7 @@ class CreateGame
   end
 
   def persist(game)
-    options = {game: game, brains: @brains, role: @roles, seed: @seed, expansions: @expansions}
+    options = {game: game, brains: @brains_copy, roles: @roles, seed: @seed, expansions: @expansions}
     PersistGame.new(options).execute
   end
 end
