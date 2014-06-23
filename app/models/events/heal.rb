@@ -1,7 +1,7 @@
 module Heal
   def heal(regained_health=1)
-    Event.new(event_listener, self)
     regained_health.times { @health += 1 if health < max_health }
+    Event.new(event_listener, self)
   end
 
   class Event < ::Event
