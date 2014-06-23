@@ -13,6 +13,7 @@ class Player
   include Heal
   include Jail
   include NewTurnStarted
+  include TapBadge
 
   attr_accessor :hand, :event_listener
   attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right, :max_health
@@ -26,7 +27,7 @@ class Player
     @in_play = []
     @max_health = sheriff? ? 5 : 4
     @health = max_health
-    @brain = brain ? brain : Brain.new
+    @brain = brain ? brain : PlayerBrain::Brain.new
     @bangs_played = 0
   end
 

@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: https://github.com/KevinMcHugh/kevins_propietary_brain.git
-  revision: 375a9dd0d9de12b199e2d85118a82c0f1a6803d9
+  revision: 6c5f722a3ba451866b35c39c2910d33a99063a7e
   branch: master
   specs:
     kevins_propietary_brain (0.0.2)

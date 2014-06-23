@@ -59,6 +59,10 @@ class PlayerAPI
     brain.notify(event.to_brainsafe)
   end
 
+  def tap_badge(adverb)
+    @player.tap_badge(adverb)
+  end
+
   def character; @player.class.to_s; end
   def health; @player.health; end
 

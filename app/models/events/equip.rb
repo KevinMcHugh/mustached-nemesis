@@ -6,18 +6,15 @@ module Equip
     else
       target = self
     end
-    duplicate_card = target.from_play(card.type)
-    event_created = false
-    if duplicate_card
-      if card.gun?
-        Event.new(event_listener, self, card, target_player, duplicate_card)
-        discard(duplicate_card, true)
-        event_created = true
-      else
-        raise DuplicateCardPlayedException.new(card.type)
-      end
+    if card.gun?
+      duplicate_card = target.in_play.find(&:gun?)
+      Event.new(event_listener, self, card, target_player, duplicate_card)
+      discard(duplicate_card, true)
+    else
+      duplicate_card = target.from_play(card.type)
+      raise DuplicateCardPlayedException.new(card.type) if duplicate_card
+      Event.new(event_listener, self, card, target_player)
     end
-    Event.new(event_listener, self, card, target_player) unless event_created
     target.in_play << card
     hand.delete(card)
   end

@@ -35,6 +35,7 @@ class Event
   def each_instance_variable(&block)
     hash = {}
     hash[:@type] = self.class.to_s
+    hash[:@to_s] = to_s
     instance_variables.each do |variable|
       hash[variable] = block.call(instance_variable_get(variable))
     end
