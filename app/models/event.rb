@@ -4,7 +4,11 @@ class Event
   end
   def as_json(options={})
     each_instance_variable do |variable|
-      variable.as_json
+      if variable.is_a? Class
+        variable.to_s
+      else
+        variable.as_json
+      end
     end
   end
 
