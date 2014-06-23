@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140622225134) do
+ActiveRecord::Schema.define(version: 20140622233348) do
 
   create_table "event_records", force: true do |t|
     t.integer "game_record_id"
@@ -37,6 +37,8 @@ ActiveRecord::Schema.define(version: 20140622225134) do
     t.string  "brain"
     t.string  "role"
     t.boolean "won"
+    t.string  "string"
+    t.string  "character"
   end
 
 end

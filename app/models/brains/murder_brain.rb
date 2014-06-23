@@ -4,9 +4,7 @@ module PlayerBrain
   ## This is a sample brain to MURDER ALL
   class MurderBrain < Brain
 
-    #The brain is instantiated with it's role.  So that it can be used later in the game
-    def initialize(role)
-      @role = role
+    def initialize
     end
 
     # you have the option of picking from many cards, pick the best one.
@@ -59,8 +57,6 @@ module PlayerBrain
     end
 
     private
-    attr_reader :role
-
     def weakest_player_in_range_of(card)
       in_range = player.players_in_range_of(card)
       in_range.min_by { |p| p.health } || in_range.first

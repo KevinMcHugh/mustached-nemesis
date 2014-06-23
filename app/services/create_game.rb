@@ -4,8 +4,11 @@ class CreateGame
     @params = params
     @seed = params[:seed] || Random.new.seed
     @random = Random.new(@seed)
-    @brains = params[:brains].shuffle(random: @random)
+    @brains = params[:brains].shuffle(random: @random).map do |brain_class|
+      brain_class.new
+    end
     @brains_copy = @brains.clone
+    @brains_to_players = {}
     @expansions = params[:expansions] || []
     @deck = Deck.new(seed: @random, expansions: @expansions)
     @roles = Game.all_roles.take(@brains.size)
@@ -18,9 +21,11 @@ class CreateGame
     load_expansions
     @characters.sort!.shuffle!(random: @random)
     @roles.shuffle!(random: Random.new(@seed + 42)).each do |role|
-      brain = @brains.shift.new(role)
+      brain = @brains.shift
+      brain.role = role
       choosing_from = [@characters.shift, @characters.shift]
       player = character_class(choosing_from, brain).new(role, @deck, brain)
+      @brains_to_players[brain] = player
       brain.player = PlayerAPI.new(player, brain)
       if role == 'sheriff'
         players.unshift(player)
@@ -35,9 +40,7 @@ class CreateGame
     game
   end
 
-
   private
-
   def load_expansions
     @expansions.each do |expansion|
       expansion_module = (expansion.to_s.camelize + "Character").constantize
@@ -60,7 +63,7 @@ class CreateGame
   end
 
   def persist(game)
-    options = {game: game, brains: @brains_copy, roles: @roles, seed: @seed, expansions: @expansions}
+    options = {game: game, brains: @brains_copy, seed: @seed, expansions: @expansions, brains_to_players: @brains_to_players}
     PersistGame.new(options).execute
   end
 end

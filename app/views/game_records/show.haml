@@ -1,6 +1,12 @@
 = link_to 'View All Games', game_records_path
 
-%h3 Game. #{@game_record.created_at}
+%h2 Created: #{@game_record.created_at}
+%h3 Players:
+- @game_record.player_records.each do |player_record|
+  %p
+    #{player_record.brain} as #{player_record.role} & #{player_record.character}
+
+%h3 Events:
 - @game_record.event_records.each do |event_record|
   %p
     #{event_record.event_json}

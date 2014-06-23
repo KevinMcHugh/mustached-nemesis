@@ -3,12 +3,6 @@
 module PlayerBrain
   ## This is a sample brain to MURDER ALL
   class MildlyIntelligentBrain < Brain
-
-    #The brain is instantiated with it's role.  So that it can be used later in the game
-    def initialize(role)
-      @role = role
-    end
-
     # you have the option of picking from many cards, pick the best one.
     def pick(number, *cards)
       # binding.pry
@@ -78,8 +72,6 @@ module PlayerBrain
     end
 
     private
-    attr_reader :role
-
     def over_bang_limit(n)
       return false if player.character == "Character::WillyTheKidPlayer"
       return false if player.in_play.detect{ |x| x.type == Card.volcanic_card }

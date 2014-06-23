@@ -1,8 +1,6 @@
 module PlayerBrain
   class Brain
-    attr_accessor :player
-    def initialize(role)
-    end
+    attr_accessor :player, :role
     def choose_character(character_1, character_2)
     end
     def target_of_bang(card, targetter, missed_needed)

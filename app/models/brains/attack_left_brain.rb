@@ -3,12 +3,6 @@
 module PlayerBrain
   ## This is a sample brain to show basic brain structure and interaction with the player.
   class AttackLeftBrain < Brain
-
-    #The brain is instantiated with it's role.  So that it can be used later in the game
-    def initialize(role)
-      @role = role
-    end
-
     # you have the option of picking from many cards, pick the best one.
     def pick(number, *cards)
       cards.flatten.first(number)
@@ -49,8 +43,5 @@ module PlayerBrain
         end
       end
     end
-
-    private
-    attr_reader :role
   end
 end
