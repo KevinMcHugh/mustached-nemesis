@@ -10,9 +10,13 @@ module NewTurnStarted
     def initialize(event_listener, player)
       @player = player
       @player_string = player.to_s
-      @in_play = player.in_play.map(&:class).map(&:to_s)
-      @hand = player.hand.map(&:class).map(&:to_s)
+      @in_play = map(player.in_play)
+      @hand = map(player.hand)
       super(event_listener)
+    end
+
+    def map(array)
+      array.map(&:class).map(&:to_s)
     end
 
     def to_s
