@@ -23,7 +23,10 @@ class Game
           @winners = []
           return
         end
-        @round += 1 if player.sheriff?
+        if player.sheriff?
+          @round += 1
+          NewRoundStartedEvent.new(event_listener, @round)
+        end
         player.play
         if player == player.left || living_players.size == 1
           raise ArgumentError.new
