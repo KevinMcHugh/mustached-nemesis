@@ -12,7 +12,7 @@ class Player
   include Equip
   include Heal
   include Jail
-  include StartTurn
+  include NewTurnStarted
 
   attr_accessor :hand, :event_listener
   attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right, :max_health
@@ -36,7 +36,7 @@ class Player
     return if dead?
     return if jail
     draw_for_turn
-    start_turn
+    new_turn_started
 
     brain.play
     while hand.size > hand_limit

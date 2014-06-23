@@ -1,6 +1,6 @@
-module StartTurn
+module NewTurnStarted
 
-  def start_turn
+  def new_turn_started
     Event.new(event_listener, self)
   end
 

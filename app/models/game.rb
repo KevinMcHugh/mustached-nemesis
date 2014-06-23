@@ -8,7 +8,7 @@ class Game
     event_listener.subscribe(self)
     @players.each { |p| p.event_listener = event_listener }
     @events = []
-    NewGameStarted.new(event_listener)
+    NewGameStartedEvent.new(event_listener)
   end
 
   def start

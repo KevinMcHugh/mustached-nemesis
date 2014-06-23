@@ -1,4 +1,4 @@
-class NewGameStarted < Event
+class NewGameStartedEvent < Event
   def to_s
     <<-eos
       Startin' a new game, pardner!
