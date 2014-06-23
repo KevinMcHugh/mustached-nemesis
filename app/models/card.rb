@@ -72,6 +72,10 @@ class Card
     {:@type => type.to_s, :@number => number, :@suit => suit }
   end
 
+  def other_players(player, &block)
+    player.players.map(&block)
+  end
+
   def self.beer_card; BeerCard; end
   def self.bang_card; BangCard; end
   def self.indians_card; IndiansCard; end

@@ -19,7 +19,7 @@ class SaloonCard < Card
   def no_range?;true;end
   def play(player, target_player=nil, target_card=nil)
     player.heal(1)
-    player.players.map(&:heal)
+    other_players(player, &:heal)
   end
 end
 class StageCoachCard < Card
@@ -38,7 +38,7 @@ class IndiansCard < Card
   def no_range?;true;end
   def damage_dealing?; true; end
   def play(player, target_player=nil, target_card=nil)
-    player.players.map { |p| p.target_of_indians(self, player)}
+    other_players(player) { |p| p.target_of_indians(self, player)}
   end
 end
 class PanicCard < Card
@@ -100,7 +100,7 @@ class GatlingCard < Card
   def no_range?;true;end
   def damage_dealing?; true; end
   def play(player, target_player=nil, target_card=nil)
-    player.players.map { |p| p.target_of_bang(self, player)}
+    other_players(player) { |p| p.target_of_bang(self, player)}
   end
 end
 class MissedCard < Card
