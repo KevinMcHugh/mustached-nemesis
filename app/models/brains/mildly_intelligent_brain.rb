@@ -63,36 +63,49 @@ module PlayerBrain
       play_guns
       player.hand.each do |card|
         target = find_target(card)
-        next if card.type == Card.missed_card || !target
-        next if card.type == Card.jail_card && !target || target.sheriff?
-        next if card.type == Card.bang_card && over_bang_limit(bangs_played)
+        next if skippable?(card, target, bangs_played)
         bangs_played += 1 if card.type == Card.bang_card
         player.play_card(card, target, :hand)
       end
     end
 
     private
-    def over_bang_limit(n)
+    def over_bang_limit?(n)
       return false if player.character == "Character::WillyTheKidPlayer"
       return false if player.in_play.detect{ |x| x.type == Card.volcanic_card }
       return false if n < 1
       true
     end
 
+    def skippable?(card, target, bangs_played)
+      missed = card.type == Card.missed_card
+      unjailable = card.type == Card.jail_card && target.sheriff?
+      too_many_bangs = card.type == Card.bang_card && over_bang_limit?(bangs_played)
+      !target || missed || unjailable || too_many_bangs
+    end
+
     def find_target(card)
       if role == 'sheriff'
         weakest_player_in_range_of(card)
       elsif role == 'outlaw'
-        player.players_in_range_of(card).include?(sheriff) ? sheriff : weakest_player_in_range_of(card)
+        find_target_for_outlaw(card)
       elsif role == 'renegade'
-        if player.players.size > 1
-          weakest_non_sheriff_in_range_of(card)
-        else
-          sheriff
-        end
+        find_target_for_renegade(card)
       elsif role == 'deputy'
         weakest_non_sheriff_in_range_of(card)
       end
+    end
+
+    def find_target_for_renegade(card)
+      if player.players.size > 1
+        weakest_non_sheriff_in_range_of(card)
+      else
+        sheriff
+      end
+    end
+
+    def find_target_for_outlaw(card)
+      player.players_in_range_of(card).include?(sheriff) ? sheriff : weakest_player_in_range_of(card)
     end
 
     def weakest_non_sheriff_in_range_of(card)
@@ -114,8 +127,13 @@ module PlayerBrain
       guns = player.hand.find_all(&:gun?)
       return if guns.empty?
       longest_ranged_gun = guns.max { |gun| gun.range }
+      player.play_card(longest_ranged_gun) if should_play_gun?(longest_ranged_gun)
+    end
+
+    def should_play_gun?(longest_ranged_gun)
       existing_gun = player.in_play.find(&:gun?)
-      player.play_card(longest_ranged_gun) if !existing_gun || (longest_ranged_gun && longest_ranged_gun.range > existing_gun.range)
+      return true unless existing_gun
+      longest_ranged_gun && longest_ranged_gun.range > existing_gun.range
     end
   end
 end
