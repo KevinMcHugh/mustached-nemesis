@@ -31,5 +31,9 @@ class PlayerKilledEvent < Event
     killer_string = killer || DynamiteCard.killer
     "#{killed} has been killed by #{killer_string}"
   end
+
+  def sheriff_killed?
+    killed.sheriff?
+  end
   def player_killed?; true; end
 end

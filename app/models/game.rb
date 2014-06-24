@@ -8,13 +8,12 @@ class Game
     event_listener.subscribe(self)
     @players.each { |p| p.event_listener = event_listener }
     @events = []
+    @round = 0
     NewGameStartedEvent.new(event_listener)
   end
 
   def start
     deck.deal_to(players)
-    @round = 0
-
     player = sheriff
     while !over do
       begin
