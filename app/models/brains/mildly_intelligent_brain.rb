@@ -5,7 +5,6 @@ module PlayerBrain
   class MildlyIntelligentBrain < Brain
     # you have the option of picking from many cards, pick the best one.
     def pick(number, *cards)
-      # binding.pry
       ordered = cards.flatten.map do |card|
         i = card_preference.map { |preference| card.type == preference }.index(true)
         {card: card, index: i}

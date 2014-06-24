@@ -9,7 +9,7 @@ module Equip
     if card.gun?
       duplicate_card = target.in_play.find(&:gun?)
       Event.new(event_listener, self, card, target_player, duplicate_card)
-      discard(duplicate_card, true)
+      discard(duplicate_card, true) if duplicate_card
     else
       duplicate_card = target.from_play(card.type)
       raise DuplicateCardPlayedException.new(card.type) if duplicate_card

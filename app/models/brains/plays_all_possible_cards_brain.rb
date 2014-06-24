@@ -36,10 +36,6 @@ module PlayerBrain
     #This is the method that is called on your turn.
     def play
       player.hand.each do |card|
-        # player.play_card(card) if !player.from_play(card.type) && card.equipment?
-        # player.play_play(card) if card.gun? && !player.from_play.bsearch{|x| x.gun?}
-        # player.play_card(card, player.players_in_range_of(card).first) if card.damage_dealing?
-        #binding.pry
         next if !card
         next if card.type == Card.missed_card || !player.players_in_range_of(card).first
         if card.type == Card.jail_card && player.players_in_range_of(card).first.sheriff?

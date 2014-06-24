@@ -15,8 +15,8 @@ class Player
   include NewTurnStarted
   include TapBadge
 
-  attr_accessor :hand, :event_listener
-  attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right, :max_health
+  attr_accessor :event_listener
+  attr_reader :in_play, :health, :brain, :role, :character, :deck, :left, :right, :max_health, :hand
 
   def initialize(role, deck, brain=nil)
     @deck = deck
@@ -142,12 +142,16 @@ class Player
   def draw_outlaw_killing_bonus
     3.times { draw }
   end
+
+  def give_card(card)
+    @hand << card
+  end
   def play_as_beer(x,y); end
   def hand_limit; health; end
   def hand_size; hand.size; end
   def random_from_hand; @hand.sample; end
   def draw_for_turn; 2.times { draw }; end
-  def draw; @hand += deck.take(1); end
+  def draw; give_card(deck.take(1).first); end
   def draw!(reason=nil); deck.draw!; end
 
   def sheriff?; role == "sheriff"; end

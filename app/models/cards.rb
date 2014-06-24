@@ -48,11 +48,11 @@ class PanicCard < Card
   def play(player, target_player, target_card)
     if target_card == :hand
       card = target_player.random_from_hand
-      player.hand << card if card
+      player.give_card(card) if card
     else
       card = target_player.from_play(target_card)
       target_player.in_play.delete(target_card)
-      player.hand << card if card
+      player.give_card(card) if card
     end
   end
 end
@@ -69,7 +69,7 @@ class GeneralStoreCard < Card
       card = cards.find { |c| card_dto == c.to_dto}
 
       # p.log("#{p.class} picked #{card.to_s}")
-      p.hand << card
+      p.give_card(card) if card
       cards.delete_if { |c| c === card }
     end
   end

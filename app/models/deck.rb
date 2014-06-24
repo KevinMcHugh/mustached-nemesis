@@ -154,7 +154,9 @@ class Deck
 
   def deal_to(players)
     players.each do |player|
-      player.hand += take(player.max_health)
+      take(player.max_health).each do |card|
+        player.give_card(card)
+      end
     end
   end
 
@@ -187,5 +189,4 @@ class Deck
   end
 
   attr_reader :draw, :discard
-
 end
