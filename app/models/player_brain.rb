@@ -20,5 +20,4 @@ module PlayerBrain
     def notify(event)
     end
   end
-  Dir[Rails.root.join("app","models","brains","*.rb")].each {|file| require file }
 end

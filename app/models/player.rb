@@ -27,7 +27,7 @@ class Player
     @in_play = []
     @max_health = sheriff? ? 5 : 4
     @health = max_health
-    @brain = brain ? brain : PlayerBrain::Brain.new
+    @brain = brain ? brain : ExampleBrains::Brain.new
     @bangs_played = 0
   end
 

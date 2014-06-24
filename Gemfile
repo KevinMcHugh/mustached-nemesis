@@ -25,6 +25,9 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem 'spring',        group: :development
+
+gem "example_brains", git: 'https://github.com/KevinMcHugh/example_brains.git', branch: "master"
+
 gem "kevins_propietary_brain", git: 'https://github.com/KevinMcHugh/kevins_propietary_brain.git', branch: "master"
 gem "basic_brain", git: 'https://github.com/KevinMcHugh/basic_brain.git', branch: "master"
 

@@ -6,8 +6,15 @@ GIT
     basic_brain (0.0.4)
 
 GIT
+  remote: https://github.com/KevinMcHugh/example_brains.git
+  revision: 2cb521bd8a6f2ee62bfdccb117604e458671398e
+  branch: master
+  specs:
+    example_brains (0.0.1)
+
+GIT
   remote: https://github.com/KevinMcHugh/kevins_propietary_brain.git
-  revision: 6c5f722a3ba451866b35c39c2910d33a99063a7e
+  revision: 7996f88ca97db47dd91acaf8dee65c708eca8013
   branch: master
   specs:
     kevins_propietary_brain (0.0.2)
@@ -170,6 +177,7 @@ PLATFORMS
 DEPENDENCIES
   basic_brain!
   coffee-rails (~> 4.0.0)
+  example_brains!
   haml-rails
   jbuilder (~> 2.0)
   jquery-rails

@@ -1,4 +1,4 @@
-require 'player_brain'
+require 'example_brains'
 class GameRecordsController < ApplicationController
 
   def create
@@ -9,10 +9,11 @@ class GameRecordsController < ApplicationController
   end
 
   def new
-    @brains = [[PlayerBrain::MildlyIntelligentBrain, PlayerBrain::MildlyIntelligentBrain],
-                [PlayerBrain::AttackLeftBrain,PlayerBrain::AttackLeftBrain],
-                [PlayerBrain::AttackRightBrain,PlayerBrain::AttackRightBrain],
-                [PlayerBrain::PlaysAllPossibleCardsBrain,PlayerBrain::PlaysAllPossibleCardsBrain]]
+    @brains = [twice(ExampleBrains::MildlyIntelligentBrain),
+                twice(ExampleBrains::AttackLeftBrain),
+                twice(ExampleBrains::AttackRightBrain),
+                twice(ExampleBrains::PlaysAllPossibleCardsBrain),
+                twice(KevinsPropietaryBrain::Brain)]
   end
 
   def show
@@ -21,5 +22,10 @@ class GameRecordsController < ApplicationController
 
   def index
     @game_records = GameRecord.all
+  end
+
+  private
+  def twice(brain)
+    2.times.map { brain }
   end
 end

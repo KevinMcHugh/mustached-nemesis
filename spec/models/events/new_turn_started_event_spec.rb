@@ -19,7 +19,7 @@ describe NewTurnStarted::Event do
       expect(subject.to_s).to include("In hand: #{hand}")
     end
     it 'returns a string with the player as a string' do
-      expect(subject.to_s).to include('Player|5|sheriff|PlayerBrain::Brain')
+      expect(subject.to_s).to include('Player|5|sheriff|ExampleBrains::Brain')
     end
   end
 
