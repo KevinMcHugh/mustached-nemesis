@@ -27,9 +27,7 @@ module PlayAndDiscard
 
     def to_s
       if card.type == Card.beer_card
-        return ["#{player.class} is enjoying a nice cold Miller® Lite®. It's Miller® Time®!",
-          "#{player.class} is sipping an ice cold Coors® Light®. Taste the Rockies®!",
-          "#{player.class} playing and discarding #{card.type}"].sample
+        return card.message(player)
       end
       string = "#{player.class} playing and discarding #{card.type}"
       if target_player && card.targets_players?
@@ -38,7 +36,7 @@ module PlayAndDiscard
           if target_card.is_a? Symbol
             string += "'s #{target_card}"
           else
-            string += "'s #{target_card.type}"
+            string += "'s #{target_card}"
           end
         end
       end

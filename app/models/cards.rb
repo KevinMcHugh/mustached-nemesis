@@ -14,6 +14,12 @@ class BeerCard < Card
       player.heal(player.beer_benefit)
     end
   end
+  def message(player)
+    message = ["is enjoying a nice cold Miller® Lite®. It's Miller® Time®!",
+       "is sipping an ice cold Coors® Light®. Taste the Rockies®!",
+        "playing and discarding #{self.type}"].sample
+    "#{player.class} #{message}"
+  end
 end
 class SaloonCard < Card
   def no_range?;true;end

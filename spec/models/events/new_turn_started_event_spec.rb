@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+require 'card'
 describe NewTurnStarted::Event do
   let(:event_listener) { EventListener.new(nil) }
   let(:player) { Player.new("sheriff", nil)}
