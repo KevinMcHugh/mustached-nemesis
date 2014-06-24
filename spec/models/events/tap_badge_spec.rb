@@ -1,14 +1,13 @@
 require 'spec_helper'
 
 describe TapBadge do
-  class Dummy
+  class TapBadgeDummy
     include TapBadge
-    def event_listener
-    end
+    def event_listener; end
   end
 
   let(:adverb) {'quickly'}
-  subject { Dummy.new }
+  subject { TapBadgeDummy.new }
   it 'returns a new Event' do
     expect(TapBadge::Event).to receive(:new).with(nil, subject, adverb)
     subject.tap_badge(adverb)

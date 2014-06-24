@@ -1,16 +1,17 @@
 require 'spec_helper'
 
 describe Heal do
-  class Dummy
+  class HealDummy
     attr_reader :health, :max_health
     include Heal
     def initialize
       @health = 0
       @max_health = 2
     end
+    def event_listener; end
   end
 
-  subject { Dummy.new }
+  subject { HealDummy.new }
   it 'heals by one without an argument' do
     expect{subject.heal}.to change{subject.health}.by 1
   end
