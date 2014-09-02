@@ -17,22 +17,13 @@ class Game
     player = sheriff
     while !over do
       begin
-        # paul regret, because he's 1 away, can cause stalemates against the dumb bots
-        if round > 150
+        if stalemated?
           @winners = []
           return
         end
-        if player.sheriff?
-          @round += 1
-          NewRoundStartedEvent.new(event_listener, @round)
-        end
+        start_new_round if player.sheriff?
         player.play
-        if player == player.left || living_players.size == 1
-          raise ArgumentError.new
-        end
-        if player.players.size != living_players.size - 1 && !player.dead?
-          raise ArgumentError.new
-        end
+        raise ArgumentError.new if error_state?(player)
         player = player.left
       rescue GameOverException => e
       rescue PlayerKilledException => e
@@ -63,6 +54,17 @@ class Game
     %w{sheriff renegade outlaw outlaw
       deputy outlaw deputy renegade}
   end
+  def error_state?(player)
+    player == player.left || living_players.size == 1 ||
+      player.players.size != living_players.size - 1 && !player.dead?
+  end
+
+  def start_new_round
+    @round += 1
+    NewRoundStartedEvent.new(event_listener, @round)
+  end
+
+  def stalemated?; round > 150; end
 end
 
 class GameOverException < Exception
