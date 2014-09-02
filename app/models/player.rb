@@ -34,24 +34,33 @@ class Player
   def play
     @bangs_played = 0
     dynamite
-    return if dead?
-    return if jail
+    return if dead? || jail
     draw_for_turn
     new_turn_started
-
     brain.play
-    while hand.size > hand_limit
-     discard_choice = from_hand_dto_to_card(brain.discard)
-      if hand.include?(discard_choice)
-        discard(discard_choice)
-      else
-        x = hand.shift(hand_limit)
-        hand.each { |card| @deck.discard << card }
-        @hand = x
-      end
-    end
+    discard_phase
     @bangs_played = 0
   end
+
+  def discard_phase
+    while over_hand_limit?
+      discard_choice = from_hand_dto_to_card(brain.discard)
+      if can_discard?(discard_choice)
+        discard(discard_choice)
+      else
+        force_discard
+      end
+    end
+  end
+
+  def force_discard
+    x = hand.shift(hand_limit)
+    hand.each { |card| @deck.discard << card }
+    @hand = x
+  end
+
+  def over_hand_limit?; hand.size > hand_limit; end
+  def can_discard?(card); hand.include?(card); end
 
   def from_hand_dto_to_card(card_dto)
     hand.detect{|card| card.to_dto == card_dto}
