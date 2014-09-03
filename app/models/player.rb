@@ -57,6 +57,11 @@ class Player
     @hand = x
   end
 
+  def discard_all
+    hand.each { |card| discard(card)}
+    in_play.each { |card| discard(card)}
+  end
+
   def from_hand_dto_to_card(card_dto)
     hand.detect{|card| card.to_dto == card_dto}
   end
@@ -65,6 +70,27 @@ class Player
     response.respond_to?(:type) && response.type == type && hand.include?(response)
   end
 
+  def from_play(card_type)
+    in_play.detect { |card| card.type == card_type }
+  end
+
+  def from_hand(card_type)
+    hand.detect { |card| card.type == card_type }
+  end
+
+  def play_as_beer(x,y); end
+  def give_card(card); @hand << card; end
+  def over_hand_limit?; hand.size > hand_limit; end
+  def can_discard?(card); hand.include?(card); end
+  def hand_limit; health; end
+  def hand_size; hand.size; end
+  def random_from_hand; @hand.sample; end
+  def draw_for_turn; 2.times { draw }; end
+  def draw; give_card(deck.take(1).first); end
+  def draw!(reason=nil); deck.draw!; end
+  def draw_outlaw_killing_bonus; 3.times { draw }; end
+
+  def beer_benefit; 1; end
   def beer
     beer_card = from_hand(Card.beer_card)
     if beer_card
@@ -72,6 +98,8 @@ class Player
     end
   end
 
+  def right=(player); @right = player; end
+  def left=(player); @left= player; end
   def players
     unless @players
       @players = []
@@ -83,14 +111,7 @@ class Player
     end
     @players
   end
-
-  def from_play(card_type)
-    in_play.detect { |card| card.type == card_type }
-  end
-
-  def from_hand(card_type)
-    hand.detect { |card| card.type == card_type }
-  end
+  def blank_players!; @players = nil; end
 
   def in_range?(card, target_player)
     if card.no_range?
@@ -125,32 +146,6 @@ class Player
     volcanic = from_play(Card.volcanic_card)
     volcanic ? false : @bangs_played  > 1
   end
-
-  def discard_all
-    hand.each { |card| discard(card)}
-    in_play.each { |card| discard(card)}
-  end
-
-  def draw_outlaw_killing_bonus; 3.times { draw }; end
-
-  def give_card(card); @hand << card; end
-  def over_hand_limit?; hand.size > hand_limit; end
-  def can_discard?(card); hand.include?(card); end
-
-  def beer_benefit; 1; end
-  def play_as_beer(x,y); end
-
-  def right=(player); @right = player; end
-  def left=(player); @left= player; end
-
-  def blank_players!; @players = nil; end
-  def hand_limit; health; end
-  def hand_size; hand.size; end
-
-  def random_from_hand; @hand.sample; end
-  def draw_for_turn; 2.times { draw }; end
-  def draw; give_card(deck.take(1).first); end
-  def draw!(reason=nil); deck.draw!; end
 
   def sheriff?; role == "sheriff"; end
   def dead?; health <= 0; end
