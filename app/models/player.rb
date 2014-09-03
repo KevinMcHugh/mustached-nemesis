@@ -96,7 +96,7 @@ class Player
   def right=(player); @right = player; end
   def left=(player); @left= player; end
 
-  def blank_players; @players = nil; end
+  def blank_players!; @players = nil; end
 
   def from_play(card_type)
     in_play.detect { |card| card.type == card_type }

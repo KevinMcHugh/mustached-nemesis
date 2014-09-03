@@ -4,7 +4,7 @@ class PlayerKilledEvent < Event
     @killed = killed
     @killer = killer
 
-    @killed.players.map(&:blank_players)
+    @killed.players.map(&:blank_players!)
     @killed.left.right = @killed.right
     @killed.right.left = @killed.left
     super(event_listener)
