@@ -22,8 +22,6 @@ class Player
     @deck = deck
     @hand = []
     @role = role
-    @range_increase = 0
-    @range_decrease = 0
     @in_play = []
     @max_health = sheriff? ? 5 : 4
     @health = max_health
@@ -86,18 +84,6 @@ class Player
     @players
   end
 
-  def over_hand_limit?; hand.size > hand_limit; end
-
-  def can_discard?(card); hand.include?(card); end
-  def beer_benefit; 1; end
-
-  def dead?; health <= 0; end
-
-  def right=(player); @right = player; end
-  def left=(player); @left= player; end
-
-  def blank_players!; @players = nil; end
-
   def from_play(card_type)
     in_play.detect { |card| card.type == card_type }
   end
@@ -122,11 +108,11 @@ class Player
   end
 
   def range_increase
-    @range_increase + in_play.select(&:range_increase?).count
+    in_play.select(&:range_increase?).count
   end
 
   def range_decrease
-    @range_decrease + in_play.select(&:range_decrease?).count
+    in_play.select(&:range_decrease?).count
   end
 
   def distance_to(target_player)
@@ -145,22 +131,29 @@ class Player
     in_play.each { |card| discard(card)}
   end
 
-  def draw_outlaw_killing_bonus
-    3.times { draw }
-  end
+  def draw_outlaw_killing_bonus; 3.times { draw }; end
 
-  def give_card(card)
-    @hand << card
-  end
+  def give_card(card); @hand << card; end
+  def over_hand_limit?; hand.size > hand_limit; end
+  def can_discard?(card); hand.include?(card); end
+
+  def beer_benefit; 1; end
   def play_as_beer(x,y); end
+
+  def right=(player); @right = player; end
+  def left=(player); @left= player; end
+
+  def blank_players!; @players = nil; end
   def hand_limit; health; end
   def hand_size; hand.size; end
+
   def random_from_hand; @hand.sample; end
   def draw_for_turn; 2.times { draw }; end
   def draw; give_card(deck.take(1).first); end
   def draw!(reason=nil); deck.draw!; end
 
   def sheriff?; role == "sheriff"; end
+  def dead?; health <= 0; end
 
   def as_json(options={})
     {:@name => self.class.to_s}
