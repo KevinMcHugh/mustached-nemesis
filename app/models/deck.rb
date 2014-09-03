@@ -174,7 +174,7 @@ class Deck
 
   def check_to_shuffle
     return draw unless draw.empty?
-    @draw = discard.shuffle.uniq  #TODO how come sometimes we have duplicate cards?
+    @draw = discard.shuffle.uniq
     discard.clear
     draw
   end

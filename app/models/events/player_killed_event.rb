@@ -10,6 +10,7 @@ class PlayerKilledEvent < Event
     super(event_listener)
 
     # Vulture Sam takes dead players cards See Character::VultureSamPlayer
+    # TODO: I hate this initializer and I hate this hack
     vs = @killed.players.detect {|p| p.class.to_s == "Character::VultureSamPlayer"}
     if vs
       @killed.hand.each { |card| vs.hand << card }
@@ -25,8 +26,8 @@ class PlayerKilledEvent < Event
     elsif @killer && @killer.sheriff? && @killed.role == 'deputy'
       @killer.discard_all
     end
-
   end
+
   def to_s
     killer_string = killer || DynamiteCard.killer
     "#{killed} has been killed by #{killer_string}"

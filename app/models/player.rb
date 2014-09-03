@@ -59,9 +59,6 @@ class Player
     @hand = x
   end
 
-  def over_hand_limit?; hand.size > hand_limit; end
-  def can_discard?(card); hand.include?(card); end
-
   def from_hand_dto_to_card(card_dto)
     hand.detect{|card| card.to_dto == card_dto}
   end
@@ -77,16 +74,6 @@ class Player
     end
   end
 
-  def beer_benefit; 1; end
-
-  def dead?; health <= 0; end
-
-  def right=(player)
-    @right = player
-  end
-
-  def left=(player); @left= player; end
-
   def players
     unless @players
       @players = []
@@ -98,6 +85,16 @@ class Player
     end
     @players
   end
+
+  def over_hand_limit?; hand.size > hand_limit; end
+
+  def can_discard?(card); hand.include?(card); end
+  def beer_benefit; 1; end
+
+  def dead?; health <= 0; end
+
+  def right=(player); @right = player; end
+  def left=(player); @left= player; end
 
   def blank_players; @players = nil; end
 

@@ -9,7 +9,6 @@ module Character
     end
     def beer
       beer_card = from_hand(Card.beer_card)
-      # TODO doesn't work with 2 players remaining
       if beer_card
         play_and_discard(beer_card)
         true
