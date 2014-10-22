@@ -37,7 +37,6 @@ ActiveRecord::Schema.define(version: 20140622233348) do
     t.string  "brain"
     t.string  "role"
     t.boolean "won"
-    t.string  "string"
     t.string  "character"
   end
 

@@ -17,7 +17,7 @@ class CreateGame
 
   def execute
     players = []
-    @characters = Character.constants.select { |c| Character.const_get(c).is_a?(Class) }
+    @characters = Character.all
     load_expansions
     @characters.sort!.shuffle!(random: @random)
     @roles.shuffle!(random: Random.new(@seed + 42)).each do |role|
