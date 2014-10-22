@@ -4,11 +4,7 @@ class CreateGame
     @params = params
     @seed = params[:seed] || Random.new.seed
     @random = Random.new(@seed)
-    @brains = params[:brains].shuffle(random: @random).map do |brain_class|
-      brain_class.new
-    end
-    @brains_copy = @brains.clone
-    @brains_to_players = {}
+    set_brains
     @expansions = params[:expansions] || []
     @deck = Deck.new(seed: @random, expansions: @expansions)
     @roles = Game.all_roles.take(@brains.size)
@@ -16,23 +12,9 @@ class CreateGame
   end
 
   def execute
-    players = []
-    @characters = Character.all
+    @characters = Character.all(@random)
     load_expansions
-    @characters.sort!.shuffle!(random: @random)
-    @roles.shuffle!(random: Random.new(@seed + 42)).each do |role|
-      brain = @brains.shift
-      brain.role = role
-      choosing_from = [@characters.shift, @characters.shift]
-      player = character_class(choosing_from, brain).new(role, @deck, brain)
-      @brains_to_players[brain] = player
-      brain.player = PlayerAPI.new(player, brain)
-      if role == 'sheriff'
-        players.unshift(player)
-      else
-        players << player
-      end
-    end
+    players = create_players
     connect(players)
     game = Game.new(players, @deck)
     game.start
@@ -41,11 +23,40 @@ class CreateGame
   end
 
   private
+  def set_brains
+    @brains = @params[:brains].shuffle(random: @random).map do |brain_class|
+      brain_class.new
+    end
+    @brains_copy = @brains.clone
+    @brains_to_players = {}
+  end
+
   def load_expansions
     @expansions.each do |expansion|
       expansion_module = (expansion.to_s.camelize + "Character").constantize
       @characters += expansion_module.constants.select { |c| expansion_module.const_get(c).is_a?(Class) }
     end
+  end
+
+  def create_players
+    players = []
+    shuffled(@roles).each do |role|
+      brain = @brains.shift
+      brain.role = role
+      player = character_class(brain).new(role, @deck, brain)
+      @brains_to_players[brain] = player
+      brain.player = PlayerAPI.new(player, brain)
+      if role == 'sheriff'
+        players.unshift(player)
+      else
+        players << player
+      end
+    end
+    players
+  end
+
+  def shuffled(roles)
+    @roles.shuffle!(random: Random.new(@seed + 42))
   end
 
   def connect(players)
@@ -57,7 +68,8 @@ class CreateGame
     end
   end
 
-  def character_class(choosing_from, brain)
+  def character_class(brain)
+    choosing_from = [@characters.shift, @characters.shift]
     choice = brain.choose_character(choosing_from.first, choosing_from.second)
     Character.const_get(choice)
   end
