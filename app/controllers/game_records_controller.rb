@@ -13,11 +13,7 @@ class GameRecordsController < ApplicationController
   end
 
   def new
-    @brains = [twice(ExampleBrains::MildlyIntelligentBrain),
-                twice(ExampleBrains::AttackLeftBrain),
-                twice(ExampleBrains::AttackRightBrain),
-                twice(ExampleBrains::PlaysAllPossibleCardsBrain),
-                twice(KevinsPropietaryBrain::Brain)]
+    @brains = PlayerBrain.all.map { |brain| [brain, brain]}
   end
 
   def show
@@ -26,10 +22,5 @@ class GameRecordsController < ApplicationController
 
   def index
     @game_records = GameRecord.all
-  end
-
-  private
-  def twice(brain)
-    2.times.map { brain }
   end
 end
