@@ -33,6 +33,8 @@ gem "basic_brain", git: 'https://github.com/KevinMcHugh/basic_brain.git', branch
 
 gem 'haml-rails'
 
+gem "codeclimate-test-reporter", group: :test, require: nil
+
 group :development, :test do
   gem 'rspec-rails', '~> 2.14.0'
   gem 'pry'
