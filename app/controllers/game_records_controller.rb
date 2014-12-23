@@ -4,8 +4,12 @@ class GameRecordsController < ApplicationController
   def create
     brains = params[:game_record][:brains].reject(&:empty?)
     brain_classes = brains.map(&:constantize)
-    @game = CreateGame.new(brains: brain_classes, persist: true).execute
-    redirect_to game_record_path(GameRecord.last)
+    number_of_games = params[:number_of_games] || 1
+    number_of_games.to_i.times do |i|
+      CreateGame.new(brains: brain_classes, persist: true).execute
+    end
+    @game_records = GameRecord.last(number_of_games)
+    render action: 'index'
   end
 
   def new
