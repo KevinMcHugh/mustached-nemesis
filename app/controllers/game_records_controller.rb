@@ -13,7 +13,7 @@ class GameRecordsController < ApplicationController
   end
 
   def new
-    @brains = PlayerBrain.all.map { |brain| [brain, brain]}
+    @brains = all.map { |brain| [brain, brain]}
   end
 
   def show
@@ -23,4 +23,14 @@ class GameRecordsController < ApplicationController
   def index
     @game_records = GameRecord.all
   end
+
+  private
+  def all
+        [ExampleBrains::MildlyIntelligentBrain,
+     ExampleBrains::AttackLeftBrain,
+     ExampleBrains::AttackRightBrain,
+     ExampleBrains::PlaysAllPossibleCardsBrain,
+     ExampleBrains::MurderBrain,
+     KevinsPropietaryBrain::Brain]
+   end
 end

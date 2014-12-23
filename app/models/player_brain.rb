@@ -1,14 +1,5 @@
 module PlayerBrain
 
-  def self.all
-    [ExampleBrains::MildlyIntelligentBrain,
-     ExampleBrains::AttackLeftBrain,
-     ExampleBrains::AttackRightBrain,
-     ExampleBrains::PlaysAllPossibleCardsBrain,
-     ExampleBrains::MurderBrain,
-     KevinsPropietaryBrain::Brain]
-  end
-
   class Brain
     attr_accessor :player, :role
     def choose_character(character_1, character_2)
