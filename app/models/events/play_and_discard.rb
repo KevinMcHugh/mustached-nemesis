@@ -16,12 +16,13 @@ module PlayAndDiscard
   end
 
   class Event < ::Event
-    attr_reader :player, :card, :target_player, :target_card
+    attr_reader :card, :target_player, :target_card
     def initialize(event_listener, player, card, target_player, target_card)
-      @player = player
-      @card = card
+      @player        = player
+      @card          = card
       @target_player = target_player
-      @target_card = target_card
+      @target_card   = target_card
+      @target        = target_player
       super(event_listener)
     end
 

@@ -20,11 +20,12 @@ module Equip
   end
 
   class Event < ::Event
-    attr_reader :player, :card, :target_player, :duplicate_card
+    attr_reader :card, :target_player, :duplicate_card
     def initialize(event_listener, player, card, target_player, duplicate_card = nil)
       @player = player
       @card = card
       @target_player = target_player
+      @target = target_player
       @duplicate_card = duplicate_card
       super(event_listener)
     end

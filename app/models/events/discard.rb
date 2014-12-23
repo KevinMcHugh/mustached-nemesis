@@ -12,7 +12,7 @@ module Discard
     end
   end
   class Event < ::Event
-    attr_reader :player, :card
+    attr_reader :card
     def initialize(event_listener, player, card)
       @player = player
       @card = card

@@ -6,7 +6,7 @@ module TapBadge
 
 
   class Event < ::Event
-    attr_reader :player, :adverb
+    attr_reader :adverb
     def initialize(event_listener, player, adverb)
       @player = player
       @adverb = adverb

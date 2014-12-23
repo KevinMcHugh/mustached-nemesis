@@ -20,7 +20,7 @@ module DynamiteCheck
   end
 
   class Event < ::Event
-    attr_reader :player, :blown_up
+    attr_reader :blown_up
     def initialize(event_listener, player, blown_up)
       @player = player
       @blown_up = blown_up

@@ -37,14 +37,13 @@ module TargetOfBang
   def jourdonnais_ability(card); false; end
 
   class Event < ::Event
-    attr_reader :target, :targetter
     def initialize(event_listener, target, targetter)
       @target = target
-      @targetter = targetter
+      @player = targetter
       super(event_listener)
     end
     def to_s
-      "#{targetter.class} played bang at #{target.class}"
+      "#{player.class} played bang at #{target.class}"
     end
   end
 end

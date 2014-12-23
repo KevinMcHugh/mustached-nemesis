@@ -5,7 +5,7 @@ module Heal
   end
 
   class Event < ::Event
-    attr_reader :player, :health
+    attr_reader :health
     def initialize(event_listener, player)
       @player = player
       @health = player.health

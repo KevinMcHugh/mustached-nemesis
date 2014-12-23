@@ -1,5 +1,5 @@
 class CardRevealedEvent < Event
-  attr_reader :card, :player
+  attr_reader :card
   def initialize(event_listener, card, player=nil)
     @card = card
     @player = player

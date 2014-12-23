@@ -12,7 +12,7 @@ module Hit
   end
 
   class Event < ::Event
-    attr_reader :player, :hitter, :health
+    attr_reader :hitter, :health
     def initialize(event_listener, player, hitter)
       @player = player
       @health = player.health

@@ -3,6 +3,7 @@ class PlayerKilledEvent < Event
   def initialize(event_listener, killed, killer)
     @killed = killed
     @killer = killer
+    @target = killed
 
     @killed.players.map(&:blank_players!)
     @killed.left.right = @killed.right

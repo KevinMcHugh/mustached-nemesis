@@ -12,7 +12,7 @@ module Jail
   end
 
   class Event < ::Event
-    attr_reader :player, :still_in_jail
+    attr_reader :still_in_jail
     def initialize(event_listener, player, still_in_jail)
       @player = player
       @still_in_jail = still_in_jail

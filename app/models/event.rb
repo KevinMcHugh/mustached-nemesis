@@ -1,4 +1,6 @@
 class Event
+  attr_reader :target, :player
+
   def initialize(event_listener)
     event_listener.notify(self) if event_listener
   end
