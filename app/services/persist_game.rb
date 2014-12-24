@@ -22,14 +22,14 @@ class PersistGame
       won = @game.winners.map(&:class).map(&:to_s).include?(brain.player.character)
       player_record = PlayerRecord.create(game_record_id: gr.id, order: index,
         brain: brain.class.to_s, role: brain.role, won: won, character: brain.player.character)
-      @players_to_ids[brain.player] = player_record.id
+      @players_to_ids[brain.player.character] = player_record.id
     end
   end
 
   def persist_events(gr)
     @game.events.each_with_index do |event, index|
-      player = @players_to_ids[event.player]
-      target = @players_to_ids[event.target]
+      player = @players_to_ids[event.player.class.to_s] if event.player
+      target = @players_to_ids[event.target.class.to_s] if event.target
       EventRecord.create(game_record_id: gr.id, order: index, player_record_id: player,
         target_player_record_id: target, event_json: event.to_json)
     end
