@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141223061448) do
+ActiveRecord::Schema.define(version: 20141224033536) do
 
   create_table "event_records", force: true do |t|
     t.integer "game_record_id"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20141223061448) do
     t.text    "event_json"
     t.integer "player_record_id"
     t.integer "target_player_record_id"
+    t.string  "eventtype"
   end
 
   create_table "expansions", force: true do |t|

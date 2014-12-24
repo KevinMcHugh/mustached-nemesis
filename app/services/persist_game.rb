@@ -28,10 +28,10 @@ class PersistGame
 
   def persist_events(gr)
     @game.events.each_with_index do |event, index|
-      player = @players_to_ids[event.player.class.to_s] if event.player
-      target = @players_to_ids[event.target.class.to_s] if event.target
+      player = @players_to_ids[event.player.character] if event.player
+      target = @players_to_ids[event.target.character] if event.target
       EventRecord.create(game_record_id: gr.id, order: index, player_record_id: player,
-        target_player_record_id: target, event_json: event.to_json)
+        target_player_record_id: target, event_json: event.to_json, eventtype: event.eventtype)
     end
   end
 

@@ -27,6 +27,7 @@ class Player
     @health = max_health
     @brain = brain ? brain : ExampleBrains::Brain.new
     @bangs_played = 0
+    @character = self.class.to_s
   end
 
   def play

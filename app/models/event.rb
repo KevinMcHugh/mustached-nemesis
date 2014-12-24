@@ -22,7 +22,7 @@ class Event
 
   def game_over?; false; end
   def player_killed?; false; end
-
+  def eventtype; self.class.to_s; end
   private
   def convert(object)
     if object.is_a? Player
