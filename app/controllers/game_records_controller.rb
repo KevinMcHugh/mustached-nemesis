@@ -4,7 +4,7 @@ class GameRecordsController < ApplicationController
   def create
     brains = params[:game_record][:brains].reject(&:empty?)
     brain_classes = brains.map(&:constantize)
-    number_of_games = params[:number_of_games] || 1
+    number_of_games = params[:game_record][:number_of_games] || 1
     number_of_games.to_i.times do |i|
       CreateGame.new(brains: brain_classes, persist: true).execute
     end
@@ -26,7 +26,7 @@ class GameRecordsController < ApplicationController
 
   private
   def all
-        [ExampleBrains::MildlyIntelligentBrain,
+    [ExampleBrains::MildlyIntelligentBrain,
      ExampleBrains::AttackLeftBrain,
      ExampleBrains::AttackRightBrain,
      ExampleBrains::PlaysAllPossibleCardsBrain,
