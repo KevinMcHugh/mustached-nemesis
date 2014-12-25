@@ -4,6 +4,7 @@ class GameRecordsController < ApplicationController
   def create
     brains = params[:game_record][:brains].reject(&:empty?)
     brain_classes = brains.map(&:constantize)
+    brain_classes = PlayerBrain.all if brain_classes.empty?
     number_of_games = params[:game_record][:number_of_games] || 1
     number_of_games.to_i.times do |i|
       CreateGame.new(brains: brain_classes, persist: true).execute
