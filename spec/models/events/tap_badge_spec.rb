@@ -29,4 +29,9 @@ describe TapBadge do
       expect(subject.tap_badge.to_s).to include('makes a fool')
     end
   end
+  describe '#voluntary?' do
+    it 'is true' do
+      expect(subject.tap_badge.voluntary?).to be(true)
+    end
+  end
 end

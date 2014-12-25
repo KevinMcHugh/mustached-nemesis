@@ -1,6 +1,12 @@
 class Event
-  attr_reader :target, :player
 
+  @@voluntary = false
+  class << self
+    def voluntary?; @voluntary ||= false; end
+    def is_voluntary; @voluntary = true; end
+  end
+
+  attr_reader :target, :player
   def initialize(event_listener)
     event_listener.notify(self) if event_listener
   end
@@ -20,6 +26,7 @@ class Event
     end
   end
 
+  def voluntary?; self.class.voluntary?; end
   def game_over?; false; end
   def player_killed?; false; end
   def eventtype; self.class.to_s; end

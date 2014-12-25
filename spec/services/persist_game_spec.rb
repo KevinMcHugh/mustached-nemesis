@@ -5,7 +5,7 @@ describe PersistGame do
   describe '#execute' do
     let(:player) { double('player', character: 'p')}
     let(:target) { double('target', character: 't')}
-    let(:event) { double('event', player: player, target: target, eventtype: 'event' )}
+    let(:event) { double('event', player: player, target: target, eventtype: 'event', voluntary?: true )}
     let(:game) { double('game', events: [event], round: 0, winners: [player])}
     let(:p_brain) { double('brain', player: player, role: 'p')}
     let(:t_brain) { double('brain', player: target, role: 't')}

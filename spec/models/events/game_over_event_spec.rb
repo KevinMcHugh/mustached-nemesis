@@ -47,4 +47,10 @@ describe GameOverEvent do
       expect(subject.to_s).to eql('the outlaws have prevailed in 0 rounds!')
     end
   end
+  describe '#voluntary?' do
+    let(:game) { double("game", {living_players: [renegade], round: 0})}
+    it 'returns false' do
+      expect(subject.voluntary?).to be(false)
+    end
+  end
 end

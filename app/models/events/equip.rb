@@ -20,6 +20,7 @@ module Equip
   end
 
   class Event < ::Event
+    is_voluntary
     attr_reader :card, :target_player, :duplicate_card
     def initialize(event_listener, player, card, target_player, duplicate_card = nil)
       @player = player

@@ -16,6 +16,7 @@ module PlayAndDiscard
   end
 
   class Event < ::Event
+    is_voluntary
     attr_reader :card, :target_player, :target_card
     def initialize(event_listener, player, card, target_player, target_card)
       @player        = player

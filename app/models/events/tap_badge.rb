@@ -4,8 +4,8 @@ module TapBadge
     Event.new(event_listener, self, adverb)
   end
 
-
   class Event < ::Event
+    is_voluntary
     attr_reader :adverb
     def initialize(event_listener, player, adverb)
       @player = player

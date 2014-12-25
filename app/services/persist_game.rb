@@ -31,7 +31,8 @@ class PersistGame
       player = @players_to_ids[event.player.character] if event.player
       target = @players_to_ids[event.target.character] if event.target
       EventRecord.create(game_record_id: gr.id, order: index, player_record_id: player,
-        target_player_record_id: target, event_json: event.to_json, eventtype: event.eventtype)
+        target_player_record_id: target, event_json: event.to_json, eventtype: event.eventtype,
+        voluntary: event.voluntary?)
     end
   end
 
