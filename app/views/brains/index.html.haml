@@ -1,4 +1,11 @@
 %h3 Here's a buncha brains:
-- @brains.each do |brain|
-  %p
-    =link_to(brain, brain_path(brain))
+%table
+  %table{:border => 1, class: 'table table-striped'}
+    %tr
+    -@stats.header.each do |brain|
+      %th= brain
+    - @stats.rows.each do |row|
+      %tr
+      -row.each do |event|
+        %td= event
+        / %td 'hi'
