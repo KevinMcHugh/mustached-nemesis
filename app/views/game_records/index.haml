@@ -1,13 +1,10 @@
-%h3 Here's a buncha games:
 %table{:border => 1, class: 'table table-striped'}
   %tr
     %th ID
-    %th Created At
     %th Rounds
     %th Winners
   - @game_records.each do |game_record|
     %tr
       %td= link_to("#{game_record.id}", game_record_path(game_record))
-      %td= game_record.created_at
       %td= game_record.rounds
       %td= game_record.winners.map {|player| player.role + ", " + player. brain}

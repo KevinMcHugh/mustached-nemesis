@@ -1,12 +1,13 @@
 = form_for :game_record, url: game_records_path do |f|
-  %div class: 'form-group'
-  -@brains.each do |brain|
+  .form-group
+    -@brains.each do |brain|
+      %p
+      "#{brain.first}:"
+      = f.text_field brain.first, value: brain.second, class: 'form-control'
+  .form-group
     %p
-    "#{brain.first}:"
-    = f.text_field brain.first, value: brain.second
-  %p
-  = f.label :number_of_games
-  %p
-  = f.text_field :number_of_games, value: 10
-  %p.button
-  = f.submit
+    = f.label :number_of_games
+    %p
+    = f.text_field :number_of_games, value: 10, class: 'form-control'
+    %p.button
+    = f.submit
