@@ -2,19 +2,18 @@ require 'example_brains'
 class GameRecordsController < ApplicationController
 
   def create
-    brains = params[:game_record][:brains].reject(&:empty?)
-    brain_classes = brains.map(&:constantize)
-    brain_classes = PlayerBrain.all if brain_classes.empty?
     number_of_games = params[:game_record][:number_of_games] || 1
+    brains = parse_brains
+
     number_of_games.to_i.times do |i|
-      CreateGame.new(brains: brain_classes, persist: true).execute
+      CreateGame.new(brains: brains, persist: true).execute
     end
     @game_records = GameRecord.last(number_of_games)
     render action: 'index'
   end
 
   def new
-    @brains = PlayerBrain.all.map { |brain| [brain, brain]}
+    @brains = PlayerBrain.all
   end
 
   def show
@@ -23,5 +22,16 @@ class GameRecordsController < ApplicationController
 
   def index
     @game_records = GameRecord.all
+  end
+
+  private
+  def parse_brains
+    brain_classes = params[:game_record].flat_map do |key, value|
+      begin
+        value.to_i.times.map { key.constantize }
+      rescue NameError => e
+      end
+    end.compact
+    brain_classes.empty? ? PlayerBrain.all : brain_classes
   end
 end

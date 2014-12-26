@@ -1,8 +1,11 @@
 = form_for :game_record, url: game_records_path do |f|
-  = f.select(:brains, @brains,{},{ multiple: true, size: @brains.size })
-  %br
+  -@brains.each do |brain|
+    %p
+    "#{brain}:"
+    = f.text_field brain, value: 1
+  %p
   = f.label :number_of_games
-  %br
+  %p
   = f.text_field :number_of_games, value: 10
   %p.button
   = f.submit
