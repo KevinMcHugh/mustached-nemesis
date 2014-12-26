@@ -1,9 +1,11 @@
 %h3 Here's a buncha brains:
-%table{:border => 1, class: 'table table-striped'}
-  %tr
-  -@stats.header.each do |brain|
-    %th= brain
-  - @stats.rows.each do |row|
+-@stats.each do |table|
+  %h4= table.title
+  %table{:border => 1, class: 'table table-striped'}
     %tr
-    -row.each do |event|
-      %td= event
+    -table.header.each do |brain|
+      %th= brain
+    - table.rows.each do |row|
+      %tr
+      -row.each do |event|
+        %td= event

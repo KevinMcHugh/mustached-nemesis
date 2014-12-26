@@ -2,44 +2,70 @@ class BrainStats
 
   def execute
     brains = PlayerBrain.all
-    s = brains.map do |brain|
+    statuses = brains.map(&:to_s).flat_map do |brain|
       events = events(brain)
-      stats = events.group_by(&:eventtype)
-      frequency = stats.map { |stat| {eventtype: stat.first, occurences: stat.second.length } }
-      f = frequency.sort_by { |stat| -stat[:occurences]}
-      Status.new(brain, f)
+      events_by_type = events.group_by(&:eventtype)
+      stats_for(events_by_type, brain)
+    end.compact
+    statuses = statuses.sort_by { |status| status.brain }
+    eventtypes_to_stats = statuses.group_by(&:eventtype)
+    eventtypes_to_stats.map do |eventtype_to_stats|
+      tablify(eventtype_to_stats)
     end
-    flip(s)
   end
 
   def events(brain)
-    players = PlayerRecord.where(brain: brain.to_s)
+    players = PlayerRecord.where(brain: brain)
     EventRecord.where(player_record_id: players.pluck(:id), voluntary: true)
   end
 
-  def flip(statuses)
-    header = statuses.map do |s|
-      s.brain.to_s
-    end
-    longest_column_length = statuses.max {|s| s.stats.length}.stats.length
-    rows = (0..longest_column_length -1).map do |i|
-      statuses.map do |s|
-        s.stats[i] || {}
+  def tablify(eventtype_to_stats)
+    stats = eventtype_to_stats.second
+
+    header = stats.map { |s| s.brain }
+    longest_column_length = stats.max {|stat| stat.counts.length}.counts.length
+
+    rows = (0..longest_column_length - 1).map do |i|
+      stats.map do |s|
+        s.counts.to_a[i] || []
       end
     end
-    Table.new(header, rows)
+    Table.new(eventtype_to_stats.first, header, rows)
+  end
+
+  def stats_for(events_by_type, brain)
+    events_by_type.map do |event|
+      eventtype = event.first
+      next if eventtype == 'TapBadge::Event'
+      events = event.second
+      cardtypes = events.map do |event|
+        JSON.parse(event.event_json)['@card']['@type']
+      end
+      counts = count_occurrences(cardtypes)
+      Status.new(brain, eventtype, counts)
+    end
+  end
+
+  def count_occurrences(array)
+    counts = Hash.new(0)
+    array.each do |member|
+      counts[member] += 1
+    end
+    counts
   end
 
   class Status
-    attr_reader :brain, :stats
-    def initialize(brain, stats)
+    attr_reader :brain, :eventtype, :counts
+    def initialize(brain, eventtype, counts)
       @brain = brain
-      @stats = stats
+      @eventtype = eventtype
+      @counts = counts.sort_by { |k, v| -v }
     end
   end
   class Table
-    attr_reader :header, :rows
-    def initialize(header, rows)
+    attr_reader :title, :header, :rows
+    def initialize(title, header, rows)
+      @title = title
       @header = header
       @rows = rows
     end
