@@ -38,20 +38,12 @@ class BrainStats
       eventtype = event.first
       next if eventtype == 'TapBadge::Event'
       events = event.second
-      cardtypes = events.map do |event|
-        JSON.parse(event.event_json)['@card']['@type']
+      cardtypes = events.map do |e|
+        JSON.parse(e.event_json)['@card']['@type']
       end
-      counts = count_occurrences(cardtypes)
+      counts = CountOccurences.new(cardtypes).execute
       Status.new(brain, eventtype, counts)
     end
-  end
-
-  def count_occurrences(array)
-    counts = Hash.new(0)
-    array.each do |member|
-      counts[member] += 1
-    end
-    counts
   end
 
   class Status

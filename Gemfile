@@ -32,6 +32,7 @@ gem "kevins_propietary_brain", git: 'https://github.com/KevinMcHugh/kevins_propi
 gem "basic_brain", git: 'https://github.com/KevinMcHugh/basic_brain.git', branch: "master"
 
 gem 'haml-rails'
+gem 'twitter-bootstrap-rails'
 
 gem "codeclimate-test-reporter", group: :test, require: nil
 

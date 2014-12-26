@@ -16,7 +16,7 @@ class GameRecordsController < ApplicationController
     count = Hash.new(0)
     previous_game_brains = GameRecord.last.player_records.map(&:brain)
     all_brains = PlayerBrain.all.map(&:to_s) + previous_game_brains
-    @brains = count_occurrences(all_brains)
+    @brains = CountOccurences(all_brains).execute
   end
 
   def show
@@ -36,13 +36,5 @@ class GameRecordsController < ApplicationController
       end
     end.compact
     brain_classes.empty? ? PlayerBrain.all : brain_classes
-  end
-
-  def count_occurrences(array)
-    counts = Hash.new(-1)
-    array.each do |member|
-      counts[member] += 1
-    end
-    counts
   end
 end

@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   # Example resource route (maps HTTP verbs to controller actions automatically):
   resources :game_records
   resources :brains
-  root 'welcome#index'
+  root 'game_records#index'
 
   # Example resource route with options:
   #   resources :products do
