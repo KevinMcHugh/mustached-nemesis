@@ -7,7 +7,15 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
+<%= nav_bar :fixed => :top, :brand => "Mustached Nemesis", :responsive => true do %>
+    <%= menu_group do %>
+        <%= menu_item "All Games", root_path %>
+        <%= menu_divider %>
+        <%= menu_item "Create New Game(s)", new_game_record_path %>
+        <%= menu_divider %>
+        <%= menu_item "See Brains", brains_path %>
+    <% end %>
+<% end %>
 <%= yield %>
 
 </body>

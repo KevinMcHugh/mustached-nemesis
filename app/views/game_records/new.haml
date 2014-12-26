@@ -1,4 +1,5 @@
 = form_for :game_record, url: game_records_path do |f|
+  %div class: 'form-group'
   -@brains.each do |brain|
     %p
     "#{brain.first}:"
