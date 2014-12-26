@@ -1,8 +1,8 @@
 = form_for :game_record, url: game_records_path do |f|
   -@brains.each do |brain|
     %p
-    "#{brain}:"
-    = f.text_field brain, value: 1
+    "#{brain.first}:"
+    = f.text_field brain.first, value: brain.second
   %p
   = f.label :number_of_games
   %p
