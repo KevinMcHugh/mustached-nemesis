@@ -28,10 +28,11 @@ class GameOverEvent < Event
   def game_over?; true; end
 
   def string_for_winner
-    @@strings ||= {['sheriff','deputy'] => 'the forces of law have',
+    @@strings ||= {['deputy', 'sheriff'] => 'the forces of law have',
+      ['sheriff'] => 'the forces of law have',
       ['renegade'] => 'the renegade has',
       ['outlaw'] => 'the outlaws have'
     }
-    @@strings[winners.map(&:role).uniq]
+    @@strings[winners.map(&:role).uniq.sort]
   end
 end

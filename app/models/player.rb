@@ -92,10 +92,10 @@ class Player
   def draw_outlaw_killing_bonus; 3.times { draw }; end
 
   def beer_benefit; 1; end
-  def beer
+  def beer(forced=false)
     beer_card = from_hand(Card.beer_card)
     if beer_card
-      play_and_discard(beer_card)
+      play_and_discard(beer_card, forced)
     end
   end
 
