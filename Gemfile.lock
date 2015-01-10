@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: https://github.com/KevinMcHugh/example_brains.git
-  revision: de56b7ba758dc42c25bed2b20b04771aabab0e93
+  revision: 898eefb532ba92f39e79aead6a9ed9b98cf835e5
   branch: master
   specs:
     example_brains (0.0.1)
