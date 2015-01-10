@@ -9,9 +9,11 @@ class BrainStats
     end.compact
     statuses = statuses.sort_by { |status| status.brain }
     eventtypes_to_stats = statuses.group_by(&:eventtype)
-    eventtypes_to_stats.map do |eventtype_to_stats|
+    result = [winning_table]
+    result += eventtypes_to_stats.map do |eventtype_to_stats|
       tablify(eventtype_to_stats)
     end
+    result
   end
 
   def events(brain)
@@ -44,6 +46,17 @@ class BrainStats
       counts = CountOccurences.new(cardtypes).execute
       Status.new(brain, eventtype, counts)
     end
+  end
+
+  def winning_table
+    winning_brains = PlayerRecord.where(won: true).pluck(:brain)
+    occurences = CountOccurences.new(winning_brains).execute
+    header = ['brain name', 'win percentage']
+    percentages = occurences.each_pair.map do |brain, wins|
+      { brain: brain, percentage: 100 * wins.to_f / winning_brains.count }
+    end.sort_by { |stat| - stat[:percentage] }.map(&:values)
+
+    Table.new('Winnings!', header, percentages)
   end
 
   class Status

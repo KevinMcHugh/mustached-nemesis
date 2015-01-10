@@ -13,9 +13,11 @@ class GameRecordsController < ApplicationController
   end
 
   def new
-    previous_game_brains = GameRecord.last.player_records.map(&:brain)
+    previous_game = GameRecord.last
+    previous_game_brains = previous_game ? previous_game.player_records.map(&:brain) : []
     all_brains = PlayerBrain.all.map(&:to_s) + previous_game_brains
-    @brains = CountOccurences.new(all_brains, -1).execute
+    offset = previous_game ? -1 : 0
+    @brains = CountOccurences.new(all_brains, offset).execute
   end
 
   def show
