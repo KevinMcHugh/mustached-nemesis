@@ -94,4 +94,11 @@ describe PlayerAPI do
       end
     end
   end
+  context '#players_in_range_of' do
+    let(:bang_card) { BangCard.new }
+    let(:other_player_dto) { PlayerDTO.new(other_player, player) }
+    it 'returns players in range' do
+      expect(subject.players_in_range_of(bang_card)).to match_array([other_player_dto])
+    end
+  end
 end

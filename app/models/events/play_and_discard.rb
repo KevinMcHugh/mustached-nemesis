@@ -1,18 +1,24 @@
 module PlayAndDiscard
 
   def play_and_discard(card, target_player=nil, target_card=nil)
-    if card.type == Card.bang_card
-      @bangs_played +=1
-    end
-    raise TooManyBangsPlayedException.new if over_bang_limit? && card.type == Card.bang_card
+    @bangs_played +=1 if counts_as_bang?(card)
+    raise TooManyBangsPlayedException.new if over_bang_limit? && counts_as_bang?(card)
     Event.new(event_listener, self, card, target_player, target_card)
 
     if in_range?(card, target_player)
       discard(card, true)
-      card.play(self, target_player, target_card)
+      play_card(card, target_player, target_card)
     else
       raise OutOfRangeException.new
     end
+  end
+
+  def counts_as_bang?(card)
+    card.type == Card.bang_card
+  end
+
+  def play_card(card, target_player, target_card)
+    card.play(self, target_player, target_card)
   end
 
   class Event < ::Event

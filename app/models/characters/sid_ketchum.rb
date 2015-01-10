@@ -15,13 +15,18 @@ module Character
       else
         card_1 = brain.discard
         card_2 = brain.discard
-        if from_hand(card_1) && from_hand(card_2)
+        if from_hand_exact(card_1) && from_hand_exact(card_2)
           play_as_beer(card_1, card_2)
           true
         else
           false
         end
       end
+    end
+
+    private
+    def from_hand_exact(card)
+      hand.find { |c| c == card }
     end
   end
 end
