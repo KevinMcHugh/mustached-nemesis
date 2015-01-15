@@ -4,7 +4,7 @@
     %th Rounds
     %th Winners
   - @game_records.each do |game_record|
-    %tr
+    %tr{class: class_for_game(game_record) }
       %td= link_to("#{game_record.id}", game_record_path(game_record))
       %td= game_record.rounds
-      %td= game_record.winners.map {|player| player.role + ", " + player. brain}
+      %td= game_record.winners.map {|player| player.brain}

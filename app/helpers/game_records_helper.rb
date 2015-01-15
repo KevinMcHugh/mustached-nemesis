@@ -6,16 +6,17 @@ module GameRecordsHelper
     json = JSON.parse(event_record.event_json)
     hash[:card] = json['@card']['@type'] if json['@card']
     target_card = json['@target_card'] if json['@target_card']
-    hash[:target_card] = target_card['@type'] if target_card && target_card['@type']
+    target_card = target_card['@type'] if target_card && target_card['@type']
+    hash[:target_card] = target_card if target_card && hash[:card] == 'CatBalouCard'
     hash.empty? ? nil : hash
   end
 
-  def class_for(event_record)
+  def class_for_event(event_record)
     eventtypes_to_classes = {
-      'NewGameStartedEvent'    => 'info',
       'NewRoundStartedEvent'   => 'info',
       'NewTurnStarted::Event'  => 'info',
       'Discard::Event'         => 'active',
+      'TapBadge::Event'        => 'active',
       'TargetOfDuel::Event'    => 'warning',
       'TargetOfBang::Event'    => 'warning',
       'TargetOfIndians::Event' => 'warning',
@@ -23,8 +24,19 @@ module GameRecordsHelper
       'Jail::Event'            => 'warning',
       'Hit::Event'             => 'danger',
       'Heal::Event'            => 'success',
-      'TapBadge::Event'        => 'success'
+      'NewGameStartedEvent'    => 'success',
     }
     eventtypes_to_classes[event_record.eventtype]
+  end
+
+  def class_for_game(game_record)
+    roles_to_classes = {
+      ['sheriff']           => 'success',
+      ['deputy', 'sheriff'] => 'success',
+      ['outlaw']            => 'danger',
+      ['renegade']          => 'warning'
+    }
+    winners = game_record.winners_roles
+    roles_to_classes[winners]
   end
 end

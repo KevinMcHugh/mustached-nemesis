@@ -20,7 +20,7 @@
     %th Event
     %th Info
   - @game_record.event_records.each do |event_record|
-    %tr{class: class_for(event_record) }
+    %tr{class: class_for_event(event_record) }
       %td= event_record.player_record
       %td= event_record.eventtype
       %td= format_event_record(event_record)
