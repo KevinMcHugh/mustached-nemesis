@@ -1,6 +1,6 @@
 %h2 Created: #{@game_record.created_at}
 %h3 Players:
-%table{:border => 1, class: 'table-bordered'}
+%table{:border => 1, class: 'table table-bordered'}
   %tr
     %th Brain
     %th Role
@@ -21,6 +21,8 @@
     %th Info
   - @game_record.event_records.each do |event_record|
     %tr{class: class_for_event(event_record) }
-      %td= emoji_for(event_record.player_record.try(:to_s_with_emoji_string) || [])
-      %td= (emoji_for(event_record.eventtype_with_emojis) || '') + event_record.eventtype
-      %td= emojify(format_event_record(event_record))
+      %td= emojify(event_record.player_record.try(:to_s_with_emoji_string))
+      %td= emoji_for(event_record.eventtype_with_emojis) ||  event_record.eventtype
+      %td
+        - format_event_record(event_record).each_pair do |k, v|
+          %div!= raw(emojify(k) + ':' + (emojify(v) || ''))

@@ -3,16 +3,19 @@ module GameRecordsHelper
   def format_event_record(event_record)
     hash = {}
     if event_record.target_player_record
-      hash[:target_player] = event_record.target_player_record.to_s_with_emoji_string
+      target_player = event_record.target_player_record.to_s_with_emoji_string
+      hash[':sweat:'] = target_player
     end
     json = event_record.json
-    hash[:card] = json['@card']['@type'] if json['@card']
+    hash[':flower_playing_cards:'] = EmojiForCard.new(json['@card'], true).execute if json['@card']
     target_card = json['@target_card'] if json['@target_card']
     target_card = target_card['@type'] if target_card && target_card['@type']
-    hash[:target_card] = target_card if target_card && hash[:card] == 'CatBalouCard'
+    if target_card && json['@card']['@type'] == 'CatBalouCard'
+      hash[':dart::flower_playing_cards:'] = EmojiForCard.new(target_card, true).execute
+    end
     hash[:still_in_jail] = json['@still_in_jail'] if json['@still_in_jail']
     hash[:winners] = json['winners'] if json['winners']
-    hash.empty? ? [] : hash
+    hash
   end
 
   def class_for_event(event_record)
@@ -47,7 +50,7 @@ module GameRecordsHelper
   end
 
   def class_for_player(player_record)
-    player_record.won?
+    player_record.won? ? 'success' : 'danger'
   end
 
   def emoji_for(emoji_strings)
@@ -58,13 +61,10 @@ module GameRecordsHelper
   end
 
   def emojify(content)
-    h(content).to_str.gsub(/:([\w+-]+):/) do |match|
-      if emoji = Emoji.find_by_alias($1)
-        image($1, emoji)
-      else
-        match
-      end
-    end.html_safe if content.present?
+    content.to_s.gsub(/:([\w+-]+):/) do |match|
+      emoji = Emoji.find_by_alias($1)
+      image($1, emoji) if emoji
+    end.html_safe
   end
 
   def image(title, emoji)
