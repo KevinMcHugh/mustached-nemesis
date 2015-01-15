@@ -20,6 +20,10 @@ test:
   <<: *default
   database: db/test.sqlite3
 
+profile:
+  <<: *default
+  database: db/profile/test.sqlite3
+
 production:
   <<: *default
   database: db/production.sqlite3

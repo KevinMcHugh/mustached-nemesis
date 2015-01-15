@@ -45,6 +45,10 @@ group :development, :test do
   gem 'simplecov', '~> 0.9'
 end
 
+
+group :profile do
+  gem 'ruby-prof'
+end
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
