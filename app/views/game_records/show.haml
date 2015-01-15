@@ -2,11 +2,25 @@
 
 %h2 Created: #{@game_record.created_at}
 %h3 Players:
-- @game_record.player_records.each do |player_record|
-  %p
-    #{player_record.brain} as #{player_record.role} & #{player_record.character}
+%table{:border => 1, class: 'table-bordered table-striped'}
+  %tr
+    %th Brain
+    %th Role
+    %th Character
+  - @game_record.player_records.each do |player_record|
+    %tr
+      %td= player_record.brain
+      %td= player_record.role
+      %td= player_record.character
 
 %h3 Events:
-- @game_record.event_records.each do |event_record|
-  %p
-    #{JSON.parse(event_record.event_json)["@to_s"]}
+%table{:border => 1, class: 'table table-condensed'}
+  %tr
+    %th Player
+    %th Event
+    %th Info
+  - @game_record.event_records.each do |event_record|
+    %tr{class: class_for(event_record) }
+      %td= event_record.player_record
+      %td= event_record.eventtype
+      %td= format_event_record(event_record)
