@@ -1,17 +1,17 @@
-= link_to 'View All Games', game_records_path
-
 %h2 Created: #{@game_record.created_at}
 %h3 Players:
-%table{:border => 1, class: 'table-bordered table-striped'}
+%table{:border => 1, class: 'table-bordered'}
   %tr
     %th Brain
     %th Role
     %th Character
+    %th Won?
   - @game_record.player_records.each do |player_record|
-    %tr
+    %tr{class: class_for_player(player_record)}
       %td= player_record.brain
-      %td= player_record.role
+      %td= emojify(player_record.emoji_string_for_role)
       %td= player_record.character
+      %td= emojify(player_record.won? ? ':white_check_mark:' : ':x:')
 
 %h3 Events:
 %table{:border => 1, class: 'table table-condensed'}
@@ -21,6 +21,6 @@
     %th Info
   - @game_record.event_records.each do |event_record|
     %tr{class: class_for_event(event_record) }
-      %td= event_record.player_record
-      %td= event_record.eventtype
-      %td= format_event_record(event_record)
+      %td= emojify(event_record.player_record.try(:to_s_with_emoji_string))
+      %td= emojify(event_record.eventtype_with_emoji)
+      %td= emojify(format_event_record(event_record))

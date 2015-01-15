@@ -2,12 +2,16 @@ module GameRecordsHelper
 
   def format_event_record(event_record)
     hash = {}
-    hash[:target_player] = event_record.target_player_record.to_s if event_record.target_player_record
-    json = JSON.parse(event_record.event_json)
+    if event_record.target_player_record
+      hash[:target_player] = event_record.target_player_record.to_s_with_emoji_string
+    end
+    json = event_record.json
     hash[:card] = json['@card']['@type'] if json['@card']
     target_card = json['@target_card'] if json['@target_card']
     target_card = target_card['@type'] if target_card && target_card['@type']
     hash[:target_card] = target_card if target_card && hash[:card] == 'CatBalouCard'
+    hash[:still_in_jail] = json['@still_in_jail'] if json['@still_in_jail']
+    hash[:winners] = json['winners'] if json['winners']
     hash.empty? ? nil : hash
   end
 
@@ -23,8 +27,10 @@ module GameRecordsHelper
       'DynamiteCheck::Event'   => 'warning',
       'Jail::Event'            => 'warning',
       'Hit::Event'             => 'danger',
+      'PlayerKilledEvent'      => 'danger',
       'Heal::Event'            => 'success',
       'NewGameStartedEvent'    => 'success',
+      'GameOverEvent'          => 'success'
     }
     eventtypes_to_classes[event_record.eventtype]
   end
@@ -38,5 +44,19 @@ module GameRecordsHelper
     }
     winners = game_record.winners_roles
     roles_to_classes[winners]
+  end
+
+  def class_for_player(player_record)
+    player_record.won?
+  end
+
+  def emojify(content)
+    h(content).to_str.gsub(/:([\w+-]+):/) do |match|
+      if emoji = Emoji.find_by_alias($1)
+        %(<img alt="#$1" src="#{asset_path("images/emoji/#{emoji.image_filename}")}" style="vertical-align:middle" width="20" height="20" />)
+      else
+        match
+      end
+    end.html_safe if content.present?
   end
 end

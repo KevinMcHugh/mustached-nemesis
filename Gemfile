@@ -33,6 +33,7 @@ gem "basic_brain", git: 'https://github.com/KevinMcHugh/basic_brain.git', branch
 
 gem 'haml-rails'
 gem 'twitter-bootstrap-rails'
+gem 'gemoji'
 
 gem "codeclimate-test-reporter", group: :test, require: nil
 

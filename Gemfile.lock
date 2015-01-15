@@ -71,6 +71,7 @@ GEM
     docile (1.1.5)
     erubis (2.7.0)
     execjs (2.2.2)
+    gemoji (2.1.0)
     haml (4.0.5)
       tilt
     haml-rails (0.5.3)
@@ -195,6 +196,7 @@ DEPENDENCIES
   codeclimate-test-reporter
   coffee-rails (~> 4.0.0)
   example_brains!
+  gemoji
   haml-rails
   jbuilder (~> 2.0)
   jquery-rails
