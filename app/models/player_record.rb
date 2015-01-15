@@ -5,7 +5,7 @@ class PlayerRecord < ActiveRecord::Base
   end
 
   def to_s_with_emoji_string
-    "#{emoji_string_for_role}|#{brain}|#{character}"
+    [emoji_string_for_role,brain,character]
   end
 
   def emoji_string_for_role
