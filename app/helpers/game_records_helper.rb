@@ -14,6 +14,7 @@ module GameRecordsHelper
     if target_card && ['CatBalouCard', 'PanicCard'].include?(card_type)
       hash[':dart::flower_playing_cards:'] = EmojiForCard.new(target_card, true).execute
     end
+    hash[':question:'] = json['@blown_up'] ? ':boom::bangbang:' : ':zzz:' if json['@blown_up']
     hash[':question:'] = json['@still_in_jail'] == true ? ':lock:' : ':unlock:' if json['@still_in_jail']
     hash[:winners] = json['winners'] if json['winners']
     hash
