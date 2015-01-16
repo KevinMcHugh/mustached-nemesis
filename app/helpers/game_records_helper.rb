@@ -4,7 +4,7 @@ module GameRecordsHelper
     hash = {}
     if event_record.target_player_record
       target_player = event_record.target_player_record.to_s_with_emoji_string
-      hash[':sweat:'] = target_player
+      hash[':dart::sweat:'] = target_player
     end
     json = event_record.json
     hash[':flower_playing_cards:'] = EmojiForCard.new(json['@card'], true).execute if json['@card']
@@ -16,7 +16,6 @@ module GameRecordsHelper
     end
     hash[':question:'] = json['@blown_up'] ? ':boom::bangbang:' : ':zzz:' if json['@blown_up']
     hash[':question:'] = json['@still_in_jail'] == true ? ':lock:' : ':unlock:' if json['@still_in_jail']
-    hash[:winners] = json['winners'] if json['winners']
     hash
   end
 

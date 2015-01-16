@@ -1,5 +1,6 @@
 module Character
   class PaulRegretPlayer < Player
+    def self.emoji; ':racehorse::man:';end
     def initialize(role, deck, brain=nil)
       super(role, deck, brain)
       @max_health = sheriff? ? 4 : 3

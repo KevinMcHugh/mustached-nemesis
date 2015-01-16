@@ -1,5 +1,6 @@
 module Character
   class SidKetchumPlayer < Player
+    def self.emoji; ':fast_forward::fast_forward::hospital:';end
     def play_as_beer(card_1, card_2)
       if hand.include?(card_1) && hand.include?(card_2)
         discard(card_1)

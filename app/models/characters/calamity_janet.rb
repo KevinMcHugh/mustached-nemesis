@@ -1,5 +1,6 @@
 module Character
   class CalamityJanetPlayer < Player
+    def self.emoji; ':dash::woman:';end
     ### Allows player to send a bang as a response to being bang attacked.
     def response_is_a_playable_missed?(response_card)
       can_play?(response_card, Card.missed_card) || can_play?(response_card, Card.bang_card)

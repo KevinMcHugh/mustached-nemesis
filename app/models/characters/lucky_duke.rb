@@ -5,6 +5,7 @@
 # option to take the explosion.
 module Character
   class LuckyDukePlayer < Player
+    def self.emoji; ':bangbang::man:';end
     def draw!(reason)
       options = 2.times.map { deck.draw! }
       if [:jail, :dynamite].include?(reason)

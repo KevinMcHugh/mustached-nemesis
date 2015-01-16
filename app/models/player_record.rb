@@ -5,7 +5,7 @@ class PlayerRecord < ActiveRecord::Base
   end
 
   def to_s_with_emoji_string
-    ":#{emoji_string_for_role}:|#{try_brain_emoji}|#{character}"
+    ":#{emoji_string_for_role}:|#{try_brain_emoji}|#{character_emoji}"
   end
 
   def emoji_string_for_role
@@ -17,10 +17,14 @@ class PlayerRecord < ActiveRecord::Base
   end
 
   def brain_emoji
-    @emoji ||= brain.constantize.try(:emoji) || ''
+    @brain_emoji ||= brain.constantize.try(:emoji) || ''
   end
 
   def try_brain_emoji
     brain_emoji.empty? ? brain : brain_emoji
+  end
+
+  def character_emoji
+    @character_emoji ||= character.constantize.try(:emoji) || ''
   end
 end

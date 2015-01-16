@@ -39,6 +39,7 @@ class EmojiForCard
     return ['hand'] if card == 'hand'
     suit = card['@suit'] + 's'
     card_specific_emojis = {
+      'BarrelCard'       => ['package'],
       'BeerCard'         => ['beer'],
       'SaloonCard'       => ['beers'],
       'CatBalouCard'     => ['cat'],

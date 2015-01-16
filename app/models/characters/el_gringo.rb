@@ -1,5 +1,6 @@
 module Character
   class ElGringoPlayer < Player
+    def self.emoji; ':cactus::us:';end
     def initialize(role, deck, brain)
       super(role, deck, brain)
       @max_health = sheriff? ? 4 : 3

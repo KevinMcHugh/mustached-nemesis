@@ -1,5 +1,6 @@
 module Character
   class PedroRamirezPlayer < Player
+    def self.emoji; ':fast_forward::arrow_up:';end
     def draw_for_turn
       card = brain.draw_choice(deck.most_recently_discarded)
       if card && card == deck.most_recently_discarded
