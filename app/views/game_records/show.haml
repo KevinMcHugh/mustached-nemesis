@@ -12,7 +12,10 @@
       %td= raw(player_record.role + emoji_for([player_record.emoji_string_for_role]))
       %td= raw("#{player_record.character}" + emojify([player_record.character_emoji]))
       %td= emoji_for(player_record.won? ? ['white_check_mark'] : ['x'])
-
+%div
+  Jump to round:
+  - @game_record.rounds.times.map do |round|
+    %a{href: "#round#{round + 1}", class: 'btn btn-primary'} #{round + 1}
 %h3 Events:
 %table{:border => 1, class: 'table table-condensed'}
   %tr
@@ -22,7 +25,10 @@
   - @game_record.event_records.each do |event_record|
     %tr{class: class_for_event(event_record) }
       %td= emojify(event_record.player_record.try(:to_s_with_emoji_string))
-      %td= emoji_for(event_record.eventtype_with_emojis) ||  event_record.eventtype
+      %td
+        = format_event_type(event_record)
+        - if event_record.eventtype == 'NewRoundStartedEvent'
+          %a{name: "round#{event_record.json['@round']}"}
       %td
         - format_event_record(event_record).each_pair do |k, v|
           %div!= raw(emojify(k) + ':' + (emojify(v) || ''))

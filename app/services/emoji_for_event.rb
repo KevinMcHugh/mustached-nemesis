@@ -4,6 +4,7 @@ class EmojiForEvent
   attr_reader :event
   def initialize(event)
     @event = event
+    emoji_for_static_eventtypes
   end
 
   def execute
@@ -17,9 +18,6 @@ class EmojiForEvent
       [json['@still_in_jail'] == true ? 'lock' : 'unlock']
     elsif event.eventtype == 'TapBadge::Event'
       ['name_badge'] + [json['@success'] ? '+1' : '-1']
-    elsif ['PlayAndDiscard::Event', 'Discard::Event', 'Equip::Event'].include?(event.eventtype)
-      card = json['@card']
-      emoji_for_static_eventtypes[event.eventtype] + emoji_for_card(card)
     elsif event.eventtype == 'NewRoundStartedEvent'
       state = json['@round'] % 24
       [clock_states[state - 1]]

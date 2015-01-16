@@ -1,5 +1,9 @@
 module GameRecordsHelper
 
+  def format_event_type(event_record)
+    emoji_for(event_record.eventtype_with_emojis) ||  event_record.eventtype
+  end
+
   def format_event_record(event_record)
     hash = {}
     if event_record.target_player_record
