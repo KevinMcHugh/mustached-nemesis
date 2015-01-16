@@ -40,7 +40,7 @@ gem "codeclimate-test-reporter", group: :test, require: nil
 group :development, :test do
   gem 'rspec-rails', '~> 2.14.0'
   gem 'pry'
-  gem 'pry-debugger'
+  gem 'pry-byebug'
   gem 'pry-rails'
   gem 'simplecov', '~> 0.9'
 end
