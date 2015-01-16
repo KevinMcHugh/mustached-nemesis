@@ -8,7 +8,7 @@
     %th Won?
   - @game_record.player_records.each do |player_record|
     %tr{class: class_for_player(player_record)}
-      %td= player_record.brain
+      %td= raw("#{player_record.brain}" + emojify([player_record.brain_emoji]))
       %td= emoji_for([player_record.emoji_string_for_role])
       %td= player_record.character
       %td= emoji_for(player_record.won? ? ['white_check_mark'] : ['x'])

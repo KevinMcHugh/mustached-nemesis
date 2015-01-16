@@ -7,17 +7,17 @@ GIT
 
 GIT
   remote: https://github.com/KevinMcHugh/example_brains.git
-  revision: 898eefb532ba92f39e79aead6a9ed9b98cf835e5
+  revision: 5b69b01aa01c576ff5c313276f2e96611af443b9
   branch: master
   specs:
-    example_brains (0.0.1)
+    example_brains (0.0.2)
 
 GIT
   remote: https://github.com/KevinMcHugh/kevins_propietary_brain.git
-  revision: 7996f88ca97db47dd91acaf8dee65c708eca8013
+  revision: b9d669f5c1cab09637dbaec12c7be44835af374a
   branch: master
   specs:
-    kevins_propietary_brain (0.0.2)
+    kevins_propietary_brain (0.0.3)
 
 GEM
   remote: https://rubygems.org/
