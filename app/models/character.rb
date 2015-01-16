@@ -6,7 +6,7 @@ module Character
     clone.sort!.shuffle!(random: random)
   end
   class KitCarlsonPlayer < Player
-    def self.emoji; ':three::flower_playing_cards::arrow_right::two::flower_playing_cards:';end
+    def self.emoji; ':question::three::arrow_down::two:';end
     def draw_for_turn
       cards = deck.take(3)
       response = brain.pick(2, cards)
@@ -20,7 +20,7 @@ module Character
   rescue
   end
   class JesseJonesPlayer < Player
-    def self.emoji; ':skull::flower_playing_cards:';end
+    def self.emoji; ':hand::flower_playing_cards::arrow_down:';end
     def draw_for_turn
       players_with_cards = players.reject { |p| p.hand.empty? }
       player = brain.draw_choice([nil] + players_with_cards)
@@ -34,7 +34,7 @@ module Character
     end
   end
   class WillyTheKidPlayer < Player
-    def self.emoji; ':baby::man:'; end
+    def self.emoji; ':eight_spoked_asterisk::boom:'; end
     def over_bang_limit?; false; end
   end
   class BartCassidyPlayer < Player
@@ -54,7 +54,7 @@ module Character
     end
   end
   class CalamityJanetPlayer < Player
-    def self.emoji; ':dash::woman:';end
+    def self.emoji; ':boom::left_right_arrow::dash:';end
     ### Allows player to send a bang as a response to being bang attacked.
     def response_is_a_playable_missed?(response_card)
       can_play?(response_card, Card.missed_card) || can_play?(response_card, Card.bang_card)
@@ -74,7 +74,7 @@ module Character
     end
   end
   class ElGringoPlayer < Player
-    def self.emoji; ':cactus::us:';end
+    def self.emoji; ':boom::hand::arrow_down:';end
     def initialize(role, deck, brain)
       super(role, deck, brain)
       @max_health = sheriff? ? 4 : 3
@@ -90,7 +90,7 @@ module Character
     end
   end
   class JourdonnaisPlayer < Player
-    def self.emoji; ':package::man:';end
+    def self.emoji; ':repeat::package:';end
     def jourdonnais_ability(card)
       if card.type == Card.bang_card
         return true if draw!(:barrel).barreled?
@@ -104,7 +104,7 @@ module Character
   # the sheriff has 1. You're dynamited and have the
   # option to take the explosion.
   class LuckyDukePlayer < Player
-    def self.emoji; ':bangbang::man:';end
+    def self.emoji; ':exclamation::question::two:';end
     def draw!(reason)
       options = 2.times.map { deck.draw! }
       if [:jail, :dynamite].include?(reason)
@@ -121,7 +121,7 @@ module Character
     end
   end
   class PaulRegretPlayer < Player
-    def self.emoji; ':racehorse::man:';end
+    def self.emoji; ':repeat::racehorse:';end
     def initialize(role, deck, brain=nil)
       super(role, deck, brain)
       @max_health = sheriff? ? 4 : 3
@@ -146,7 +146,7 @@ module Character
     end
   end
   class RoseDoolanPlayer < Player
-    def self.emoji; ':rose::telescope:';end
+    def self.emoji; ':repeat::telescope:';end
     def initialize(role, deck, brain=nil)
       super(role, deck, brain)
       @range_decrease = 1
@@ -184,7 +184,7 @@ module Character
     end
   end
   class SlabTheKillerPlayer < Player
-    def self.emoji; ':office::gun:';end
+    def self.emoji; ':boom::dash::dash:';end
     def missed_needed(card)
       card.type == Card.bang_card ? 2 : 1
     end
@@ -200,6 +200,6 @@ module Character
     # Whenever a character is eliminated from the game,
     # Sam takes all the cards that player had in his hand and in play, and adds them to his hand.
     #Code is in the PlayerKilledEvent
-    def self.emoji; ':bird::man:'; end
+    def self.emoji; ':ghost::arrow_down::eight_spoked_asterisk::flower_playing_cards:'; end
   end
 end

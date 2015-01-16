@@ -58,7 +58,7 @@ class EmojiForCard
       'MissedCard'       => ['dash'],
       'PanicCard'        => ['trollface'],
       'ScopeCard'        => ['telescope'],
-      'WellsFargoCard'   => ['truck']
+      'WellsFargoCard'   => ['truck', 'card', 'card', 'card']
     }
     card_specific_emoji = card_specific_emojis[card['@type']] || []
     card_specific_emoji += [number, suit].flatten
