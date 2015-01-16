@@ -79,13 +79,18 @@ class Player
     hand.detect { |card| card.type == card_type }
   end
 
+  def random_from_hand
+    card = @hand.sample
+    @hand.delete(card)
+    card
+  end
+
   def play_as_beer(x,y); end
   def give_card(card); @hand << card; end
   def over_hand_limit?; hand.size > hand_limit; end
   def can_discard?(card); hand.include?(card); end
   def hand_limit; health; end
   def hand_size; hand.size; end
-  def random_from_hand; @hand.sample; end
   def draw_for_turn; 2.times { draw }; end
   def draw; give_card(deck.take(1).first); end
   def draw!(reason=nil); deck.draw!; end

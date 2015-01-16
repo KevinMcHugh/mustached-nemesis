@@ -22,9 +22,10 @@ module Character
   class JesseJonesPlayer < Player
     def self.emoji; ':skull::flower_playing_cards:';end
     def draw_for_turn
-      player = brain.draw_choice
-      if player && player.respond_to?(:random_from_hand)
-        hand << player.random_from_hand if player.random_from_hand
+      player = brain.draw_choice([nil] + players)
+      if player
+        target = player.random_from_hand
+        hand << target
         1.times { draw }
       else
         2.times { draw }
