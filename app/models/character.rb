@@ -22,7 +22,8 @@ module Character
   class JesseJonesPlayer < Player
     def self.emoji; ':skull::flower_playing_cards:';end
     def draw_for_turn
-      player = brain.draw_choice([nil] + players)
+      players_with_cards = players.reject { |p| p.hand.empty? }
+      player = brain.draw_choice([nil] + players_with_cards)
       if player
         target = player.random_from_hand
         hand << target
@@ -134,8 +135,9 @@ module Character
   class PedroRamirezPlayer < Player
     def self.emoji; ':fast_forward::arrow_down:';end
     def draw_for_turn
-      card = brain.draw_choice(deck.most_recently_discarded)
-      if card && card == deck.most_recently_discarded
+      discard = deck.most_recently_discarded
+      card = brain.draw_choice([nil, discard]) if discard
+      if card && card == discard
         hand << card
         1.times { draw }
       else

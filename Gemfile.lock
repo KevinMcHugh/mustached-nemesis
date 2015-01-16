@@ -7,14 +7,14 @@ GIT
 
 GIT
   remote: https://github.com/KevinMcHugh/example_brains.git
-  revision: 5b69b01aa01c576ff5c313276f2e96611af443b9
+  revision: 7160949400e086f6975cba6b067d92334478722c
   branch: master
   specs:
     example_brains (0.0.2)
 
 GIT
   remote: https://github.com/KevinMcHugh/kevins_propietary_brain.git
-  revision: b9d669f5c1cab09637dbaec12c7be44835af374a
+  revision: a734f40926f0a1415ef0294f1500525a621b1727
   branch: master
   specs:
     kevins_propietary_brain (0.0.3)
