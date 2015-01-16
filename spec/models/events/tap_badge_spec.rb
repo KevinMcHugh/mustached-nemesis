@@ -7,24 +7,21 @@ describe TapBadge do
   end
 
   let(:adverb) {'quickly'}
+  let(:sheriff) { true }
   subject { TapBadgeDummy.new }
+  before  { allow(subject).to receive(:sheriff?).and_return(sheriff) }
+
   it 'returns a new Event' do
     expect(TapBadge::Event).to receive(:new).with(nil, subject, adverb)
     subject.tap_badge(adverb)
   end
-
   context 'for the sheriff' do
-    before do
-      allow(subject).to receive(:sheriff?).and_return(true)
-    end
     it 'returns an embarassing message' do
       expect(subject.tap_badge.to_s).to include('taps its badge')
     end
   end
   context 'for non-sheriffs' do
-    before do
-      allow(subject).to receive(:sheriff?).and_return(false)
-    end
+    let(:sheriff) { false }
     it 'returns an embarassing message' do
       expect(subject.tap_badge.to_s).to include('makes a fool')
     end

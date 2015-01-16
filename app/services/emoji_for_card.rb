@@ -54,8 +54,8 @@ class EmojiForCard
       'RemingtonCard'    => ['three','gun'],
       'RevCarbineCard'   => ['four','gun'],
       'WinchesterCard'   => ['five','gun'],
-      'MissedCard'       => ['no_pedestrians'],
-      'PanicCard'        => ['no_good'],
+      'MissedCard'       => ['cloud'],
+      'PanicCard'        => ['trollface'],
       'ScopeCard'        => ['telescope'],
       'WellsFargoCard'   => ['truck']
     }

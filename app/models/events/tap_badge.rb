@@ -6,15 +6,16 @@ module TapBadge
 
   class Event < ::Event
     is_voluntary
-    attr_reader :adverb
+    attr_reader :adverb, :success
     def initialize(event_listener, player, adverb)
-      @player = player
-      @adverb = adverb
+      @player  = player
+      @adverb  = adverb
+      @success = player.sheriff?
       super(event_listener)
     end
 
     def to_s
-      @player.sheriff? ? "#{player.class} taps its badge #{adverb}" :
+      success ? "#{player.class} taps its badge #{adverb}" :
         "#{player.class} attempts to tap its badge, does not realize that it does not have a badge,
             and makes a fool of itself in front of all the other robots."
     end

@@ -10,10 +10,11 @@ module GameRecordsHelper
     hash[':flower_playing_cards:'] = EmojiForCard.new(json['@card'], true).execute if json['@card']
     target_card = json['@target_card'] if json['@target_card']
     target_card = target_card['@type'] if target_card && target_card['@type']
-    if target_card && json['@card']['@type'] == 'CatBalouCard'
+    card_type = json['@card']['@type'] if json['@card']
+    if target_card && ['CatBalouCard', 'PanicCard'].include?(card_type)
       hash[':dart::flower_playing_cards:'] = EmojiForCard.new(target_card, true).execute
     end
-    hash[:still_in_jail] = json['@still_in_jail'] if json['@still_in_jail']
+    hash[':question:'] = json['@still_in_jail'] == true ? ':lock:' : ':unlock:' if json['@still_in_jail']
     hash[:winners] = json['winners'] if json['winners']
     hash
   end
