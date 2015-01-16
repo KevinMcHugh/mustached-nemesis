@@ -36,14 +36,14 @@ module Character
     def over_bang_limit?; false; end
   end
   class BartCassidyPlayer < Player
-    def self.emoji; ':snowboarder:';end
+    def self.emoji; ':boom::arrow_down:';end
     def hit!(hitter=nil)
       super(hitter)
       draw unless dead?
     end
   end
   class BlackJackPlayer < Player
-    def self.emoji; ':black_large_square::jack_o_lantern:';end
+    def self.emoji; ':arrow_down::hearts::diamonds::question::arrow_down:';end
     def draw_for_turn
       draw
       card = draw.first
@@ -131,7 +131,7 @@ module Character
     end
   end
   class PedroRamirezPlayer < Player
-    def self.emoji; ':fast_forward::left_arrow:';end
+    def self.emoji; ':fast_forward::arrow_down:';end
     def draw_for_turn
       card = brain.draw_choice(deck.most_recently_discarded)
       if card && card == deck.most_recently_discarded
@@ -187,7 +187,7 @@ module Character
     end
   end
   class SuzyLafayettePlayer < Player
-    def self.emoji; ':zero::flower_playing_cards::left_arrow:'; end
+    def self.emoji; ':zero::flower_playing_cards::arrow_down:'; end
     def play_and_discard(card, target_player=nil, target_card=nil)
       super(card, target_player, target_card)
       draw if hand_size == 0
